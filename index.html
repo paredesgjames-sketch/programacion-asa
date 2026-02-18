@@ -849,7 +849,7 @@ function renderInterno() {
                 const v = (p.dias && p.dias[d]) || 0;
                 let cls = 'day-input' + (di >= 5 ? ' finde' : '');
                 if (v > 0) { cls += ' has-value'; if (p.turno==='TARDE') cls += ' tarde'; if (p.turno==='NOCHE') cls += ' noche'; }
-                html += `<td class="day-cell"><input type="number" class="${cls}" data-row="${i}" data-col="${di}" value="${v||''}" min="0" placeholder="-" onchange="setDia(${i},'${d}',this.value)" onfocus="this.select()" onkeydown="navegarInput(event,${i},${di})"></td>`;
+                html += `<td class="day-cell"><input type="number" class="${cls}" data-row="${i}" data-col="${di}" data-dia="${d}" value="${v||''}" min="0" placeholder="-" oninput="guardarDia(this,${i},'${d}')" onfocus="this.select()" onkeydown="navegarInput(event,${i},${di})" onblur="actualizarAlSalir()"></td>`;
             });
             
             html += `<td class="col-total"><span class="tot-badge">${rowTot}</span></td>`;
@@ -918,6 +918,40 @@ function setLabor(i, val) {
 
 function setTurno(i, v) { progs[i].turno = v; render(); }
 function setDia(i, d, v) { if (!progs[i].dias) progs[i].dias = {}; progs[i].dias[d] = parseInt(v)||0; render(); }
+
+// Guardar día sin re-renderizar (para navegación fluida)
+function guardarDia(input, row, dia) {
+    const val = parseInt(input.value) || 0;
+    if (!progs[row].dias) progs[row].dias = {};
+    progs[row].dias[dia] = val;
+    
+    // Actualizar estilo visual
+    input.classList.remove('has-value', 'tarde', 'noche');
+    if (val > 0) {
+        input.classList.add('has-value');
+        if (progs[row].turno === 'TARDE') input.classList.add('tarde');
+        if (progs[row].turno === 'NOCHE') input.classList.add('noche');
+    }
+    
+    // Actualizar total en header
+    let totalGen = 0;
+    progs.forEach(p => DIAS.forEach(d => { totalGen += (p.dias && p.dias[d]) || 0; }));
+    document.getElementById('statPersonal').textContent = totalGen;
+    
+    // Guardar silenciosamente
+    guardarEnLocalSilencioso();
+}
+
+// Actualizar totales y subtotales al salir del input
+function actualizarAlSalir() {
+    // Solo actualizar si no estamos navegando
+    setTimeout(() => {
+        const activeEl = document.activeElement;
+        if (!activeEl || !activeEl.classList.contains('day-input')) {
+            renderSinHistorial();
+        }
+    }, 100);
+}
 
 function mostrarConfirm(icon, title, msg, onYes, green = false) {
     document.getElementById('confirmIcon').textContent = icon;
@@ -1099,27 +1133,11 @@ function navegarInput(event, row, col) {
     
     // Solo procesar flechas, Enter y Tab
     if (!['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Enter', 'Tab'].includes(key)) {
-        return; // Permitir escribir números normalmente
+        return;
     }
     
     event.preventDefault();
     event.stopPropagation();
-    
-    // Guardar el valor actual ANTES de moverse
-    const currentInput = event.target;
-    const currentValue = parseInt(currentInput.value) || 0;
-    const dia = DIAS[col];
-    
-    if (!progs[row].dias) progs[row].dias = {};
-    progs[row].dias[dia] = currentValue;
-    
-    // Actualizar estilo visual del input actual (sin re-renderizar)
-    currentInput.classList.remove('has-value', 'tarde', 'noche');
-    if (currentValue > 0) {
-        currentInput.classList.add('has-value');
-        if (progs[row].turno === 'TARDE') currentInput.classList.add('tarde');
-        if (progs[row].turno === 'NOCHE') currentInput.classList.add('noche');
-    }
     
     // Calcular nueva posición
     let newRow = row;
@@ -1135,21 +1153,12 @@ function navegarInput(event, row, col) {
         if (row > 0) newRow = row - 1;
     }
     
-    // Buscar y enfocar el nuevo input directamente
+    // Buscar y enfocar el nuevo input
     const newInput = document.querySelector(`input.day-input[data-row="${newRow}"][data-col="${newCol}"]`);
     if (newInput) {
         newInput.focus();
         newInput.select();
     }
-    
-    // Actualizar solo el total (sin re-renderizar la tabla)
-    let totalGen = 0;
-    progs.forEach(p => DIAS.forEach(d => { totalGen += (p.dias && p.dias[d]) || 0; }));
-    document.getElementById('statPersonal').textContent = totalGen;
-    
-    // Guardar silenciosamente
-    const data = { progs, laboresCustom, semana: semanaActual, anio: anioActual, usuario: document.getElementById('userName').value, fecha: new Date().toISOString() };
-    localStorage.setItem('asa_programacion', JSON.stringify(data));
 }
 
 function actualizarTotalesRapido() {
