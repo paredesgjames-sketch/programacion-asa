@@ -1113,16 +1113,24 @@ function autocompletarDesdeLabor(row, laborSeleccionada) {
 }
 
 // Cerrar dropdown al hacer clic fuera
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.select-search-container')) {
+document.addEventListener('mousedown', function(e) {
+    // No cerrar si se hace clic dentro del dropdown (incluyendo scrollbar)
+    const dropdown = e.target.closest('.select-dropdown');
+    const container = e.target.closest('.select-search-container');
+    
+    if (!dropdown && !container) {
         document.querySelectorAll('.select-dropdown.show').forEach(d => d.classList.remove('show'));
     }
 });
 
-// Cerrar dropdown al hacer scroll
-document.addEventListener('scroll', function() {
-    document.querySelectorAll('.select-dropdown.show').forEach(d => d.classList.remove('show'));
-}, true);
+// Cerrar dropdown al hacer scroll en la página principal (no dentro del dropdown)
+let scrollTimeout;
+window.addEventListener('scroll', function(e) {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        document.querySelectorAll('.select-dropdown.show').forEach(d => d.classList.remove('show'));
+    }, 150);
+}, false);
 
 function selLaborHTML(i, p, isDup, isInc, isNoPer, isObs, det) {
     const opts = getOpts('labor', {fundo:p.fundo, cultivo:p.cultivo, area:p.area, grupo:p.grupo});
