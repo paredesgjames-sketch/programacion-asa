@@ -181,17 +181,19 @@
             content: '▼'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
             font-size: 6px; color: #64748b; pointer-events: none;
         }
+        .select-search-container .select-display.disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+        .select-search-container .select-display.disabled:hover { border-color: #e2e8f0; }
         .select-search-container.dup-select .select-display { border-color: #f59e0b; background: #fffbeb; }
         .select-search-container .select-dropdown {
             display: none; position: fixed; 
             background: #fff; border: 1px solid #cbd5e1; border-radius: 6px;
-            width: 280px; max-height: 300px; overflow: hidden; z-index: 99999; 
+            width: 300px; max-height: 350px; overflow: hidden; z-index: 99999; 
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        .select-search-container .select-dropdown.show { display: block; }
+        .select-search-container .select-dropdown.show { display: flex; flex-direction: column; }
         .select-search-container .search-input-wrapper {
             padding: 10px; background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-bottom: 1px solid #cbd5e1;
-            position: sticky; top: 0;
+            flex-shrink: 0;
         }
         .select-search-container .search-input-wrapper input {
             width: 100%; padding: 8px 10px 8px 32px; border: 1px solid #10b981; border-radius: 6px;
@@ -200,12 +202,12 @@
         .select-search-container .search-input-wrapper input:focus { outline: none; border-color: #059669; box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
         .select-search-container .search-input-wrapper input::placeholder { color: #64748b; font-weight: 500; }
         .select-search-container .select-options {
-            max-height: 240px; overflow-y: auto;
+            flex: 1; overflow-y: auto; max-height: 280px;
         }
-        .select-search-container .select-options::-webkit-scrollbar { width: 8px; }
-        .select-search-container .select-options::-webkit-scrollbar-track { background: #f1f5f9; }
-        .select-search-container .select-options::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
-        .select-search-container .select-options::-webkit-scrollbar-thumb:hover { background: #059669; }
+        .select-search-container .select-options::-webkit-scrollbar { width: 10px; }
+        .select-search-container .select-options::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 0 6px 6px 0; }
+        .select-search-container .select-options::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #10b981, #059669); border-radius: 5px; border: 2px solid #e2e8f0; }
+        .select-search-container .select-options::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #059669, #047857); }
         .select-search-container .select-option {
             padding: 10px 14px; font-size: 10px; cursor: pointer; border-bottom: 1px solid #f1f5f9;
             transition: background 0.15s;
@@ -949,8 +951,16 @@ function selHTML(i, tipo, val, opts, hl) {
     const id = `sel_${i}_${tipo}`;
     const displayVal = val || '--';
     let optsJson = JSON.stringify(opts).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    
+    // Verificar si está deshabilitado (requiere seleccionar Fundo primero)
+    const p = progs[i];
+    let disabled = false;
+    if (tipo !== 'fundo' && !p.fundo) {
+        disabled = true;
+    }
+    
     return `<div class="select-search-container${hl?' dup-select':''}">
-        <div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','${tipo}',${i})"
+        <div class="select-display${disabled?' disabled':''}" id="${id}" onclick="${disabled ? '' : `abrirSelectSearch('${id}','${tipo}',${i})`}"
             data-opts="${optsJson}" data-val="${val||''}" data-tipo="${tipo}" data-row="${i}">${displayVal}</div>
         <div class="select-dropdown" id="${id}_dropdown"></div>
     </div>`;
@@ -970,13 +980,39 @@ function abrirSelectSearch(id, tipo, row) {
     
     const display = document.getElementById(id);
     const dropdown = document.getElementById(id + '_dropdown');
+    const p = progs[row];
     
-    let opts;
-    // Para Labor, mostrar TODAS las labores del MAESTRO para autocompletar
-    if (tipo === 'labor' && (!progs[row].fundo || !progs[row].area)) {
-        opts = [...new Set(MAESTRO.map(m => m.Labor).filter(Boolean))].sort();
-    } else {
-        opts = JSON.parse(display.dataset.opts.replace(/&quot;/g, '"'));
+    // Verificar dependencias
+    if (tipo !== 'fundo' && !p.fundo) {
+        showToast('Seleccione primero', 'Debe seleccionar un Fundo', 'warning');
+        return;
+    }
+    
+    let opts = [];
+    
+    // Obtener opciones según el contexto actual (cascada)
+    if (tipo === 'fundo') {
+        opts = getOpts('fundo', {});
+    } else if (tipo === 'cultivo') {
+        opts = getOpts('cultivo', {fundo: p.fundo});
+    } else if (tipo === 'area') {
+        opts = getOpts('area', {fundo: p.fundo, cultivo: p.cultivo});
+    } else if (tipo === 'grupo') {
+        opts = getOpts('grupo', {fundo: p.fundo, cultivo: p.cultivo, area: p.area});
+    } else if (tipo === 'labor') {
+        // Labor depende de lo que ya se seleccionó
+        if (p.grupo) {
+            opts = getOpts('labor', {fundo: p.fundo, cultivo: p.cultivo, area: p.area, grupo: p.grupo});
+        } else if (p.area) {
+            // Si tiene área pero no grupo, mostrar labores de esa área
+            opts = [...new Set(MAESTRO.filter(m => m.Fundo === p.fundo && m.AREA === p.area).map(m => m.Labor).filter(Boolean))].sort();
+        } else if (p.cultivo) {
+            // Si tiene cultivo pero no área, mostrar labores de ese cultivo
+            opts = [...new Set(MAESTRO.filter(m => m.Fundo === p.fundo && (m.CULTIVO || m.Cultivo) === p.cultivo).map(m => m.Labor).filter(Boolean))].sort();
+        } else {
+            // Solo tiene fundo, mostrar todas las labores de ese fundo
+            opts = [...new Set(MAESTRO.filter(m => m.Fundo === p.fundo).map(m => m.Labor).filter(Boolean))].sort();
+        }
     }
     
     const currentVal = display.dataset.val;
@@ -985,7 +1021,7 @@ function abrirSelectSearch(id, tipo, row) {
     // Posicionar el dropdown
     const rect = display.getBoundingClientRect();
     dropdown.style.top = (rect.bottom + 2) + 'px';
-    dropdown.style.left = rect.left + 'px';
+    dropdown.style.left = Math.max(rect.left, 10) + 'px';
     
     let html = `<div class="search-input-wrapper">
         <input type="text" placeholder="${placeholder}" id="${id}_search" onkeyup="filtrarSelectSearch('${id}')" autocomplete="off">
@@ -1044,19 +1080,25 @@ function seleccionarOpcion(id, valor) {
     display.textContent = valor || '--';
     display.dataset.val = valor;
     
-    // Si seleccionamos LABOR y no tenemos los otros campos, autocompletar
+    // Si seleccionamos LABOR y faltan campos intermedios, autocompletar
     if (tipo === 'labor' && valor) {
-        autocompletarDesdeLabor(row, valor);
-    } else {
-        setVal(row, tipo, valor);
+        const p = progs[row];
+        if (!p.cultivo || !p.area || !p.grupo) {
+            autocompletarDesdeLabor(row, valor);
+            return;
+        }
     }
+    
+    setVal(row, tipo, valor);
 }
 
-// Autocompletar Fundo, Cultivo, Área, Grupo cuando se selecciona Labor directamente
+// Autocompletar Cultivo, Área, Grupo cuando se selecciona Labor directamente
 function autocompletarDesdeLabor(row, laborSeleccionada) {
-    const registro = MAESTRO.find(m => m.Labor === laborSeleccionada);
+    const p = progs[row];
+    // Buscar registro que coincida con el fundo seleccionado y la labor
+    const registro = MAESTRO.find(m => m.Fundo === p.fundo && m.Labor === laborSeleccionada);
+    
     if (registro) {
-        progs[row].fundo = registro.Fundo || '';
         progs[row].cultivo = registro.CULTIVO || registro.Cultivo || '';
         progs[row].area = registro.AREA || '';
         progs[row].grupo = registro['Grupo Labor'] || '';
@@ -1064,7 +1106,7 @@ function autocompletarDesdeLabor(row, laborSeleccionada) {
         progs[row].cc = registro.CodCentroCosto || '';
         progs[row].esNueva = false;
         render();
-        showToast('Autocompletado', `${registro.Fundo} → ${registro.AREA} → ${laborSeleccionada}`, 'success');
+        showToast('Autocompletado', `${registro.CULTIVO || registro.Cultivo} → ${registro.AREA} → ${registro['Grupo Labor']}`, 'success');
     } else {
         setVal(row, 'labor', laborSeleccionada);
     }
