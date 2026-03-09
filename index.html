@@ -1207,20 +1207,17 @@ function verificarPassword() {
 
 function ejecutarExportBusqueda() {
     const datos = window.searchResultadosTotal;
-    const h = ['Fundo','Cultivo','Area','Grupo Labor','Labor','Centro Costo','Partida','Rubro','Estado'];
+    const h = ['Fundo','Centro Costo','Cultivo','Area','Grupo Labor','Labor'];
     let csv = '\uFEFF' + h.join(';') + '\n';
     
     datos.forEach(m => {
         csv += [
             m.Fundo || '',
+            m.CodCentroCosto || '',
             m.CULTIVO || m.Cultivo || '',
             m.AREA || '',
             m['Grupo Labor'] || '',
-            m.Labor || '',
-            m.CodCentroCosto || '',
-            m.PARTIDA || '',
-            m.RUBRO || '',
-            m.ESTADO || ''
+            m.Labor || ''
         ].join(';') + '\n';
     });
     
