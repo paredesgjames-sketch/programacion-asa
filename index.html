@@ -260,10 +260,14 @@
         .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .search-header h4 { font-size: 11px; color: #1a1a2e; display: flex; align-items: center; gap: 6px; }
         .search-close { background: #ef4444; color: #fff; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 9px; }
-        .search-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+        .search-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: flex-end; }
         .search-filters select, .search-filters input { padding: 6px 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 9px; min-width: 120px; }
-        .search-filters input { min-width: 180px; }
-        .search-filters .btn-search { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 9px; font-weight: 600; }
+        .search-filters input { min-width: 220px; }
+        .search-filters .btn-search { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 9px; font-weight: 600; height: 28px; }
+        .filter-group { display: flex; flex-direction: column; gap: 2px; }
+        .filter-group label { font-size: 8px; font-weight: 600; color: #1a1a2e; text-transform: uppercase; }
+        .btn-export-search { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 9px; font-weight: 600; }
+        .btn-export-search:hover { opacity: 0.9; }
         .search-results { max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; }
         .search-results table { width: 100%; border-collapse: collapse; font-size: 8px; }
         .search-results th { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 6px 4px; text-align: left; font-weight: 600; position: sticky; top: 0; }
@@ -390,13 +394,25 @@
         <!-- Search Box -->
         <div class="search-box" id="searchBox">
             <div class="search-header">
-                <h4>🔍 Buscar Labor en MAESTRO</h4>
-                <button class="search-close" onclick="toggleSearch()">✕ Cerrar</button>
+                <h4>🔍 Buscar en MAESTRO</h4>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn-export-search" onclick="exportarBusqueda()">📥 Exportar Excel</button>
+                    <button class="search-close" onclick="toggleSearch()">✕ Cerrar</button>
+                </div>
             </div>
             <div class="search-filters">
-                <select id="searchFundo" onchange="updateSearchFilters()"><option value="">-- Todos los Fundos --</option></select>
-                <select id="searchArea" onchange="buscarLabores()"><option value="">-- Todas las Áreas --</option></select>
-                <input type="text" id="searchText" placeholder="Buscar por nombre de labor..." onkeyup="buscarLabores()">
+                <div class="filter-group">
+                    <label>FUNDO</label>
+                    <select id="searchFundo" onchange="updateSearchFilters()"><option value="">-- Todos --</option></select>
+                </div>
+                <div class="filter-group">
+                    <label>ÁREA</label>
+                    <select id="searchArea" onchange="buscarLabores()"><option value="">-- Todas --</option></select>
+                </div>
+                <div class="filter-group">
+                    <label>BUSCAR (Fundo, Área, Grupo, Labor)</label>
+                    <input type="text" id="searchText" placeholder="Buscar en todos los campos..." onkeyup="buscarLabores()">
+                </div>
                 <button class="btn-search" onclick="buscarLabores()">Buscar</button>
             </div>
             <div class="search-results">
@@ -404,6 +420,21 @@
                 <tbody id="searchResultsBody"><tr><td colspan="7" style="text-align:center;color:#64748b;padding:20px;">Ingrese filtros</td></tr></tbody></table>
             </div>
             <div class="search-count" id="searchCount"></div>
+        </div>
+        
+        <!-- Modal Contraseña Export -->
+        <div class="modal-bg" id="modalPassword">
+            <div class="modal" style="max-width:300px;">
+                <h3>🔐 Contraseña requerida</h3>
+                <div class="modal-field">
+                    <label>Ingrese la contraseña para exportar:</label>
+                    <input type="password" id="exportPassword" placeholder="Contraseña..." onkeyup="if(event.key==='Enter')verificarPassword()">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button>
+                    <button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button>
+                </div>
+            </div>
         </div>
         
         <!-- Alerts -->
@@ -1091,23 +1122,43 @@ function buscarLabores() {
     
     if (!fundo && !area && !texto) {
         document.getElementById('searchResultsBody').innerHTML = '<tr><td colspan="7" style="text-align:center;color:#64748b;padding:20px;">Ingrese filtros</td></tr>';
+        document.getElementById('searchCount').textContent = '';
         return;
     }
     
     let res = MAESTRO.filter(m => {
         if (fundo && m.Fundo !== fundo) return false;
         if (area && m.AREA !== area) return false;
-        if (texto && !m.Labor?.toLowerCase().includes(texto)) return false;
+        if (texto) {
+            // Buscar en múltiples campos
+            const searchIn = [
+                m.Fundo || '',
+                m.AREA || '',
+                m['Grupo Labor'] || '',
+                m.Labor || '',
+                m.CULTIVO || m.Cultivo || ''
+            ].join(' ').toLowerCase();
+            if (!searchIn.includes(texto)) return false;
+        }
         return true;
     });
     
     const total = res.length;
-    res = res.slice(0, 50);
+    res = res.slice(0, 100); // Mostrar hasta 100 resultados
     window.searchResultados = res;
+    window.searchResultadosTotal = MAESTRO.filter(m => {
+        if (fundo && m.Fundo !== fundo) return false;
+        if (area && m.AREA !== area) return false;
+        if (texto) {
+            const searchIn = [m.Fundo || '', m.AREA || '', m['Grupo Labor'] || '', m.Labor || '', m.CULTIVO || m.Cultivo || ''].join(' ').toLowerCase();
+            if (!searchIn.includes(texto)) return false;
+        }
+        return true;
+    }); // Guardar todos para exportar
     
     if (!res.length) {
         document.getElementById('searchResultsBody').innerHTML = '<tr><td colspan="7" style="text-align:center;color:#64748b;padding:20px;">Sin resultados</td></tr>';
-        document.getElementById('searchCount').textContent = '0';
+        document.getElementById('searchCount').textContent = '0 resultados';
         return;
     }
     
@@ -1116,7 +1167,7 @@ function buscarLabores() {
         html += `<tr><td>${m.Fundo||'-'}</td><td>${m.CULTIVO||m.Cultivo||'-'}</td><td>${m.AREA||'-'}</td><td>${m['Grupo Labor']||'-'}</td><td><strong>${m.Labor||'-'}</strong></td><td style="font-size:7px;">${m.CodCentroCosto||'-'}</td><td><button class="btn-add" onclick="agregarDesdeSearch(${idx})">+ Agregar</button></td></tr>`;
     });
     document.getElementById('searchResultsBody').innerHTML = html;
-    document.getElementById('searchCount').textContent = total > 50 ? `50 de ${total}` : `${total}`;
+    document.getElementById('searchCount').textContent = total > 100 ? `Mostrando 100 de ${total} resultados` : `${total} resultado(s)`;
 }
 
 function agregarDesdeSearch(idx) {
@@ -1125,6 +1176,60 @@ function agregarDesdeSearch(idx) {
     progs.push({ id: Date.now(), fundo: m.Fundo||'', cultivo: m.CULTIVO||m.Cultivo||'', area: m.AREA||'', grupo: m['Grupo Labor']||'', labor: m.Labor||'', cc: m.CodCentroCosto||'', turno: 'DIA', dias: {}, esNueva: false });
     render();
     showToast('Agregada', `"${m.Labor}"`, 'success');
+}
+
+// ========== EXPORTAR BÚSQUEDA CON CONTRASEÑA ==========
+function exportarBusqueda() {
+    if (!window.searchResultadosTotal || window.searchResultadosTotal.length === 0) {
+        showToast('Sin datos', 'Primero realice una búsqueda', 'warning');
+        return;
+    }
+    document.getElementById('exportPassword').value = '';
+    document.getElementById('modalPassword').classList.add('open');
+    document.getElementById('exportPassword').focus();
+}
+
+function cerrarModalPassword() {
+    document.getElementById('modalPassword').classList.remove('open');
+}
+
+function verificarPassword() {
+    const pass = document.getElementById('exportPassword').value;
+    if (pass === '1234santa') {
+        cerrarModalPassword();
+        ejecutarExportBusqueda();
+    } else {
+        showToast('Error', 'Contraseña incorrecta', 'error');
+        document.getElementById('exportPassword').value = '';
+        document.getElementById('exportPassword').focus();
+    }
+}
+
+function ejecutarExportBusqueda() {
+    const datos = window.searchResultadosTotal;
+    const h = ['Fundo','Cultivo','Area','Grupo Labor','Labor','Centro Costo','Partida','Rubro','Estado'];
+    let csv = '\uFEFF' + h.join(';') + '\n';
+    
+    datos.forEach(m => {
+        csv += [
+            m.Fundo || '',
+            m.CULTIVO || m.Cultivo || '',
+            m.AREA || '',
+            m['Grupo Labor'] || '',
+            m.Labor || '',
+            m.CodCentroCosto || '',
+            m.PARTIDA || '',
+            m.RUBRO || '',
+            m.ESTADO || ''
+        ].join(';') + '\n';
+    });
+    
+    const b = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b);
+    a.download = `Busqueda_MAESTRO_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    showToast('Exportado', `${datos.length} registros exportados`, 'success');
 }
 
 // ========== NAVEGACIÓN CON TECLADO ==========
