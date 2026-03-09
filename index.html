@@ -168,6 +168,26 @@
         
         select.cell-sel { width: 100%; padding: 3px 2px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 8px; background: #fff; cursor: pointer; transition: all 0.2s; }
         select.cell-sel.labor-sel { font-weight: 700; }
+        
+        /* Select con búsqueda */
+        .select-search-container { position: relative; width: 100%; }
+        .select-search-container input.select-search {
+            width: 100%; padding: 3px 2px; border: 1px solid #e2e8f0; border-radius: 4px; 
+            font-size: 8px; background: #fff; cursor: pointer;
+        }
+        .select-search-container input.select-search:focus { border-color: #10b981; outline: none; }
+        .select-search-container .select-dropdown {
+            display: none; position: absolute; top: 100%; left: 0; right: 0;
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 4px;
+            max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .select-search-container .select-dropdown.show { display: block; }
+        .select-search-container .select-option {
+            padding: 6px 8px; font-size: 8px; cursor: pointer; border-bottom: 1px solid #f1f5f9;
+        }
+        .select-search-container .select-option:hover { background: #f0fdf4; }
+        .select-search-container .select-option.selected { background: #d1fae5; font-weight: 600; }
+        .select-search-container.labor-sel input { font-weight: 700; }
         select.cell-sel:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 2px rgba(16,185,129,0.2); }
         select.cell-sel.dup-select { border-color: #f59e0b; background: #fffbeb; }
         
@@ -900,18 +920,101 @@ function renderInterno() {
 }
 
 function selHTML(i, tipo, val, opts, hl) {
-    let h = `<select class="cell-sel${hl?' dup-select':''}" onchange="setVal(${i},'${tipo}',this.value)"><option value="">--</option>`;
-    opts.forEach(o => h += `<option value="${o}"${o===val?' selected':''}>${o}</option>`);
-    return h + '</select>';
+    const id = `sel_${i}_${tipo}`;
+    const displayVal = val || '--';
+    let optsJson = JSON.stringify(opts).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    return `<div class="select-search-container${hl?' dup-select':''}">
+        <input type="text" class="select-search" id="${id}" value="${displayVal}" 
+            onclick="abrirSelectSearch('${id}','${tipo}',${i})" 
+            onkeyup="filtrarSelectSearch('${id}')"
+            onfocus="this.select()"
+            data-opts="${optsJson}" data-val="${val||''}" data-tipo="${tipo}" data-row="${i}">
+        <div class="select-dropdown" id="${id}_dropdown"></div>
+    </div>`;
 }
+
+function abrirSelectSearch(id, tipo, row) {
+    // Cerrar otros dropdowns abiertos
+    document.querySelectorAll('.select-dropdown.show').forEach(d => d.classList.remove('show'));
+    
+    const input = document.getElementById(id);
+    const dropdown = document.getElementById(id + '_dropdown');
+    const opts = JSON.parse(input.dataset.opts.replace(/&quot;/g, '"'));
+    const currentVal = input.dataset.val;
+    
+    let html = '<div class="select-option" data-value="" onclick="seleccionarOpcion(\'' + id + '\',\'\')">--</div>';
+    opts.forEach(o => {
+        const selected = o === currentVal ? ' selected' : '';
+        html += `<div class="select-option${selected}" data-value="${o}" onclick="seleccionarOpcion('${id}','${o.replace(/'/g, "\\'")}')">${o}</div>`;
+    });
+    
+    if (tipo === 'labor') {
+        html += `<div class="select-option" style="color:#10b981;font-weight:600;" onclick="seleccionarOpcion('${id}','__NEW__')">➕ Nueva...</div>`;
+    }
+    
+    dropdown.innerHTML = html;
+    dropdown.classList.add('show');
+    input.select();
+}
+
+function filtrarSelectSearch(id) {
+    const input = document.getElementById(id);
+    const dropdown = document.getElementById(id + '_dropdown');
+    const filtro = input.value.toLowerCase();
+    
+    dropdown.querySelectorAll('.select-option').forEach(opt => {
+        const texto = opt.textContent.toLowerCase();
+        opt.style.display = texto.includes(filtro) || opt.dataset.value === '' || opt.dataset.value === '__NEW__' ? 'block' : 'none';
+    });
+    
+    if (!dropdown.classList.contains('show')) {
+        dropdown.classList.add('show');
+    }
+}
+
+function seleccionarOpcion(id, valor) {
+    const input = document.getElementById(id);
+    const dropdown = document.getElementById(id + '_dropdown');
+    const tipo = input.dataset.tipo;
+    const row = parseInt(input.dataset.row);
+    
+    dropdown.classList.remove('show');
+    
+    if (valor === '__NEW__') {
+        abrirModal(row);
+        return;
+    }
+    
+    input.value = valor || '--';
+    input.dataset.val = valor;
+    
+    setVal(row, tipo, valor);
+}
+
+// Cerrar dropdown al hacer clic fuera
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.select-search-container')) {
+        document.querySelectorAll('.select-dropdown.show').forEach(d => d.classList.remove('show'));
+    }
+});
 
 function selLaborHTML(i, p, isDup, isInc, isNoPer, isObs, det) {
     const opts = getOpts('labor', {fundo:p.fundo, cultivo:p.cultivo, area:p.area, grupo:p.grupo});
-    let cls = 'cell-sel labor-sel' + ((isObs||isInc||isDup) ? ' dup-select' : '');
-    let h = `<select class="${cls}" onchange="setLabor(${i},this.value)"><option value="">--</option>`;
-    if (isObs && p.labor) h += `<option value="${p.labor}" selected style="color:#9333ea;">⚠️ ${p.labor}</option>`;
-    opts.forEach(o => h += `<option value="${o}"${o===p.labor && !isObs?' selected':''}>${o}</option>`);
-    h += '<option value="__NEW__">➕ Nueva...</option></select>';
+    const id = `sel_${i}_labor`;
+    const displayVal = p.labor || '--';
+    const hl = isObs || isInc || isDup;
+    let optsJson = JSON.stringify(opts).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    
+    let h = `<div class="select-search-container labor-sel${hl?' dup-select':''}">
+        <input type="text" class="select-search" id="${id}" value="${displayVal}" 
+            onclick="abrirSelectSearch('${id}','labor',${i})" 
+            onkeyup="filtrarSelectSearch('${id}')"
+            onfocus="this.select()"
+            data-opts="${optsJson}" data-val="${p.labor||''}" data-tipo="labor" data-row="${i}"
+            style="font-weight:700;">
+        <div class="select-dropdown" id="${id}_dropdown"></div>
+    </div>`;
+    
     if (p.esNueva) h += '<span class="new-badge">NUEVA</span>';
     if (isObs) h += '<span class="obsoleta-badge">ACTUALIZAR</span>';
     else if (isInc) h += '<span class="incomplete-badge">INCOMPLETA</span>';
@@ -935,6 +1038,10 @@ function setVal(i, tipo, val) {
     if (tipo==='cultivo') { progs[i].area=''; progs[i].grupo=''; progs[i].labor=''; progs[i].cc=''; }
     if (tipo==='area') { progs[i].grupo=''; progs[i].labor=''; progs[i].cc=''; }
     if (tipo==='grupo') { progs[i].labor=''; progs[i].cc=''; }
+    if (tipo==='labor') {
+        const dat = getData().find(r => r.Fundo===progs[i].fundo && (r.CULTIVO||r.Cultivo)===progs[i].cultivo && r.AREA===progs[i].area && r['Grupo Labor']===progs[i].grupo && r.Labor===val);
+        if (dat) { progs[i].cc = dat.CodCentroCosto||''; progs[i].esNueva = dat._custom||false; }
+    }
     progs[i].esNueva = false;
     render();
 }
