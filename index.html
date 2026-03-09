@@ -169,25 +169,51 @@
         select.cell-sel { width: 100%; padding: 3px 2px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 8px; background: #fff; cursor: pointer; transition: all 0.2s; }
         select.cell-sel.labor-sel { font-weight: 700; }
         
-        /* Select con búsqueda */
+        /* Select con búsqueda profesional */
         .select-search-container { position: relative; width: 100%; }
-        .select-search-container input.select-search {
-            width: 100%; padding: 3px 2px; border: 1px solid #e2e8f0; border-radius: 4px; 
-            font-size: 8px; background: #fff; cursor: pointer;
+        .select-search-container .select-display {
+            width: 100%; padding: 3px 20px 3px 6px; border: 1px solid #e2e8f0; border-radius: 4px; 
+            font-size: 8px; background: #fff; cursor: pointer; white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis; min-height: 20px; line-height: 14px;
         }
-        .select-search-container input.select-search:focus { border-color: #10b981; outline: none; }
+        .select-search-container .select-display:hover { border-color: #10b981; }
+        .select-search-container .select-display::after {
+            content: '▼'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+            font-size: 6px; color: #64748b; pointer-events: none;
+        }
+        .select-search-container.dup-select .select-display { border-color: #f59e0b; background: #fffbeb; }
         .select-search-container .select-dropdown {
             display: none; position: absolute; top: 100%; left: 0; right: 0;
-            background: #fff; border: 1px solid #e2e8f0; border-radius: 4px;
-            max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 6px;
+            max-height: 250px; overflow: hidden; z-index: 1000; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         }
         .select-search-container .select-dropdown.show { display: block; }
+        .select-search-container .search-input-wrapper {
+            padding: 8px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;
+            position: sticky; top: 0;
+        }
+        .select-search-container .search-input-wrapper input {
+            width: 100%; padding: 6px 8px 6px 28px; border: 1px solid #cbd5e1; border-radius: 4px;
+            font-size: 9px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 8px center;
+        }
+        .select-search-container .search-input-wrapper input:focus { outline: none; border-color: #10b981; }
+        .select-search-container .search-input-wrapper input::placeholder { color: #94a3b8; }
+        .select-search-container .select-options {
+            max-height: 200px; overflow-y: auto;
+        }
+        .select-search-container .select-options::-webkit-scrollbar { width: 8px; }
+        .select-search-container .select-options::-webkit-scrollbar-track { background: #f1f5f9; }
+        .select-search-container .select-options::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .select-search-container .select-options::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .select-search-container .select-option {
-            padding: 6px 8px; font-size: 8px; cursor: pointer; border-bottom: 1px solid #f1f5f9;
+            padding: 8px 12px; font-size: 9px; cursor: pointer; border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s;
         }
         .select-search-container .select-option:hover { background: #f0fdf4; }
         .select-search-container .select-option.selected { background: #d1fae5; font-weight: 600; }
-        .select-search-container.labor-sel input { font-weight: 700; }
+        .select-search-container .select-option.new-option { color: #10b981; font-weight: 600; border-top: 1px solid #e2e8f0; }
+        .select-search-container.labor-sel .select-display { font-weight: 700; }
         select.cell-sel:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 2px rgba(16,185,129,0.2); }
         select.cell-sel.dup-select { border-color: #f59e0b; background: #fffbeb; }
         
@@ -924,11 +950,8 @@ function selHTML(i, tipo, val, opts, hl) {
     const displayVal = val || '--';
     let optsJson = JSON.stringify(opts).replace(/'/g, "\\'").replace(/"/g, '&quot;');
     return `<div class="select-search-container${hl?' dup-select':''}">
-        <input type="text" class="select-search" id="${id}" value="${displayVal}" 
-            onclick="abrirSelectSearch('${id}','${tipo}',${i})" 
-            onkeyup="filtrarSelectSearch('${id}')"
-            onfocus="this.select()"
-            data-opts="${optsJson}" data-val="${val||''}" data-tipo="${tipo}" data-row="${i}">
+        <div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','${tipo}',${i})"
+            data-opts="${optsJson}" data-val="${val||''}" data-tipo="${tipo}" data-row="${i}">${displayVal}</div>
         <div class="select-dropdown" id="${id}_dropdown"></div>
     </div>`;
 }
@@ -937,46 +960,54 @@ function abrirSelectSearch(id, tipo, row) {
     // Cerrar otros dropdowns abiertos
     document.querySelectorAll('.select-dropdown.show').forEach(d => d.classList.remove('show'));
     
-    const input = document.getElementById(id);
+    const display = document.getElementById(id);
     const dropdown = document.getElementById(id + '_dropdown');
-    const opts = JSON.parse(input.dataset.opts.replace(/&quot;/g, '"'));
-    const currentVal = input.dataset.val;
+    const opts = JSON.parse(display.dataset.opts.replace(/&quot;/g, '"'));
+    const currentVal = display.dataset.val;
     
-    let html = '<div class="select-option" data-value="" onclick="seleccionarOpcion(\'' + id + '\',\'\')">--</div>';
+    let html = `<div class="search-input-wrapper">
+        <input type="text" placeholder="Buscar..." id="${id}_search" onkeyup="filtrarSelectSearch('${id}')" autocomplete="off">
+    </div>`;
+    html += '<div class="select-options">';
+    html += `<div class="select-option" data-value="" onclick="seleccionarOpcion('${id}','')">--</div>`;
     opts.forEach(o => {
         const selected = o === currentVal ? ' selected' : '';
-        html += `<div class="select-option${selected}" data-value="${o}" onclick="seleccionarOpcion('${id}','${o.replace(/'/g, "\\'")}')">${o}</div>`;
+        const oEscaped = o.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        html += `<div class="select-option${selected}" data-value="${oEscaped}" onclick="seleccionarOpcion('${id}','${oEscaped}')">${o}</div>`;
     });
     
     if (tipo === 'labor') {
-        html += `<div class="select-option" style="color:#10b981;font-weight:600;" onclick="seleccionarOpcion('${id}','__NEW__')">➕ Nueva...</div>`;
+        html += `<div class="select-option new-option" onclick="seleccionarOpcion('${id}','__NEW__')">➕ Crear nueva labor...</div>`;
     }
+    html += '</div>';
     
     dropdown.innerHTML = html;
     dropdown.classList.add('show');
-    input.select();
+    
+    // Enfocar el input de búsqueda
+    setTimeout(() => {
+        const searchInput = document.getElementById(id + '_search');
+        if (searchInput) searchInput.focus();
+    }, 50);
 }
 
 function filtrarSelectSearch(id) {
-    const input = document.getElementById(id);
+    const searchInput = document.getElementById(id + '_search');
     const dropdown = document.getElementById(id + '_dropdown');
-    const filtro = input.value.toLowerCase();
+    const filtro = searchInput.value.toLowerCase();
     
     dropdown.querySelectorAll('.select-option').forEach(opt => {
         const texto = opt.textContent.toLowerCase();
-        opt.style.display = texto.includes(filtro) || opt.dataset.value === '' || opt.dataset.value === '__NEW__' ? 'block' : 'none';
+        const isSpecial = opt.dataset.value === '' || opt.classList.contains('new-option');
+        opt.style.display = texto.includes(filtro) || isSpecial ? 'block' : 'none';
     });
-    
-    if (!dropdown.classList.contains('show')) {
-        dropdown.classList.add('show');
-    }
 }
 
 function seleccionarOpcion(id, valor) {
-    const input = document.getElementById(id);
+    const display = document.getElementById(id);
     const dropdown = document.getElementById(id + '_dropdown');
-    const tipo = input.dataset.tipo;
-    const row = parseInt(input.dataset.row);
+    const tipo = display.dataset.tipo;
+    const row = parseInt(display.dataset.row);
     
     dropdown.classList.remove('show');
     
@@ -985,8 +1016,11 @@ function seleccionarOpcion(id, valor) {
         return;
     }
     
-    input.value = valor || '--';
-    input.dataset.val = valor;
+    // Decodificar el valor
+    valor = valor.replace(/&quot;/g, '"').replace(/\\'/g, "'");
+    
+    display.textContent = valor || '--';
+    display.dataset.val = valor;
     
     setVal(row, tipo, valor);
 }
@@ -1006,12 +1040,8 @@ function selLaborHTML(i, p, isDup, isInc, isNoPer, isObs, det) {
     let optsJson = JSON.stringify(opts).replace(/'/g, "\\'").replace(/"/g, '&quot;');
     
     let h = `<div class="select-search-container labor-sel${hl?' dup-select':''}">
-        <input type="text" class="select-search" id="${id}" value="${displayVal}" 
-            onclick="abrirSelectSearch('${id}','labor',${i})" 
-            onkeyup="filtrarSelectSearch('${id}')"
-            onfocus="this.select()"
-            data-opts="${optsJson}" data-val="${p.labor||''}" data-tipo="labor" data-row="${i}"
-            style="font-weight:700;">
+        <div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','labor',${i})"
+            data-opts="${optsJson}" data-val="${p.labor||''}" data-tipo="labor" data-row="${i}">${displayVal}</div>
         <div class="select-dropdown" id="${id}_dropdown"></div>
     </div>`;
     
