@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tareo de Labores - ASA</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh;font-size:12px}.login-container{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}.login-box{background:#fff;padding:40px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:400px;text-align:center}.login-logo{font-size:32px;font-weight:800;color:#10b981;margin-bottom:8px}.login-title{font-size:18px;color:#1a1a2e;margin-bottom:24px}.login-field{margin-bottom:16px;text-align:left}.login-field label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px}.login-field input{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:16px}.login-field input:focus{outline:none;border-color:#10b981}.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer}.login-error{color:#ef4444;font-size:13px;margin-top:12px;display:none}.login-status{font-size:10px;color:#10b981;margin-top:8px}.app-container{display:none}.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:10px 20px;color:#fff;position:sticky;top:0;z-index:100}.header-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.header-brand{display:flex;align-items:center;gap:12px}.logo{background:linear-gradient(135deg,#10b981,#059669);padding:6px 12px;border-radius:8px;font-weight:800;font-size:14px}.header-info{display:flex;align-items:center;gap:20px}.header-user{text-align:right}.user-name{font-size:12px;font-weight:600}.user-role{font-size:10px;padding:2px 8px;border-radius:4px;background:#3b82f6}.user-role.supervisor{background:#10b981}.btn-logout{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px}.toolbar{background:#fff;padding:10px 16px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.week-nav{display:flex;align-items:center;gap:6px}.week-nav button{background:#1a1a2e;color:#fff;border:none;width:28px;height:28px;border-radius:6px;cursor:pointer}.week-display{text-align:center;min-width:160px}.week-display strong{font-size:13px;color:#1a1a2e}.week-display span{display:block;font-size:10px;color:#64748b}.filter-group{display:flex;align-items:center;gap:6px}.filter-group label{font-size:10px;font-weight:600;color:#64748b}.filter-group select{padding:6px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:11px;min-width:130px}.toolbar-actions{margin-left:auto;display:flex;gap:6px}.btn{padding:7px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}.btn:disabled{opacity:0.5;cursor:not-allowed}.btn-primary{background:linear-gradient(135deg,#10b981,#059669);color:#fff}.btn-secondary{background:#f1f5f9;color:#1a1a2e;border:1px solid #e2e8f0}.btn-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}.btn-orange{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}.btn-green{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}.main-content{padding:16px}.cards-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}.stat-card{background:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:center;gap:10px}.stat-icon{font-size:20px}.stat-value{font-size:20px;font-weight:700;color:#1a1a2e}.stat-label{font-size:10px;color:#64748b}.supervisores-bar{background:#fff;padding:12px 16px;border-radius:10px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}.supervisores-bar-title{font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:10px}.supervisores-chips{display:flex;gap:8px;flex-wrap:wrap}.sup-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-radius:20px;font-size:11px;font-weight:500;color:#065f46}.sup-chip .remove{cursor:pointer;color:#dc2626;font-weight:700;margin-left:4px}.table-card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden}.table-header{padding:12px 16px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}.table-title{font-size:13px;font-weight:600;color:#1a1a2e}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:10px}thead{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff}th{padding:10px 6px;text-align:center;font-weight:600;font-size:9px}td{padding:6px;text-align:center;border-bottom:1px solid #f1f5f9}tbody tr:hover{background:#f8fafc}.area-row{background:linear-gradient(135deg,#f0fdf4,#d1fae5)}.area-row td{font-weight:600;color:#065f46;font-size:11px;padding:8px;text-align:left}.day-input{width:44px;padding:6px 2px;border:2px solid #e2e8f0;border-radius:6px;text-align:center;font-size:11px;font-weight:600}.day-input:focus{border-color:#10b981;outline:none}.day-input.has-value{background:#d1fae5;border-color:#10b981;color:#065f46}.btn-action{padding:4px 6px;border-radius:4px;border:none;cursor:pointer;font-size:9px}.btn-edit{background:#dbeafe;color:#1d4ed8}.btn-del{background:#fee2e2;color:#dc2626}.sup-view-card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}.sup-labor-item{background:#f8fafc;border-radius:8px;padding:14px;margin-bottom:10px;border-left:4px solid #10b981}.sup-labor-name{font-size:13px;font-weight:600;color:#1a1a2e}.sup-labor-grupo{font-size:11px;color:#10b981}.sup-labor-details{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}.sup-detail{text-align:center}.sup-detail-val{font-size:18px;font-weight:700;color:#10b981}.sup-detail-lbl{font-size:9px;color:#64748b}.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center}.modal-bg.show{display:flex}.modal{background:#fff;border-radius:12px;padding:20px;width:95%;max-width:500px;max-height:85vh;overflow-y:auto}.modal h3{margin-bottom:16px;color:#1a1a2e;font-size:15px}.modal-field{margin-bottom:12px}.modal-field label{display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px}.modal-field input,.modal-field select{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}.lotes-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.lote-chip{padding:6px 12px;border:2px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:11px}.lote-chip.selected{background:#10b981;color:#fff;border-color:#10b981}.days-row{display:flex;gap:6px;margin-top:8px}.day-chip{flex:1;text-align:center;padding:8px 4px;border:2px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600}.day-chip.selected{background:#10b981;color:#fff;border-color:#10b981}.apply-row{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}.apply-row input{width:70px}.toast-container{position:fixed;top:16px;right:16px;z-index:9999}.toast{background:#fff;padding:12px 16px;border-radius:8px;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;gap:10px;animation:slideIn 0.3s}.toast.success{border-left:4px solid #10b981}.toast.error{border-left:4px solid #ef4444}.toast.warning{border-left:4px solid #f59e0b}.saving-indicator{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:8px;display:none;align-items:center;gap:8px;z-index:9999}.saving-indicator.show{display:flex}.spinner{width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@keyframes slideIn{from{transform:translateX(100px);opacity:0}}@media(max-width:768px){.toolbar{flex-direction:column}.toolbar-actions{margin-left:0;justify-content:center}}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;min-height:100vh;font-size:12px}.login-container{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)}.login-box{background:#fff;padding:40px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:400px;text-align:center}.login-logo{font-size:32px;font-weight:800;color:#10b981;margin-bottom:8px}.login-title{font-size:18px;color:#1a1a2e;margin-bottom:24px}.login-field{margin-bottom:16px;text-align:left}.login-field label{display:block;font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px}.login-field input{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:16px}.login-field input:focus{outline:none;border-color:#10b981}.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer}.login-error{color:#ef4444;font-size:13px;margin-top:12px;display:none}.login-status{font-size:10px;color:#10b981;margin-top:8px}.app-container{display:none}.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:10px 20px;color:#fff;position:sticky;top:0;z-index:100}.header-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}.header-brand{display:flex;align-items:center;gap:12px}.logo{background:linear-gradient(135deg,#10b981,#059669);padding:6px 12px;border-radius:8px;font-weight:800;font-size:14px}.header-info{display:flex;align-items:center;gap:20px}.header-user{text-align:right}.user-name{font-size:12px;font-weight:600}.user-role{font-size:10px;padding:2px 8px;border-radius:4px;background:#3b82f6}.user-role.supervisor{background:#10b981}.btn-logout{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px}.toolbar{background:#fff;padding:10px 16px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.week-nav{display:flex;align-items:center;gap:6px}.week-nav button{background:#1a1a2e;color:#fff;border:none;width:28px;height:28px;border-radius:6px;cursor:pointer}.week-display{text-align:center;min-width:160px}.week-display strong{font-size:13px;color:#1a1a2e}.week-display span{display:block;font-size:10px;color:#64748b}.filter-group{display:flex;align-items:center;gap:6px}.filter-group label{font-size:10px;font-weight:600;color:#64748b}.filter-group select{padding:6px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:11px;min-width:130px}.toolbar-actions{margin-left:auto;display:flex;gap:6px}.btn{padding:7px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}.btn:disabled{opacity:0.5;cursor:not-allowed}.btn-primary{background:linear-gradient(135deg,#10b981,#059669);color:#fff}.btn-secondary{background:#f1f5f9;color:#1a1a2e;border:1px solid #e2e8f0}.btn-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}.btn-orange{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}.main-content{padding:16px}.cards-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}.stat-card{background:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);display:flex;align-items:center;gap:10px}.stat-icon{font-size:20px}.stat-value{font-size:20px;font-weight:700;color:#1a1a2e}.stat-label{font-size:10px;color:#64748b}.supervisores-bar{background:#fff;padding:12px 16px;border-radius:10px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}.supervisores-bar-title{font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:10px}.supervisores-chips{display:flex;gap:8px;flex-wrap:wrap}.sup-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-radius:20px;font-size:11px;font-weight:500;color:#065f46}.table-card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden}.table-header{padding:12px 16px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}.table-title{font-size:13px;font-weight:600;color:#1a1a2e}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:10px}thead{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff}th{padding:10px 6px;text-align:center;font-weight:600;font-size:9px}td{padding:6px;text-align:center;border-bottom:1px solid #f1f5f9}tbody tr:hover{background:#f8fafc}.area-row{background:linear-gradient(135deg,#f0fdf4,#d1fae5)}.area-row td{font-weight:600;color:#065f46;font-size:11px;padding:8px;text-align:left}.day-input{width:44px;padding:6px 2px;border:2px solid #e2e8f0;border-radius:6px;text-align:center;font-size:11px;font-weight:600}.day-input:focus{border-color:#10b981;outline:none}.day-input.has-value{background:#d1fae5;border-color:#10b981;color:#065f46}.btn-action{padding:4px 8px;border-radius:4px;border:none;cursor:pointer;font-size:9px;margin:1px}.btn-edit{background:#dbeafe;color:#1d4ed8}.btn-del{background:#fee2e2;color:#dc2626}.btn-save{background:#d1fae5;color:#065f46}.sup-view-card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05)}.sup-labor-item{background:#f8fafc;border-radius:8px;padding:14px;margin-bottom:10px;border-left:4px solid #10b981}.sup-labor-name{font-size:13px;font-weight:600;color:#1a1a2e}.sup-labor-grupo{font-size:11px;color:#10b981}.sup-labor-details{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}.sup-detail{text-align:center}.sup-detail-val{font-size:18px;font-weight:700;color:#10b981}.sup-detail-lbl{font-size:9px;color:#64748b}.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center}.modal-bg.show{display:flex}.modal{background:#fff;border-radius:12px;padding:20px;width:95%;max-width:500px;max-height:85vh;overflow-y:auto}.modal h3{margin-bottom:16px;color:#1a1a2e;font-size:15px}.modal-field{margin-bottom:12px}.modal-field label{display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px}.modal-field input,.modal-field select{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}.lotes-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.lote-chip{padding:6px 12px;border:2px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:11px}.lote-chip.selected{background:#10b981;color:#fff;border-color:#10b981}.days-row{display:flex;gap:6px;margin-top:8px}.day-chip{flex:1;text-align:center;padding:8px 4px;border:2px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600}.day-chip.selected{background:#10b981;color:#fff;border-color:#10b981}.apply-row{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}.apply-row input{width:70px}.toast-container{position:fixed;top:16px;right:16px;z-index:9999}.toast{background:#fff;padding:12px 16px;border-radius:8px;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;gap:10px;animation:slideIn 0.3s}.toast.success{border-left:4px solid #10b981}.toast.error{border-left:4px solid #ef4444}.toast.warning{border-left:4px solid #f59e0b}.saving{opacity:0.6;pointer-events:none}@keyframes slideIn{from{transform:translateX(100px);opacity:0}}@media(max-width:768px){.toolbar{flex-direction:column}.toolbar-actions{margin-left:0;justify-content:center}}
 </style>
 </head>
 <body>
@@ -28,14 +28,14 @@
 <div class="toolbar-actions">
 <button class="btn btn-orange" onclick="abrirModalSupervisores()">👥 Supervisores</button>
 <button class="btn btn-primary" onclick="abrirModalAgregar()">➕ Agregar</button>
-<button class="btn btn-green" onclick="guardarEnSheets()" id="btnGuardar">💾 Guardar</button>
+<button class="btn btn-secondary" onclick="recargarDatos()">🔄</button>
 <button class="btn btn-secondary" onclick="exportarCSV()">📥</button>
 </div>
 </div>
 <div class="toolbar" id="toolbarSupervisor" style="display:none">
 <div class="week-nav"><button onclick="cambiarDia(-1)">◀</button><div class="week-display"><strong id="currentDay"></strong><span id="currentDate"></span></div><button onclick="cambiarDia(1)">▶</button></div>
 <div class="filter-group"><label>Grupo:</label><select id="filterGrupoSup" onchange="renderSupervisorView()"><option value="">-- Todos --</option></select></div>
-<div class="toolbar-actions"><button class="btn btn-primary" onclick="actualizarData()">🔄</button></div>
+<div class="toolbar-actions"><button class="btn btn-primary" onclick="recargarDatos()">🔄 Actualizar</button></div>
 </div>
 <div class="main-content">
 <div class="cards-row">
@@ -44,15 +44,14 @@
 <div class="stat-card"><div class="stat-icon">👷</div><div><div class="stat-value" id="statSupervisores">0</div><div class="stat-label">Supervisores</div></div></div>
 </div>
 <div class="supervisores-bar" id="supervisoresBar"><div class="supervisores-bar-title">👷 Supervisores</div><div class="supervisores-chips" id="supervisoresChips"></div></div>
-<div id="jefeView"><div class="table-card"><div class="table-header"><div class="table-title">📅 Programación Semanal</div><div id="saveStatus" style="font-size:10px;color:#64748b"></div></div><div class="table-scroll"><table><thead><tr><th>Grupo</th><th>Labor</th><th>Supervisor</th><th>Lotes</th><th id="th-lun">LUN</th><th id="th-mar">MAR</th><th id="th-mie">MIE</th><th id="th-jue">JUE</th><th id="th-vie">VIE</th><th id="th-sab">SAB</th><th id="th-dom">DOM</th><th>Total</th><th></th></tr></thead><tbody id="tableProg"></tbody></table></div></div></div>
+<div id="jefeView"><div class="table-card"><div class="table-header"><div class="table-title">📅 Programación Semanal</div><div id="syncStatus" style="font-size:10px;color:#10b981">✅ Sincronizado con Google Sheets</div></div><div class="table-scroll"><table><thead><tr><th>Grupo</th><th>Labor</th><th>Supervisor</th><th>Lotes</th><th id="th-lun">LUN</th><th id="th-mar">MAR</th><th id="th-mie">MIE</th><th id="th-jue">JUE</th><th id="th-vie">VIE</th><th id="th-sab">SAB</th><th id="th-dom">DOM</th><th>Total</th><th>Acciones</th></tr></thead><tbody id="tableProg"></tbody></table></div></div></div>
 <div id="supervisorView" style="display:none"><div class="sup-view-card"><h3>📋 Mis Labores</h3><div id="supLabores"></div></div></div>
 </div>
 </div>
 <div class="modal-bg" id="modalSupervisores"><div class="modal"><h3>👥 Supervisores</h3>
-<div style="background:#f0fdf4;padding:12px;border-radius:8px;margin-bottom:16px"><label style="font-size:11px;font-weight:600;color:#065f46;display:block;margin-bottom:6px">Seleccionar existente:</label><div style="display:flex;gap:8px"><select id="selectAddSup" style="flex:1;padding:8px;border:1px solid #e2e8f0;border-radius:6px"></select><button class="btn btn-primary" onclick="agregarSupDeLista()">Agregar</button></div></div>
-<div style="background:#dbeafe;padding:12px;border-radius:8px;margin-bottom:16px"><label style="font-size:11px;font-weight:600;color:#1e40af;display:block;margin-bottom:6px">➕ Crear nuevo (se guarda en Google Sheets):</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="newSupDNI" placeholder="DNI" maxlength="8" style="width:100px;padding:8px;border:1px solid #e2e8f0;border-radius:6px"><input type="text" id="newSupNombre" placeholder="Nombre completo" style="flex:1;min-width:120px;padding:8px;border:1px solid #e2e8f0;border-radius:6px"><button class="btn btn-blue" onclick="agregarSupNuevo()" id="btnCrearSup">Crear</button></div></div>
-<div style="border-top:1px solid #e2e8f0;padding-top:12px"><label style="font-size:11px;font-weight:600;color:#64748b">Supervisores de esta semana:</label><div id="listSupSemana" style="margin-top:8px"></div></div>
-<div class="modal-actions"><button class="btn btn-primary" onclick="cerrarModal('modalSupervisores')">✓ Listo</button></div>
+<div style="background:#f0fdf4;padding:12px;border-radius:8px;margin-bottom:16px"><label style="font-size:11px;font-weight:600;color:#065f46;display:block;margin-bottom:6px">Supervisores registrados:</label><div id="listSupExistentes" style="max-height:150px;overflow-y:auto"></div></div>
+<div style="background:#dbeafe;padding:12px;border-radius:8px;margin-bottom:16px"><label style="font-size:11px;font-weight:600;color:#1e40af;display:block;margin-bottom:6px">➕ Crear nuevo supervisor:</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="newSupDNI" placeholder="DNI" maxlength="8" style="width:100px;padding:8px;border:1px solid #e2e8f0;border-radius:6px"><input type="text" id="newSupNombre" placeholder="Nombre completo" style="flex:1;min-width:120px;padding:8px;border:1px solid #e2e8f0;border-radius:6px"><button class="btn btn-blue" onclick="crearSupervisor()" id="btnCrearSup">Crear</button></div></div>
+<div class="modal-actions"><button class="btn btn-primary" onclick="cerrarModal('modalSupervisores')">✓ Cerrar</button></div>
 </div></div>
 <div class="modal-bg" id="modalAgregar"><div class="modal"><h3>➕ Agregar Labor</h3>
 <div class="modal-field"><label>ÁREA</label><select id="modalArea" onchange="actualizarGruposModal()"></select></div>
@@ -62,50 +61,58 @@
 <div class="modal-field"><label>LOTES</label><div class="lotes-grid" id="lotesGrid"></div></div>
 <div class="modal-field"><label>DÍAS</label><div class="days-row" id="daysRow"></div></div>
 <div class="modal-field"><label>PERSONAL Y META</label><div class="apply-row"><span>Pers:</span><input type="number" id="modalPersonal" min="0"><span>Meta:</span><input type="number" id="modalMeta" min="0"></div></div>
-<div class="modal-actions"><button class="btn btn-secondary" onclick="cerrarModal('modalAgregar')">Cancelar</button><button class="btn btn-primary" onclick="agregarLabor()">Agregar</button></div>
+<div class="modal-actions"><button class="btn btn-secondary" onclick="cerrarModal('modalAgregar')">Cancelar</button><button class="btn btn-primary" onclick="agregarLabor()" id="btnAgregarLabor">Agregar</button></div>
 </div></div>
 <div class="modal-bg" id="modalEditar"><div class="modal"><h3>✏️ Editar Labor</h3>
 <div class="modal-field"><label>LABOR</label><input type="text" id="editLabor" readonly style="background:#f1f5f9"></div>
 <div class="modal-field"><label>SUPERVISOR</label><select id="editSup"></select></div>
 <div class="modal-field"><label>LOTES</label><div class="lotes-grid" id="editLotesGrid"></div></div>
-<div class="modal-field"><label>APLICAR A DÍAS SELECCIONADOS</label><div class="days-row" id="editDaysRow"></div><div class="apply-row" style="margin-top:10px"><span>Pers:</span><input type="number" id="editPersonal" min="0"><span>Meta:</span><input type="number" id="editMeta" min="0"><button class="btn btn-primary" onclick="aplicarValoresEdit()">Aplicar</button></div></div>
-<div style="margin-top:12px;padding:10px;background:#f8fafc;border-radius:6px"><table style="width:100%;font-size:10px"><tr><th>L</th><th>M</th><th>X</th><th>J</th><th>V</th><th>S</th><th>D</th></tr><tr id="editDaysInputs"></tr></table></div>
-<div class="modal-actions"><button class="btn btn-secondary" onclick="cerrarModal('modalEditar')">Cancelar</button><button class="btn btn-primary" onclick="guardarEdicion()">Guardar</button></div>
+<div class="modal-field"><label>DÍAS - Personal y Meta</label>
+<table style="width:100%;font-size:11px;margin-top:8px"><tr style="background:#f1f5f9"><th>Día</th><th>Personal</th><th>Meta</th></tr>
+<tr><td>LUN</td><td><input type="number" id="edit_LUN" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_LUN" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+<tr><td>MAR</td><td><input type="number" id="edit_MAR" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_MAR" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+<tr><td>MIE</td><td><input type="number" id="edit_MIE" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_MIE" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+<tr><td>JUE</td><td><input type="number" id="edit_JUE" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_JUE" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+<tr><td>VIE</td><td><input type="number" id="edit_VIE" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_VIE" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+<tr><td>SAB</td><td><input type="number" id="edit_SAB" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_SAB" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+<tr><td>DOM</td><td><input type="number" id="edit_DOM" min="0" style="width:60px;padding:4px;text-align:center"></td><td><input type="number" id="edit_meta_DOM" min="0" style="width:60px;padding:4px;text-align:center"></td></tr>
+</table></div>
+<div class="modal-actions"><button class="btn btn-secondary" onclick="cerrarModal('modalEditar')">Cancelar</button><button class="btn btn-primary" onclick="guardarEdicion()" id="btnGuardarEdicion">💾 Guardar</button></div>
 </div></div>
-<div class="saving-indicator" id="savingIndicator"><div class="spinner"></div><span>Guardando...</span></div>
 <div class="toast-container" id="toastContainer"></div>
 <script>
+const API_URL='https://script.google.com/macros/s/AKfycbxYn-TRh7bErvkRS7drZWwySbxdJGY-Nid4ME0FAvjmHTfz7mItFIOd5Y1lcpz-bbgUNA/exec';
 const URLS={
   MAESTRO:'https://docs.google.com/spreadsheets/d/e/2PACX-1vTtOqg02IGvkLp1AZGLwgKLV4mMJjxneSZdkXSnKQ1zwLFWP6v979iEbDu6aFotMg/pub?gid=1733470180&single=true&output=csv',
   SUPERVISORES:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdN77Rei3b3YWLEAJkwxr1-SaS_JR7tkQbnctdfMfB12-qPIEw5gd_ONhZOOFALUwWjjbBoBz152SZ/pub?gid=1949978377&single=true&output=csv',
-  PROGRAMACION:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdN77Rei3b3YWLEAJkwxr1-SaS_JR7tkQbnctdfMfB12-qPIEw5gd_ONhZOOFALUwWjjbBoBz152SZ/pub?gid=1584540764&single=true&output=csv',
-  API:'https://script.google.com/macros/s/AKfycbzjzHj7cVg2a0AOIbJhKr9vLZxDoBJ7KQmc6opIR_ZjUeXEuPsWWwQCuXwVR9Mb0A8zaw/exec'
+  PROGRAMACION:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdN77Rei3b3YWLEAJkwxr1-SaS_JR7tkQbnctdfMfB12-qPIEw5gd_ONhZOOFALUwWjjbBoBz152SZ/pub?gid=1584540764&single=true&output=csv'
 };
-let MAESTRO=[],SUPERVISORES_DB=[],PROGRAMACION_DB=[],currentUser=null,programacion=[],supervisoresSemana=[],fechaBase=new Date(),diasSemana=[],diaActualIdx=0,editRowId=null,hasChanges=false;
+let MAESTRO=[],SUPERVISORES_DB=[],PROGRAMACION_DB=[],currentUser=null,programacion=[],fechaBase=new Date(),diasSemana=[],diaActualIdx=0,editRowId=null;
 const LOTES=['L1','L2','L3','L4','L5','L6','L7','L8','L9','L10','S1','S2','S3','S4','S5','P1','P2','P3'],DIAS=['LUN','MAR','MIE','JUE','VIE','SAB','DOM'],DIAS_FULL=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'],MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 document.addEventListener('DOMContentLoaded',async()=>{ajustarALunes();await cargarDatos()});
 
 function ajustarALunes(){const d=fechaBase.getDay();fechaBase.setDate(fechaBase.getDate()-(d===0?6:d-1));actualizarSemana()}
-
 function actualizarSemana(){diasSemana=[];for(let i=0;i<7;i++){const d=new Date(fechaBase);d.setDate(d.getDate()+i);diasSemana.push(d)}const s=getWeekNumber(fechaBase),f=diasSemana[6];document.getElementById('weekNumber').textContent='Semana '+s;document.getElementById('weekRange').textContent=fechaBase.getDate()+' '+MESES[fechaBase.getMonth()].substr(0,3)+' - '+f.getDate()+' '+MESES[f.getMonth()].substr(0,3)+' '+f.getFullYear();DIAS.forEach((d,i)=>{const t=document.getElementById('th-'+d.toLowerCase());if(t)t.innerHTML=d+'<br><span style="font-size:8px">'+diasSemana[i].getDate()+'</span>'})}
-
 function getWeekNumber(d){d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const y=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-y)/86400000)+1)/7)}
-
-function cambiarSemana(dir){if(hasChanges&&!confirm('Hay cambios sin guardar. ¿Desea continuar?'))return;fechaBase.setDate(fechaBase.getDate()+(dir*7));actualizarSemana();cargarSemanaData()}
+function cambiarSemana(dir){fechaBase.setDate(fechaBase.getDate()+(dir*7));actualizarSemana();cargarSemanaData()}
 
 async function cargarDatos(){
   try{
-    document.getElementById('loginStatus').textContent='Cargando MAESTRO...';
+    document.getElementById('loginStatus').textContent='Cargando datos...';
     const[r1,r2,r3]=await Promise.all([fetch(URLS.MAESTRO),fetch(URLS.SUPERVISORES),fetch(URLS.PROGRAMACION)]);
     MAESTRO=parseCSV(await r1.text());
     SUPERVISORES_DB=parseCSV(await r2.text());
     PROGRAMACION_DB=parseCSV(await r3.text());
     document.getElementById('loginStatus').textContent='✅ '+MAESTRO.length+' labores | '+SUPERVISORES_DB.length+' supervisores';
-  }catch(e){
-    console.error(e);
-    document.getElementById('loginStatus').textContent='⚠️ Error de conexión';
-  }
+  }catch(e){console.error(e);document.getElementById('loginStatus').textContent='⚠️ Error conexión'}
+}
+
+async function recargarDatos(){
+  showToast('Recargando...','','warning');
+  await cargarDatos();
+  if(currentUser.rol==='JEFE')cargarSemanaData();else cargarLaboresSupervisor();
+  showToast('Actualizado','Datos sincronizados','success');
 }
 
 function parseCSV(t){const l=t.trim().split('\n');if(l.length<1)return[];const h=l[0].split(',').map(x=>x.trim().replace(/"/g,''));return l.slice(1).map(line=>{const v=[];let c='',q=false;for(let ch of line){if(ch==='"')q=!q;else if(ch===','&&!q){v.push(c.trim());c=''}else c+=ch}v.push(c.trim());const o={};h.forEach((x,i)=>o[x]=v[i]||'');return o})}
@@ -126,147 +133,17 @@ function login(){
   showToast('Bienvenido',currentUser.nombre,'success');
 }
 
-function logout(){currentUser=null;hasChanges=false;document.getElementById('loginScreen').style.display='flex';document.getElementById('appContainer').style.display='none';document.getElementById('loginDNI').value=''}
+function logout(){currentUser=null;document.getElementById('loginScreen').style.display='flex';document.getElementById('appContainer').style.display='none';document.getElementById('loginDNI').value=''}
 
-function getStorageKey(){return'tareo_'+currentUser.fundo+'_'+getWeekNumber(fechaBase)+'_'+fechaBase.getFullYear()}
-
-function cargarSemanaData(){
-  const semana=getWeekNumber(fechaBase);
-  const anio=fechaBase.getFullYear();
-  const fundo=document.getElementById('filterFundo').value||currentUser.fundo;
-  
-  // Cargar de PROGRAMACION_DB (Google Sheets)
-  programacion=PROGRAMACION_DB
-    .filter(p=>p.semana==semana&&p.anio==anio&&p.fundo===fundo&&p.dniJefe===currentUser.dni)
-    .map(p=>({
-      id:parseInt(p.id)||Date.now(),
-      area:p.area,
-      grupoLabor:p.grupoLabor,
-      labor:p.labor,
-      centroCosto:p.centroCosto,
-      dniSup:p.dniSup,
-      supervisor:p.supervisor,
-      lotes:p.lotes,
-      LUN:p.LUN,MAR:p.MAR,MIE:p.MIE,JUE:p.JUE,VIE:p.VIE,SAB:p.SAB,DOM:p.DOM,
-      meta_LUN:p.meta_LUN,meta_MAR:p.meta_MAR,meta_MIE:p.meta_MIE,meta_JUE:p.meta_JUE,meta_VIE:p.meta_VIE,meta_SAB:p.meta_SAB,meta_DOM:p.meta_DOM,
-      fromDB:true
-    }));
-  
-  // Si no hay en DB, cargar de localStorage como backup
-  if(programacion.length===0){
-    const saved=localStorage.getItem(getStorageKey());
-    if(saved){
-      const d=JSON.parse(saved);
-      programacion=d.programacion||[];
-      supervisoresSemana=d.supervisores||[];
-    }
-  }
-  
-  // Cargar supervisores del jefe
-  supervisoresSemana=SUPERVISORES_DB
-    .filter(x=>x.ID_Jefe===currentUser.dni&&x.Estado==='ACTIVO')
-    .map(x=>({dni:x.DNI_Supervisor,nombre:x.Supervisor}));
-  
-  hasChanges=false;
-  updateSaveStatus();
-  renderSupervisoresChips();
-  renderProgramacion();
-}
-
-function guardarLocal(){
-  localStorage.setItem(getStorageKey(),JSON.stringify({programacion,supervisores:supervisoresSemana}));
-  hasChanges=true;
-  updateSaveStatus();
-}
-
-function updateSaveStatus(){
-  const el=document.getElementById('saveStatus');
-  if(hasChanges){
-    el.innerHTML='<span style="color:#f59e0b">⚠️ Cambios sin guardar</span>';
-  }else{
-    el.innerHTML='<span style="color:#10b981">✅ Guardado</span>';
-  }
-}
-
-// ==================== GUARDAR EN GOOGLE SHEETS ====================
-async function guardarEnSheets(){
-  if(programacion.length===0){showToast('Sin datos','No hay labores para guardar','warning');return}
-  
-  const btn=document.getElementById('btnGuardar');
-  btn.disabled=true;
-  btn.innerHTML='⏳ Guardando...';
-  document.getElementById('savingIndicator').classList.add('show');
-  
+// ==================== API CALLS ====================
+async function apiCall(data){
   try{
-    const semana=getWeekNumber(fechaBase);
-    const anio=fechaBase.getFullYear();
-    const fundo=document.getElementById('filterFundo').value||currentUser.fundo;
-    const fecha=new Date().toISOString().split('T')[0];
-    
-    const rows=programacion.map(p=>({
-      id:p.id,
-      semana:semana,
-      anio:anio,
-      fundo:fundo,
-      area:p.area||'',
-      grupoLabor:p.grupoLabor,
-      labor:p.labor,
-      centroCosto:p.centroCosto||'',
-      dniSup:p.dniSup,
-      supervisor:p.supervisor,
-      lotes:p.lotes||'',
-      LUN:p.LUN||'',MAR:p.MAR||'',MIE:p.MIE||'',JUE:p.JUE||'',VIE:p.VIE||'',SAB:p.SAB||'',DOM:p.DOM||'',
-      meta_LUN:p.meta_LUN||'',meta_MAR:p.meta_MAR||'',meta_MIE:p.meta_MIE||'',meta_JUE:p.meta_JUE||'',meta_VIE:p.meta_VIE||'',meta_SAB:p.meta_SAB||'',meta_DOM:p.meta_DOM||'',
-      dniJefe:currentUser.dni,
-      fechaRegistro:fecha
-    }));
-    
-    const response=await fetch(URLS.API,{
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'saveProgramacion',rows:rows,semana:semana,anio:anio,fundo:fundo,dniJefe:currentUser.dni})
-    });
-    
-    hasChanges=false;
-    updateSaveStatus();
-    showToast('Guardado','Programación guardada en Google Sheets','success');
-    
-  }catch(e){
-    console.error(e);
-    showToast('Error','No se pudo guardar: '+e.message,'error');
-  }finally{
-    btn.disabled=false;
-    btn.innerHTML='💾 Guardar';
-    document.getElementById('savingIndicator').classList.remove('show');
-  }
+    await fetch(API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    return{success:true};
+  }catch(e){console.error(e);return{success:false,message:e.message}}
 }
 
-async function guardarSupervisorEnSheets(dni,nombre){
-  try{
-    const fecha=new Date().toISOString().split('T')[0];
-    await fetch(URLS.API,{
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        action:'addSupervisor',
-        ID_Jefe:currentUser.dni,
-        DNI_Supervisor:dni,
-        Supervisor:nombre,
-        Fundo:currentUser.fundo,
-        Estado:'ACTIVO',
-        FechaRegistro:fecha
-      })
-    });
-    return true;
-  }catch(e){
-    console.error(e);
-    return false;
-  }
-}
-
-// ==================== VISTA JEFE ====================
+// ==================== JEFE VIEW ====================
 function setupJefeView(){
   document.getElementById('toolbarJefe').style.display='flex';
   document.getElementById('toolbarSupervisor').style.display='none';
@@ -280,13 +157,27 @@ function setupJefeView(){
 
 function cambiarFundo(){cargarSemanaData()}
 
+function cargarSemanaData(){
+  const semana=getWeekNumber(fechaBase);
+  const anio=fechaBase.getFullYear();
+  const fundo=document.getElementById('filterFundo').value||currentUser.fundo;
+  programacion=PROGRAMACION_DB.filter(p=>p.semana==semana&&p.anio==anio&&p.fundo===fundo&&p.dniJefe===currentUser.dni).map(p=>({
+    id:p.id,semana:p.semana,anio:p.anio,fundo:p.fundo,area:p.area,grupoLabor:p.grupoLabor,labor:p.labor,centroCosto:p.centroCosto,
+    dniSup:p.dniSup,supervisor:p.supervisor,lotes:p.lotes,
+    LUN:p.LUN,MAR:p.MAR,MIE:p.MIE,JUE:p.JUE,VIE:p.VIE,SAB:p.SAB,DOM:p.DOM,
+    meta_LUN:p.meta_LUN,meta_MAR:p.meta_MAR,meta_MIE:p.meta_MIE,meta_JUE:p.meta_JUE,meta_VIE:p.meta_VIE,meta_SAB:p.meta_SAB,meta_DOM:p.meta_DOM
+  }));
+  renderSupervisoresChips();
+  renderProgramacion();
+}
+
 function renderSupervisoresChips(){
+  const sups=SUPERVISORES_DB.filter(x=>x.ID_Jefe===currentUser.dni&&x.Estado==='ACTIVO');
   const c=document.getElementById('supervisoresChips'),f=document.getElementById('filterSupervisor');
-  document.getElementById('statSupervisores').textContent=supervisoresSemana.length;
-  if(supervisoresSemana.length===0){c.innerHTML='<span style="color:#64748b">Clic en 👥 para agregar</span>';f.innerHTML='<option value="">--</option>';return}
-  c.innerHTML=supervisoresSemana.map(s=>'<div class="sup-chip"><span>'+s.nombre+'</span></div>').join('');
-  f.innerHTML='<option value="">-- Todos ('+supervisoresSemana.length+') --</option>';
-  supervisoresSemana.forEach(s=>f.innerHTML+='<option value="'+s.dni+'">'+s.nombre+'</option>');
+  document.getElementById('statSupervisores').textContent=sups.length;
+  if(sups.length===0){c.innerHTML='<span style="color:#64748b">Sin supervisores</span>';f.innerHTML='<option value="">--</option>';return}
+  c.innerHTML=sups.map(s=>'<div class="sup-chip">'+s.Supervisor+'</div>').join('');
+  f.innerHTML='<option value="">-- Todos ('+sups.length+') --</option>'+sups.map(s=>'<option value="'+s.DNI_Supervisor+'">'+s.Supervisor+'</option>').join('');
 }
 
 function renderProgramacion(){
@@ -299,7 +190,7 @@ function renderProgramacion(){
     h+='<tr class="area-row"><td colspan="13">📁 '+gr+'</td></tr>';
     g[gr].forEach(x=>{
       const rt=DIAS.reduce((s,d)=>s+(parseInt(x[d])||0),0);tp+=rt;
-      h+='<tr><td style="font-size:9px;color:#64748b">'+x.grupoLabor+'</td><td style="text-align:left;font-weight:600">'+x.labor+'</td><td style="font-size:10px">'+(x.supervisor||'--')+'</td><td style="font-size:9px">'+(x.lotes||'--')+'</td>'+DIAS.map(d=>{const v=x[d]||'',m=x['meta_'+d]||'';return'<td><input type="number" class="day-input'+(v?' has-value':'')+'" value="'+v+'" min="0" style="width:40px" onchange="updateDia('+x.id+',\''+d+'\',this.value)">'+(m?'<div style="font-size:8px;color:#f59e0b">M:'+m+'</div>':'')+'</td>'}).join('')+'<td><strong>'+rt+'</strong></td><td><button class="btn-action btn-edit" onclick="editarFila('+x.id+')">✏️</button><button class="btn-action btn-del" onclick="eliminarFila('+x.id+')">🗑️</button></td></tr>'
+      h+='<tr data-id="'+x.id+'"><td style="font-size:9px;color:#64748b">'+x.grupoLabor+'</td><td style="text-align:left;font-weight:600">'+x.labor+'</td><td style="font-size:10px">'+(x.supervisor||'--')+'</td><td style="font-size:9px">'+(x.lotes||'--')+'</td>'+DIAS.map(d=>{const v=x[d]||'',m=x['meta_'+d]||'';return'<td><div class="day-input'+(v?' has-value':'')+'">'+v+'</div>'+(m?'<div style="font-size:8px;color:#f59e0b">M:'+m+'</div>':'')+'</td>'}).join('')+'<td><strong>'+rt+'</strong></td><td><button class="btn-action btn-edit" onclick="editarFila(\''+x.id+'\')">✏️</button><button class="btn-action btn-del" onclick="eliminarFila(\''+x.id+'\')">🗑️</button></td></tr>'
     });
   });
   t.innerHTML=h;
@@ -307,85 +198,44 @@ function renderProgramacion(){
   document.getElementById('statPersonal').textContent=tp;
 }
 
-function updateDia(id,d,v){const p=programacion.find(x=>x.id===id);if(p){p[d]=v;guardarLocal();renderProgramacion()}}
-
-function eliminarFila(id){if(confirm('¿Eliminar esta labor?')){programacion=programacion.filter(x=>x.id!==id);guardarLocal();renderProgramacion();showToast('Eliminado','Labor removida','success')}}
-
 // ==================== MODAL SUPERVISORES ====================
 function abrirModalSupervisores(){
-  const s=document.getElementById('selectAddSup');
-  const db=SUPERVISORES_DB.filter(x=>x.ID_Jefe===currentUser.dni&&x.Estado==='ACTIVO');
-  s.innerHTML='<option value="">-- Seleccionar --</option>';
-  db.forEach(x=>s.innerHTML+='<option value="'+x.DNI_Supervisor+'">'+x.DNI_Supervisor+' - '+x.Supervisor+'</option>');
+  const sups=SUPERVISORES_DB.filter(x=>x.ID_Jefe===currentUser.dni&&x.Estado==='ACTIVO');
+  document.getElementById('listSupExistentes').innerHTML=sups.length?sups.map(s=>'<div style="padding:6px 10px;background:#d1fae5;border-radius:6px;margin-bottom:4px;font-size:11px">'+s.DNI_Supervisor+' - '+s.Supervisor+'</div>').join(''):'<span style="color:#64748b">No hay supervisores</span>';
   document.getElementById('newSupDNI').value='';
   document.getElementById('newSupNombre').value='';
-  renderListSupSemana();
   document.getElementById('modalSupervisores').classList.add('show');
 }
 
-function renderListSupSemana(){
-  const d=document.getElementById('listSupSemana');
-  if(supervisoresSemana.length===0){d.innerHTML='<span style="color:#64748b">No hay supervisores registrados</span>';return}
-  d.innerHTML=supervisoresSemana.map(s=>'<div style="display:flex;justify-content:space-between;padding:8px;background:#f0fdf4;border-radius:6px;margin-bottom:6px"><span style="font-weight:500">'+s.dni+' - '+s.nombre+'</span></div>').join('');
-}
-
-function agregarSupDeLista(){
-  const s=document.getElementById('selectAddSup'),dni=s.value;
-  if(!dni){showToast('Error','Seleccione un supervisor','error');return}
-  const sup=SUPERVISORES_DB.find(x=>x.DNI_Supervisor===dni);
-  if(sup&&!supervisoresSemana.find(x=>x.dni===dni)){
-    supervisoresSemana.push({dni,nombre:sup.Supervisor});
-    guardarLocal();
-    renderListSupSemana();
-    renderSupervisoresChips();
-    s.value='';
-    showToast('Agregado',sup.Supervisor,'success');
-  }
-}
-
-async function agregarSupNuevo(){
+async function crearSupervisor(){
   const dni=document.getElementById('newSupDNI').value.trim();
   const nombre=document.getElementById('newSupNombre').value.trim();
-  if(!dni||dni.length!==8){showToast('Error','DNI debe tener 8 dígitos','error');return}
-  if(!nombre){showToast('Error','Ingrese el nombre','error');return}
+  if(!dni||dni.length!==8){showToast('Error','DNI 8 dígitos','error');return}
+  if(!nombre){showToast('Error','Ingrese nombre','error');return}
   if(SUPERVISORES_DB.find(x=>x.DNI_Supervisor===dni)){showToast('Error','DNI ya existe','error');return}
   
-  const btn=document.getElementById('btnCrearSup');
-  btn.disabled=true;
-  btn.innerHTML='⏳...';
+  const btn=document.getElementById('btnCrearSup');btn.disabled=true;btn.textContent='⏳...';
   
-  const ok=await guardarSupervisorEnSheets(dni,nombre);
+  const fecha=new Date().toISOString().split('T')[0];
+  await apiCall({action:'addSupervisor',ID_Jefe:currentUser.dni,DNI_Supervisor:dni,Supervisor:nombre,Fundo:currentUser.fundo,Estado:'ACTIVO',FechaRegistro:fecha});
   
-  if(ok){
-    SUPERVISORES_DB.push({ID_Jefe:currentUser.dni,DNI_Supervisor:dni,Supervisor:nombre,Fundo:currentUser.fundo,Estado:'ACTIVO'});
-    supervisoresSemana.push({dni,nombre});
-    guardarLocal();
-    renderListSupSemana();
-    renderSupervisoresChips();
-    document.getElementById('newSupDNI').value='';
-    document.getElementById('newSupNombre').value='';
-    showToast('Creado',nombre+' guardado en Google Sheets','success');
-  }else{
-    showToast('Error','No se pudo guardar','error');
-  }
-  
-  btn.disabled=false;
-  btn.innerHTML='Crear';
+  SUPERVISORES_DB.push({ID_Jefe:currentUser.dni,DNI_Supervisor:dni,Supervisor:nombre,Fundo:currentUser.fundo,Estado:'ACTIVO'});
+  renderSupervisoresChips();
+  abrirModalSupervisores();
+  showToast('Creado',nombre+' guardado en Sheets','success');
+  btn.disabled=false;btn.textContent='Crear';
 }
 
 // ==================== MODAL AGREGAR LABOR ====================
 function abrirModalAgregar(){
-  if(supervisoresSemana.length===0){showToast('Sin supervisores','Primero agregue supervisores','warning');abrirModalSupervisores();return}
+  const sups=SUPERVISORES_DB.filter(x=>x.ID_Jefe===currentUser.dni&&x.Estado==='ACTIVO');
+  if(sups.length===0){showToast('Sin supervisores','Primero cree supervisores','warning');abrirModalSupervisores();return}
   const fundo=document.getElementById('filterFundo').value;
-  const a=[...new Set(MAESTRO.filter(m=>m.DNI_Jefe===currentUser.dni&&m.Fundo===fundo).map(m=>m.AREA))].sort();
-  const sa=document.getElementById('modalArea');
-  sa.innerHTML='<option value="">-- Seleccionar --</option>';
-  a.forEach(x=>sa.innerHTML+='<option value="'+x+'">'+x+'</option>');
-  document.getElementById('modalGrupo').innerHTML='<option value="">-- Primero seleccione área --</option>';
-  document.getElementById('modalLabor').innerHTML='<option value="">-- Primero seleccione grupo --</option>';
-  const ss=document.getElementById('modalSup');
-  ss.innerHTML='<option value="">-- Seleccionar --</option>';
-  supervisoresSemana.forEach(s=>ss.innerHTML+='<option value="'+s.dni+'">'+s.nombre+'</option>');
+  const areas=[...new Set(MAESTRO.filter(m=>m.DNI_Jefe===currentUser.dni&&m.Fundo===fundo).map(m=>m.AREA))].sort();
+  document.getElementById('modalArea').innerHTML='<option value="">-- Seleccionar --</option>'+areas.map(x=>'<option value="'+x+'">'+x+'</option>').join('');
+  document.getElementById('modalGrupo').innerHTML='<option value="">--</option>';
+  document.getElementById('modalLabor').innerHTML='<option value="">--</option>';
+  document.getElementById('modalSup').innerHTML='<option value="">-- Seleccionar --</option>'+sups.map(s=>'<option value="'+s.DNI_Supervisor+'">'+s.Supervisor+'</option>').join('');
   document.getElementById('lotesGrid').innerHTML=LOTES.map(l=>'<div class="lote-chip" onclick="this.classList.toggle(\'selected\')">'+l+'</div>').join('');
   document.getElementById('daysRow').innerHTML=DIAS.map((d,i)=>'<div class="day-chip'+(i<6?' selected':'')+'" data-day="'+d+'" onclick="this.classList.toggle(\'selected\')">'+d+'</div>').join('');
   document.getElementById('modalPersonal').value='';
@@ -395,105 +245,124 @@ function abrirModalAgregar(){
 
 function actualizarGruposModal(){
   const fundo=document.getElementById('filterFundo').value;
-  const a=document.getElementById('modalArea').value;
-  const g=[...new Set(MAESTRO.filter(m=>m.DNI_Jefe===currentUser.dni&&m.Fundo===fundo&&m.AREA===a).map(m=>m['Grupo Labor']))].sort();
-  const s=document.getElementById('modalGrupo');
-  s.innerHTML='<option value="">-- Seleccionar --</option>';
-  g.forEach(x=>s.innerHTML+='<option value="'+x+'">'+x+'</option>');
-  document.getElementById('modalLabor').innerHTML='<option value="">-- Primero seleccione grupo --</option>';
+  const area=document.getElementById('modalArea').value;
+  const grupos=[...new Set(MAESTRO.filter(m=>m.DNI_Jefe===currentUser.dni&&m.Fundo===fundo&&m.AREA===area).map(m=>m['Grupo Labor']))].sort();
+  document.getElementById('modalGrupo').innerHTML='<option value="">--</option>'+grupos.map(x=>'<option value="'+x+'">'+x+'</option>').join('');
+  document.getElementById('modalLabor').innerHTML='<option value="">--</option>';
 }
 
 function actualizarLaboresModal(){
   const fundo=document.getElementById('filterFundo').value;
-  const a=document.getElementById('modalArea').value;
-  const g=document.getElementById('modalGrupo').value;
-  const l=[...new Set(MAESTRO.filter(m=>m.DNI_Jefe===currentUser.dni&&m.Fundo===fundo&&m.AREA===a&&m['Grupo Labor']===g).map(m=>m.Labor))].sort();
-  const s=document.getElementById('modalLabor');
-  s.innerHTML='<option value="">-- Seleccionar --</option>';
-  l.forEach(x=>s.innerHTML+='<option value="'+x+'">'+x+'</option>');
+  const area=document.getElementById('modalArea').value;
+  const grupo=document.getElementById('modalGrupo').value;
+  const labores=[...new Set(MAESTRO.filter(m=>m.DNI_Jefe===currentUser.dni&&m.Fundo===fundo&&m.AREA===area&&m['Grupo Labor']===grupo).map(m=>m.Labor))].sort();
+  document.getElementById('modalLabor').innerHTML='<option value="">--</option>'+labores.map(x=>'<option value="'+x+'">'+x+'</option>').join('');
 }
 
-function agregarLabor(){
-  const a=document.getElementById('modalArea').value;
-  const g=document.getElementById('modalGrupo').value;
-  const l=document.getElementById('modalLabor').value;
-  const ds=document.getElementById('modalSup').value;
-  const p=document.getElementById('modalPersonal').value||0;
-  const m=document.getElementById('modalMeta').value||0;
-  if(!a||!g||!l||!ds){showToast('Error','Complete todos los campos','error');return}
-  const sup=supervisoresSemana.find(x=>x.dni===ds);
-  const md=MAESTRO.find(x=>x.Labor===l&&x['Grupo Labor']===g);
+async function agregarLabor(){
+  const area=document.getElementById('modalArea').value;
+  const grupo=document.getElementById('modalGrupo').value;
+  const labor=document.getElementById('modalLabor').value;
+  const dniSup=document.getElementById('modalSup').value;
+  const pers=document.getElementById('modalPersonal').value||'';
+  const meta=document.getElementById('modalMeta').value||'';
+  if(!area||!grupo||!labor||!dniSup){showToast('Error','Complete todos los campos','error');return}
+  
+  // Verificar duplicado local
+  const semana=getWeekNumber(fechaBase),anio=fechaBase.getFullYear(),fundo=document.getElementById('filterFundo').value;
+  if(programacion.find(p=>p.labor===labor&&p.dniSup===dniSup)){showToast('Error','Esta labor ya está asignada a este supervisor','error');return}
+  
+  const btn=document.getElementById('btnAgregarLabor');btn.disabled=true;btn.textContent='⏳...';
+  
+  const sup=SUPERVISORES_DB.find(x=>x.DNI_Supervisor===dniSup);
+  const md=MAESTRO.find(x=>x.Labor===labor&&x['Grupo Labor']===grupo);
   const lotes=[...document.querySelectorAll('#lotesGrid .lote-chip.selected')].map(x=>x.textContent).join(',');
   const dias=[...document.querySelectorAll('#daysRow .day-chip.selected')].map(x=>x.dataset.day);
-  const np={id:Date.now(),area:a,grupoLabor:g,labor:l,centroCosto:md?.CodCentroCosto||'',dniSup:ds,supervisor:sup?sup.nombre:'',lotes,LUN:'',MAR:'',MIE:'',JUE:'',VIE:'',SAB:'',DOM:'',meta_LUN:'',meta_MAR:'',meta_MIE:'',meta_JUE:'',meta_VIE:'',meta_SAB:'',meta_DOM:''};
-  dias.forEach(d=>{np[d]=p;np['meta_'+d]=m});
-  programacion.push(np);
-  guardarLocal();
+  const fecha=new Date().toISOString().split('T')[0];
+  const id=Date.now().toString();
+  
+  const row={id,semana,anio,fundo,area,grupoLabor:grupo,labor,centroCosto:md?.CodCentroCosto||'',dniSup,supervisor:sup?.Supervisor||'',lotes,LUN:'',MAR:'',MIE:'',JUE:'',VIE:'',SAB:'',DOM:'',meta_LUN:'',meta_MAR:'',meta_MIE:'',meta_JUE:'',meta_VIE:'',meta_SAB:'',meta_DOM:'',dniJefe:currentUser.dni,fechaRegistro:fecha};
+  dias.forEach(d=>{row[d]=pers;row['meta_'+d]=meta});
+  
+  await apiCall({action:'addLabor',row});
+  
+  // Agregar a local
+  programacion.push(row);
+  PROGRAMACION_DB.push(row);
+  
   cerrarModal('modalAgregar');
   renderProgramacion();
-  showToast('Agregado',l,'success');
+  showToast('Agregado',labor+' guardado en Sheets','success');
+  btn.disabled=false;btn.textContent='Agregar';
 }
 
-// ==================== MODAL EDITAR ====================
+// ==================== EDITAR LABOR ====================
 function editarFila(id){
-  const p=programacion.find(x=>x.id===id);if(!p)return;
+  const p=programacion.find(x=>x.id==id);if(!p)return;
   editRowId=id;
   document.getElementById('editLabor').value=p.labor;
-  const ss=document.getElementById('editSup');
-  ss.innerHTML='<option value="">-- Seleccionar --</option>';
-  supervisoresSemana.forEach(s=>ss.innerHTML+='<option value="'+s.dni+'"'+(s.dni===p.dniSup?' selected':'')+'>'+s.nombre+'</option>');
+  const sups=SUPERVISORES_DB.filter(x=>x.ID_Jefe===currentUser.dni&&x.Estado==='ACTIVO');
+  document.getElementById('editSup').innerHTML='<option value="">--</option>'+sups.map(s=>'<option value="'+s.DNI_Supervisor+'"'+(s.DNI_Supervisor===p.dniSup?' selected':'')+'>'+s.Supervisor+'</option>').join('');
   const cl=(p.lotes||'').split(',').map(x=>x.trim());
   document.getElementById('editLotesGrid').innerHTML=LOTES.map(l=>'<div class="lote-chip'+(cl.includes(l)?' selected':'')+'" onclick="this.classList.toggle(\'selected\')">'+l+'</div>').join('');
-  document.getElementById('editDaysRow').innerHTML=DIAS.map(d=>'<div class="day-chip" data-day="'+d+'" onclick="this.classList.toggle(\'selected\')">'+d+'</div>').join('');
-  document.getElementById('editDaysInputs').innerHTML=DIAS.map(d=>'<td><input type="number" id="editDay_'+d+'" value="'+(p[d]||'')+'" style="width:30px;padding:2px;font-size:10px;text-align:center" onchange="marcarCambio()"><div style="font-size:7px">M:<input type="number" id="editMeta_'+d+'" value="'+(p['meta_'+d]||'')+'" style="width:25px;font-size:7px" onchange="marcarCambio()"></div></td>').join('');
-  document.getElementById('editPersonal').value='';
-  document.getElementById('editMeta').value='';
+  DIAS.forEach(d=>{document.getElementById('edit_'+d).value=p[d]||'';document.getElementById('edit_meta_'+d).value=p['meta_'+d]||''});
   document.getElementById('modalEditar').classList.add('show');
 }
 
-function marcarCambio(){hasChanges=true;updateSaveStatus()}
-
-function aplicarValoresEdit(){
-  const p=document.getElementById('editPersonal').value;
-  const m=document.getElementById('editMeta').value;
-  const ds=[...document.querySelectorAll('#editDaysRow .day-chip.selected')].map(x=>x.dataset.day);
-  if(ds.length===0){showToast('Error','Seleccione días','error');return}
-  ds.forEach(d=>{if(p)document.getElementById('editDay_'+d).value=p;if(m)document.getElementById('editMeta_'+d).value=m});
-  showToast('Aplicado',ds.length+' días','success');
-}
-
-function guardarEdicion(){
-  const p=programacion.find(x=>x.id===editRowId);if(!p)return;
+async function guardarEdicion(){
+  const p=programacion.find(x=>x.id==editRowId);if(!p)return;
+  
+  const btn=document.getElementById('btnGuardarEdicion');btn.disabled=true;btn.textContent='⏳...';
+  
   p.dniSup=document.getElementById('editSup').value;
-  p.supervisor=supervisoresSemana.find(x=>x.dni===p.dniSup)?.nombre||'';
+  p.supervisor=SUPERVISORES_DB.find(x=>x.DNI_Supervisor===p.dniSup)?.Supervisor||'';
   p.lotes=[...document.querySelectorAll('#editLotesGrid .lote-chip.selected')].map(x=>x.textContent).join(',');
-  DIAS.forEach(d=>{p[d]=document.getElementById('editDay_'+d).value;p['meta_'+d]=document.getElementById('editMeta_'+d).value});
-  guardarLocal();
+  DIAS.forEach(d=>{p[d]=document.getElementById('edit_'+d).value;p['meta_'+d]=document.getElementById('edit_meta_'+d).value});
+  
+  const fecha=new Date().toISOString().split('T')[0];
+  const row={...p,dniJefe:currentUser.dni,fechaRegistro:fecha};
+  
+  await apiCall({action:'updateLabor',row});
+  
+  // Actualizar en PROGRAMACION_DB
+  const idx=PROGRAMACION_DB.findIndex(x=>x.id==editRowId);
+  if(idx>=0)PROGRAMACION_DB[idx]=row;
+  
   cerrarModal('modalEditar');
   renderProgramacion();
-  showToast('Guardado','Cambios aplicados','success');
+  showToast('Actualizado','Cambios guardados en Sheets','success');
+  btn.disabled=false;btn.textContent='💾 Guardar';
 }
 
-// ==================== VISTA SUPERVISOR ====================
+async function eliminarFila(id){
+  if(!confirm('¿Eliminar esta labor?'))return;
+  
+  await apiCall({action:'deleteLabor',id});
+  
+  programacion=programacion.filter(x=>x.id!=id);
+  PROGRAMACION_DB=PROGRAMACION_DB.filter(x=>x.id!=id);
+  
+  renderProgramacion();
+  showToast('Eliminado','Labor removida de Sheets','success');
+}
+
+// ==================== SUPERVISOR VIEW ====================
 function setupSupervisorView(){
   document.getElementById('toolbarJefe').style.display='none';
   document.getElementById('toolbarSupervisor').style.display='flex';
   document.getElementById('jefeView').style.display='none';
   document.getElementById('supervisorView').style.display='block';
   document.getElementById('supervisoresBar').style.display='none';
-  const h=new Date();diaActualIdx=diasSemana.findIndex(d=>d.toDateString()===h.toDateString());
+  diaActualIdx=diasSemana.findIndex(d=>d.toDateString()===new Date().toDateString());
   if(diaActualIdx===-1)diaActualIdx=0;
   cargarLaboresSupervisor();
 }
 
 function cargarLaboresSupervisor(){
-  const semana=getWeekNumber(fechaBase);
-  const anio=fechaBase.getFullYear();
-  programacion=PROGRAMACION_DB.filter(p=>p.semana==semana&&p.anio==anio&&p.dniSup===currentUser.dni).map(p=>({...p,id:parseInt(p.id)||Date.now()}));
+  const semana=getWeekNumber(fechaBase),anio=fechaBase.getFullYear();
+  programacion=PROGRAMACION_DB.filter(p=>p.semana==semana&&p.anio==anio&&p.dniSup===currentUser.dni);
   const g=[...new Set(programacion.map(p=>p.grupoLabor))].sort();
-  const s=document.getElementById('filterGrupoSup');
-  s.innerHTML='<option value="">-- Todos --</option>';
-  g.forEach(x=>s.innerHTML+='<option value="'+x+'">'+x+'</option>');
+  document.getElementById('filterGrupoSup').innerHTML='<option value="">-- Todos --</option>'+g.map(x=>'<option value="'+x+'">'+x+'</option>').join('');
   renderSupervisorView();
 }
 
@@ -506,33 +375,29 @@ function renderSupervisorView(){
   const fg=document.getElementById('filterGrupoSup').value;
   let l=programacion.filter(p=>parseInt(p[d])>0&&(!fg||p.grupoLabor===fg));
   const c=document.getElementById('supLabores');
-  if(l.length===0){c.innerHTML='<div style="text-align:center;padding:40px;color:#64748b">📭 No hay labores para este día</div>';document.getElementById('statLabores').textContent='0';document.getElementById('statPersonal').textContent='0';return}
+  if(l.length===0){c.innerHTML='<div style="text-align:center;padding:40px;color:#64748b">📭 No hay labores</div>';document.getElementById('statLabores').textContent='0';document.getElementById('statPersonal').textContent='0';return}
   let tp=0;
   c.innerHTML=l.map(p=>{const pe=parseInt(p[d])||0,me=p['meta_'+d]||'-';tp+=pe;return'<div class="sup-labor-item"><div class="sup-labor-name">'+p.labor+'</div><div class="sup-labor-grupo">📁 '+p.grupoLabor+' | 📍 '+(p.lotes||'-')+'</div><div class="sup-labor-details"><div class="sup-detail"><div class="sup-detail-val">'+pe+'</div><div class="sup-detail-lbl">Personal</div></div><div class="sup-detail"><div class="sup-detail-val">'+me+'</div><div class="sup-detail-lbl">Meta</div></div></div></div>'}).join('');
   document.getElementById('statLabores').textContent=l.length;
   document.getElementById('statPersonal').textContent=tp;
 }
 
-function actualizarData(){cargarDatos().then(()=>{cargarLaboresSupervisor();showToast('Actualizado','Datos recargados','success')})}
-
-// ==================== UTILIDADES ====================
+// ==================== UTILS ====================
 function cerrarModal(id){document.getElementById(id).classList.remove('show')}
 
 function exportarCSV(){
-  if(programacion.length===0){showToast('Sin datos','','warning');return}
+  if(programacion.length===0)return;
   const s=getWeekNumber(fechaBase);
   let c='\uFEFF'+'Area;Grupo;Labor;Supervisor;Lotes;LUN;MAR;MIE;JUE;VIE;SAB;DOM;Total\n';
   programacion.forEach(p=>{const t=DIAS.reduce((s,d)=>s+(parseInt(p[d])||0),0);c+=[p.area,p.grupoLabor,p.labor,p.supervisor,p.lotes,p.LUN||0,p.MAR||0,p.MIE||0,p.JUE||0,p.VIE||0,p.SAB||0,p.DOM||0,t].join(';')+'\n'});
   const b=new Blob([c],{type:'text/csv;charset=utf-8;'}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download='Tareo_S'+s+'.csv';a.click();
-  showToast('Exportado',programacion.length+' registros','success');
 }
 
 function showToast(t,m,y='success'){
   const c=document.getElementById('toastContainer'),e=document.createElement('div');
   e.className='toast '+y;
-  const icons={success:'✅',error:'❌',warning:'⚠️'};
-  e.innerHTML='<span>'+icons[y]+'</span><div><strong>'+t+'</strong>'+(m?'<br><small>'+m+'</small>':'')+'</div>';
+  e.innerHTML='<span>'+(y==='success'?'✅':y==='error'?'❌':'⚠️')+'</span><div><strong>'+t+'</strong>'+(m?'<br><small>'+m+'</small>':'')+'</div>';
   c.appendChild(e);setTimeout(()=>e.remove(),3500);
 }
 </script>
