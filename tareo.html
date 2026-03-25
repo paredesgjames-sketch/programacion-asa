@@ -377,7 +377,7 @@ function renderSupervisorView(){
   const c=document.getElementById('supLabores');
   if(l.length===0){c.innerHTML='<div style="text-align:center;padding:40px;color:#64748b">📭 No hay labores</div>';document.getElementById('statLabores').textContent='0';document.getElementById('statPersonal').textContent='0';return}
   let tp=0;
-  c.innerHTML=l.map(p=>{const pe=parseInt(p[d])||0,me=p['meta_'+d]||'-';tp+=pe;return'<div class="sup-labor-item"><div class="sup-labor-name">'+p.labor+'</div><div class="sup-labor-grupo">📁 '+p.grupoLabor+' | 📍 '+(p.lotes||'-')+'</div><div class="sup-labor-details"><div class="sup-detail"><div class="sup-detail-val">'+pe+'</div><div class="sup-detail-lbl">Personal</div></div><div class="sup-detail"><div class="sup-detail-val">'+me+'</div><div class="sup-detail-lbl">Meta</div></div></div></div>'}).join('');
+  c.innerHTML=l.map(p=>{const pe=parseInt(p[d])||0,me=p['meta_'+d]||'-';tp+=pe;return'<div class="sup-labor-item"><div class="sup-labor-name">'+p.labor+'</div><div class="sup-labor-grupo">🏢 '+p.fundo+' | 📍 '+p.area+' | 📁 '+p.grupoLabor+' | 🌱 '+(p.lotes||'-')+'</div><div class="sup-labor-details"><div class="sup-detail"><div class="sup-detail-val">'+pe+'</div><div class="sup-detail-lbl">Personal</div></div><div class="sup-detail"><div class="sup-detail-val">'+me+'</div><div class="sup-detail-lbl">Meta</div></div></div></div>'}).join('');
   document.getElementById('statLabores').textContent=l.length;
   document.getElementById('statPersonal').textContent=tp;
 }
