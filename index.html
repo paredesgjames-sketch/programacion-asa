@@ -29,25 +29,58 @@
         .user-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 9px; width: 100px; }
         .user-input::placeholder { color: rgba(255,255,255,0.5); }
         .container { max-width: 1920px; margin: 0 auto; padding: 8px; }
-        .toolbar { background: #fff; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; gap: 8px; }
+        
+        /* Toolbar unificado con filtros */
+        .toolbar { background: #fff; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .toolbar-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .toolbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        
         .semana-picker { display: flex; align-items: center; gap: 6px; }
         .semana-picker label { font-weight: 600; color: #64748b; font-size: 9px; }
         .semana-picker input[type="date"] { display: none; }
         .semana-nav { display: flex; align-items: center; gap: 4px; }
         .semana-nav .btn-nav { width: 28px; height: 28px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #e2e8f0; color: #1a1a2e; font-weight: 700; font-size: 14px; transition: all 0.2s; }
         .semana-nav .btn-nav:hover { background: #1a1a2e; color: #fff; }
-        .semana-nav .semana-display { min-width: 180px; text-align: center; padding: 6px 12px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 10px; font-weight: 600; color: #1a1a2e; }
+        .semana-nav .semana-display { min-width: 150px; text-align: center; padding: 4px 10px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 9px; font-weight: 600; color: #1a1a2e; }
         .semana-nav .semana-display .sem-num { color: #10b981; font-weight: 700; }
-        .semana-nav .semana-display .sem-rango { color: #64748b; font-size: 9px; }
-        .stats { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .stat { background: linear-gradient(135deg, #f8fafc, #f1f5f9); padding: 6px 12px; border-radius: 8px; text-align: center; border: 1px solid #e2e8f0; min-width: 70px; }
-        .stat-value { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+        .semana-nav .semana-display .sem-rango { color: #64748b; font-size: 8px; }
+        
+        /* Filtros inline */
+        .filters-inline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .filter-item { display: flex; align-items: center; gap: 4px; }
+        .filter-item label { font-size: 8px; font-weight: 600; color: #64748b; text-transform: uppercase; }
+        
+        .multi-select { position: relative; min-width: 120px; }
+        .multi-select-display { padding: 4px 24px 4px 8px; border: 1px solid #e2e8f0; border-radius: 4px; background: #fff; cursor: pointer; font-size: 8px; min-height: 26px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; position: relative; }
+        .multi-select-display:hover { border-color: #10b981; }
+        .multi-select-display::after { content: '▼'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 6px; color: #64748b; }
+        .multi-select-display .chip { background: #10b981; color: #fff; padding: 1px 4px; border-radius: 8px; font-size: 7px; font-weight: 600; }
+        .multi-select-display .chip-count { background: #3b82f6; color: #fff; padding: 1px 6px; border-radius: 8px; font-size: 8px; font-weight: 700; }
+        .multi-select-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 1px solid #10b981; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; max-height: 200px; overflow-y: auto; }
+        .multi-select-dropdown.show { display: block; }
+        .multi-select-search { padding: 6px; border-bottom: 1px solid #e2e8f0; }
+        .multi-select-search input { width: 100%; padding: 4px 6px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 8px; }
+        .multi-select-option { padding: 6px 10px; cursor: pointer; font-size: 8px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #f1f5f9; }
+        .multi-select-option:hover { background: #f0fdf4; }
+        .multi-select-option.selected { background: #d1fae5; font-weight: 600; }
+        .multi-select-option input[type="checkbox"] { accent-color: #10b981; }
+        
+        .btn-limpiar { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 8px; }
+        .btn-limpiar:hover { background: #e2e8f0; }
+        
+        .btn-agregar { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 9px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .btn-agregar:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16,185,129,0.4); }
+        
+        .stats { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .stat { background: linear-gradient(135deg, #f8fafc, #f1f5f9); padding: 4px 10px; border-radius: 6px; text-align: center; border: 1px solid #e2e8f0; min-width: 60px; }
+        .stat-value { font-size: 14px; font-weight: 700; color: #1a1a2e; }
         .stat-label { font-size: 7px; color: #64748b; text-transform: uppercase; }
         .stat.highlight { background: linear-gradient(135deg, #10b981, #059669); border: none; }
         .stat.highlight .stat-value, .stat.highlight .stat-label { color: #fff; }
-        .btn-search-toggle { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 9px; font-weight: 600; display: flex; align-items: center; gap: 4px; transition: all 0.2s; }
-        .btn-search-toggle:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+        
+        .btn-search-toggle { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 8px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        
         .status-badge { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 12px; font-size: 8px; font-weight: 600; }
         .status-badge.online { background: #d1fae5; color: #065f46; }
         .status-badge.offline { background: #fee2e2; color: #991b1b; }
@@ -57,103 +90,102 @@
         .status-badge.offline .status-dot { background: #ef4444; }
         .status-badge.loading .status-dot { background: #6366f1; animation: pulse 1s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .alert-box { border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; display: none; align-items: center; gap: 8px; }
+        
+        .alert-box { border-radius: 6px; padding: 6px 10px; margin-bottom: 6px; display: none; align-items: center; gap: 6px; font-size: 8px; }
         .alert-box.show { display: flex; }
         .alert-box.warning { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; }
-        .alert-box .alert-icon { font-size: 16px; }
+        .alert-box .alert-icon { font-size: 14px; }
         .alert-box .alert-text { flex: 1; }
-        .alert-box .alert-title { font-weight: 700; font-size: 10px; }
+        .alert-box .alert-title { font-weight: 700; font-size: 9px; }
         .alert-box .alert-msg { font-size: 8px; opacity: 0.8; }
+        
         .table-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        .table-scroll { overflow-x: auto; max-height: calc(100vh - 260px); }
+        .table-scroll { overflow-x: auto; max-height: calc(100vh - 200px); }
         table { width: 100%; border-collapse: collapse; }
-        th { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; padding: 5px 2px; text-align: center; font-size: 7px; font-weight: 600; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
+        th { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; padding: 4px 2px; text-align: center; font-size: 7px; font-weight: 600; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         th.col-text { text-align: left; padding-left: 4px; }
-        th .dia-fecha { font-size: 10px; font-weight: 700; }
+        th .dia-fecha { font-size: 9px; font-weight: 700; }
         th .dia-nombre { font-size: 6px; opacity: 0.7; }
-        td { padding: 2px 1px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        td { padding: 1px 1px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
         tr:hover td { background: #f8fafc; }
+        
         tr.duplicated td { background: #fed7aa !important; }
         tr.incomplete td { background: #fee2e2 !important; }
         tr.no-personal td { background: #fef3c7 !important; }
-        .dup-badge, .incomplete-badge, .no-personal-badge { font-size: 5px; padding: 1px 2px; border-radius: 2px; margin-left: 1px; color: #fff; }
-        .dup-badge { background: #ea580c; }
-        .incomplete-badge { background: #ef4444; }
-        .no-personal-badge { background: #f59e0b; }
-        tr.fundo-row td { background: linear-gradient(135deg, #1e3a5f, #0f3460); color: #fff; font-weight: 700; padding: 6px 8px; font-size: 10px; }
-        tr.fundo-row .fundo-icon { font-size: 12px; margin-right: 6px; }
-        tr.area-row td { background: linear-gradient(135deg, #10b981, #059669); color: #fff; font-weight: 600; padding: 4px 8px; font-size: 9px; }
+        
+        /* Badges al costado */
+        .labor-cell { display: flex; align-items: center; gap: 4px; }
+        .labor-badge { font-size: 5px; padding: 1px 3px; border-radius: 2px; color: #fff; font-weight: 600; white-space: nowrap; }
+        .badge-dup { background: #ea580c; }
+        .badge-inc { background: #ef4444; }
+        .badge-noper { background: #f59e0b; }
+        .badge-nueva { background: #8b5cf6; }
+        
+        /* Fila combinada Fundo + Jefe + Área */
+        tr.fundo-area-row td { background: linear-gradient(135deg, #1e3a5f, #0f3460); color: #fff; font-weight: 600; padding: 4px 8px; font-size: 9px; }
+        tr.fundo-area-row .info-fundo { margin-right: 12px; }
+        tr.fundo-area-row .info-jefe { margin-right: 12px; color: #fbbf24; }
+        tr.fundo-area-row .info-area { color: #10b981; }
+        
         tr.subtotal-area td { background: linear-gradient(135deg, #d1fae5, #a7f3d0); font-weight: 600; font-size: 8px; border-top: 1px solid #10b981; }
         .subtot-area-num { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 2px 5px; border-radius: 3px; font-weight: 700; font-size: 8px; display: inline-block; min-width: 22px; text-align: center; }
+        
         tr.total-fundo td { background: linear-gradient(135deg, #0f3460, #1e3a5f); color: #fff; font-weight: 700; font-size: 9px; }
         .total-fundo-num { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 9px; display: inline-block; min-width: 24px; text-align: center; }
+        
         tr.total-row td { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-weight: 700; font-size: 10px; }
         .total-num { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; padding: 3px 8px; border-radius: 4px; font-weight: 800; font-size: 11px; display: inline-block; min-width: 28px; text-align: center; }
-        select.cell-sel { width: 100%; padding: 2px 1px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 7px; background: #fff; cursor: pointer; }
+        
         .select-search-container { position: relative; width: 100%; }
-        .select-search-container .select-display { width: 100%; padding: 2px 14px 2px 4px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 7px; background: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 18px; line-height: 12px; position: relative; }
+        .select-search-container .select-display { width: 100%; padding: 2px 12px 2px 4px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 7px; background: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 16px; line-height: 12px; position: relative; }
         .select-search-container .select-display:hover { border-color: #10b981; }
-        .select-search-container .select-display::after { content: '▼'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-size: 5px; color: #64748b; }
-        .select-search-container .select-dropdown { display: none; position: fixed; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; width: 280px; max-height: 320px; overflow: hidden; z-index: 99999; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .select-search-container .select-display::after { content: '▼'; position: absolute; right: 3px; top: 50%; transform: translateY(-50%); font-size: 5px; color: #64748b; }
+        .select-search-container .select-dropdown { display: none; position: fixed; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; width: 260px; max-height: 280px; overflow: hidden; z-index: 99999; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
         .select-search-container .select-dropdown.show { display: flex; flex-direction: column; }
-        .select-search-container .search-input-wrapper { padding: 8px; background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-bottom: 1px solid #cbd5e1; }
-        .select-search-container .search-input-wrapper input { width: 100%; padding: 6px 8px 6px 28px; border: 1px solid #10b981; border-radius: 5px; font-size: 9px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 8px center; }
-        .select-search-container .select-options { flex: 1; overflow-y: auto; max-height: 250px; }
-        .select-search-container .select-option { padding: 8px 12px; font-size: 9px; cursor: pointer; border-bottom: 1px solid #f1f5f9; }
+        .select-search-container .search-input-wrapper { padding: 6px; background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-bottom: 1px solid #cbd5e1; }
+        .select-search-container .search-input-wrapper input { width: 100%; padding: 5px 6px 5px 24px; border: 1px solid #10b981; border-radius: 4px; font-size: 9px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 6px center; }
+        .select-search-container .select-options { flex: 1; overflow-y: auto; max-height: 220px; }
+        .select-search-container .select-option { padding: 6px 10px; font-size: 8px; cursor: pointer; border-bottom: 1px solid #f1f5f9; }
         .select-search-container .select-option:hover { background: #f0fdf4; }
         .select-search-container .select-option.selected { background: #d1fae5; font-weight: 600; color: #065f46; }
         .select-search-container .select-option.new-option { color: #10b981; font-weight: 600; border-top: 2px solid #10b981; background: #f0fdf4; }
-        .turno-sel { padding: 2px 4px; border-radius: 3px; border: 1px solid transparent; font-size: 7px; font-weight: 600; cursor: pointer; }
+        
+        /* Turno con texto */
+        .turno-sel { padding: 2px 4px; border-radius: 3px; border: 1px solid transparent; font-size: 7px; font-weight: 600; cursor: pointer; min-width: 40px; }
         .t-dia { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
         .t-tarde { background: #fed7aa; color: #c2410c; border-color: #fb923c; }
         .t-noche { background: #1e293b; color: #fff; border-color: #334155; }
-        .day-cell { text-align: center; width: 32px; min-width: 32px; padding: 1px !important; }
-        .day-input { width: 28px; height: 20px; padding: 0; font-size: 9px; text-align: center; border: 1px solid #e2e8f0; border-radius: 3px; font-weight: 700; background: #f8fafc; }
+        
+        .day-cell { text-align: center; width: 30px; min-width: 30px; padding: 1px !important; }
+        .day-input { width: 26px; height: 18px; padding: 0; font-size: 9px; text-align: center; border: 1px solid #e2e8f0; border-radius: 3px; font-weight: 700; background: #f8fafc; }
         .day-input:focus { outline: none; border-color: #10b981; background: #fff; box-shadow: 0 0 0 2px rgba(16,185,129,0.2); }
         .day-input.has-value { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; border-color: #1a1a2e; }
         .day-input.has-value.tarde { background: linear-gradient(135deg, #ea580c, #c2410c); }
         .day-input.has-value.noche { background: linear-gradient(135deg, #0f172a, #1e293b); }
         .day-input.finde { background: #fef9c3; border-color: #fcd34d; }
         .day-input.finde.has-value { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
-        .tot-badge { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 2px 5px; border-radius: 3px; font-weight: 700; font-size: 8px; }
-        .new-badge { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; font-size: 5px; padding: 1px 2px; border-radius: 2px; margin-left: 1px; }
+        
+        .tot-badge { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 2px 4px; border-radius: 3px; font-weight: 700; font-size: 8px; }
+        
         .row-actions { display: flex; gap: 1px; justify-content: center; }
-        .btn-row { width: 18px; height: 18px; border: none; border-radius: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .btn-row { width: 16px; height: 16px; border: none; border-radius: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .btn-row:hover { transform: scale(1.1); }
-        .btn-row svg { width: 9px; height: 9px; }
+        .btn-row svg { width: 8px; height: 8px; }
         .btn-dup { background: #3b82f6; color: #fff; }
         .btn-del { background: #ef4444; color: #fff; }
-        .add-row { width: 100%; padding: 8px; border: 2px dashed #cbd5e1; background: #f8fafc; cursor: pointer; color: #64748b; font-size: 9px; font-weight: 600; border-radius: 0 0 8px 8px; }
+        
+        .add-row { width: 100%; padding: 6px; border: 2px dashed #cbd5e1; background: #f8fafc; cursor: pointer; color: #64748b; font-size: 9px; font-weight: 600; border-radius: 0 0 8px 8px; }
         .add-row:hover { border-color: #10b981; color: #10b981; background: #f0fdf4; }
-        .empty { text-align: center; padding: 30px; color: #64748b; }
-        .empty-icon { font-size: 36px; margin-bottom: 8px; }
-        .col-grupo { width: 100px; }
-        .col-labor { width: 140px; }
-        .col-turno { width: 40px; }
-        .col-total { width: 36px; text-align: center; }
-        .col-actions { width: 40px; }
-        .filter-bar { background: #fff; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        .filter-bar-title { font-size: 10px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
-        .filter-group { display: flex; flex-direction: column; gap: 4px; }
-        .filter-group label { font-size: 8px; font-weight: 600; color: #64748b; text-transform: uppercase; }
-        .multi-select { position: relative; min-width: 150px; }
-        .multi-select-display { padding: 6px 28px 6px 10px; border: 2px solid #e2e8f0; border-radius: 6px; background: #fff; cursor: pointer; font-size: 9px; min-height: 32px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; position: relative; }
-        .multi-select-display:hover { border-color: #10b981; }
-        .multi-select-display::after { content: '▼'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 8px; color: #64748b; }
-        .multi-select-display .chip { background: #10b981; color: #fff; padding: 2px 6px; border-radius: 10px; font-size: 8px; font-weight: 600; }
-        .multi-select-display .chip-count { background: #3b82f6; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 700; }
-        .multi-select-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 2px solid #10b981; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; max-height: 200px; overflow-y: auto; }
-        .multi-select-dropdown.show { display: block; }
-        .multi-select-option { padding: 8px 12px; cursor: pointer; font-size: 9px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f1f5f9; }
-        .multi-select-option:hover { background: #f0fdf4; }
-        .multi-select-option.selected { background: #d1fae5; font-weight: 600; }
-        .multi-select-option input[type="checkbox"] { accent-color: #10b981; }
-        .filter-group select { padding: 6px 10px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 9px; min-width: 140px; }
-        .filter-group select:focus { border-color: #10b981; outline: none; }
-        .btn-apply-filter { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; font-size: 9px; font-weight: 600; }
-        .btn-apply-filter:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16,185,129,0.4); }
-        .btn-clear-filter { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 9px; }
+        
+        .empty { text-align: center; padding: 20px; color: #64748b; }
+        .empty-icon { font-size: 30px; margin-bottom: 6px; }
+        
+        .col-grupo { width: 90px; }
+        .col-labor { width: 130px; }
+        .col-turno { width: 45px; }
+        .col-total { width: 32px; text-align: center; }
+        .col-actions { width: 36px; }
+        
         .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-bg.open { display: flex; }
         .modal { background: #fff; border-radius: 12px; padding: 16px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
@@ -167,6 +199,7 @@
         .modal-actions .btn { padding: 8px 14px; border-radius: 6px; font-size: 10px; font-weight: 600; border: none; cursor: pointer; }
         .modal-actions .btn-cancel { background: #f1f5f9; color: #64748b; }
         .modal-actions .btn-confirm { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+        
         .confirm-dialog { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .confirm-dialog.open { display: flex; }
         .confirm-box { background: #fff; border-radius: 12px; padding: 20px; width: 90%; max-width: 320px; text-align: center; }
@@ -178,12 +211,14 @@
         .confirm-actions .btn-no { background: #f1f5f9; color: #64748b; }
         .confirm-actions .btn-yes { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
         .confirm-actions .btn-yes.green { background: linear-gradient(135deg, #10b981, #059669); }
+        
         .file-input { display: none; }
         .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 4000; align-items: center; justify-content: center; flex-direction: column; }
         .loading-overlay.show { display: flex; }
         .loading-spinner { width: 40px; height: 40px; border: 3px solid #e2e8f0; border-top-color: #10b981; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-text { margin-top: 12px; font-size: 12px; color: #64748b; }
+        
         .search-box { background: #fff; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); display: none; }
         .search-box.show { display: block; }
         .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -202,6 +237,7 @@
         .search-results tr:hover td { background: #f0fdf4; }
         .search-results .btn-add { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 4px; padding: 3px 8px; cursor: pointer; font-size: 8px; }
         .search-count { font-size: 8px; color: #64748b; margin-top: 6px; }
+        
         .toast-container { position: fixed; top: 60px; right: 20px; z-index: 5000; display: flex; flex-direction: column; gap: 8px; }
         .toast { background: #fff; border-radius: 8px; padding: 12px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; min-width: 280px; max-width: 400px; animation: slideIn 0.3s ease; border-left: 4px solid #10b981; }
         .toast.error { border-left-color: #ef4444; }
@@ -213,20 +249,23 @@
         .toast-msg { font-size: 9px; color: #64748b; margin-top: 2px; }
         .toast-close { background: none; border: none; font-size: 16px; cursor: pointer; color: #94a3b8; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
         .autosave-indicator { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 9px; font-weight: 600; display: none; align-items: center; gap: 6px; z-index: 1000; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
         .autosave-indicator.show { display: flex; }
-        .shortcuts-hint { position: fixed; bottom: 20px; left: 20px; background: rgba(26,26,46,0.9); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 8px; z-index: 1000; }
-        .shortcuts-hint kbd { background: rgba(255,255,255,0.2); padding: 2px 5px; border-radius: 3px; margin: 0 2px; }
+        
+        .shortcuts-hint { position: fixed; bottom: 20px; left: 20px; background: rgba(26,26,46,0.9); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 7px; z-index: 1000; }
+        .shortcuts-hint kbd { background: rgba(255,255,255,0.2); padding: 1px 4px; border-radius: 3px; margin: 0 2px; }
     </style>
 </head>
 <body>
     <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><div class="loading-text">Cargando maestro de labores...</div></div>
     <div class="toast-container" id="toastContainer"></div>
-    <div class="autosave-indicator" id="autosaveIndicator"><span>💾</span> <span id="autosaveText">Guardado automático</span></div>
-    <div class="shortcuts-hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Guardar &nbsp; <kbd>Ctrl</kbd>+<kbd>E</kbd> Excel &nbsp; <kbd>Ctrl</kbd>+<kbd>F</kbd> Buscar</div>
+    <div class="autosave-indicator" id="autosaveIndicator"><span>💾</span> <span id="autosaveText">Guardado</span></div>
+    <div class="shortcuts-hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Guardar <kbd>Ctrl</kbd>+<kbd>E</kbd> Excel <kbd>Ctrl</kbd>+<kbd>F</kbd> Buscar</div>
+    
     <header class="header">
         <div class="header-content">
-            <div class="brand"><div class="brand-logo">ASA-IA</div><div><div class="brand-title">PROGRAMACIÓN DE PERSONAL</div><div class="brand-subtitle">Control Presupuestal</div></div></div>
+            <div class="brand"><div class="brand-logo">ASA</div><div><div class="brand-title">PROGRAMACIÓN DE PERSONAL</div><div class="brand-subtitle">Control Presupuestal</div></div></div>
             <div class="header-actions">
                 <div class="status-badge loading" id="statusBadge"><div class="status-dot"></div><span id="statusText">Conectando...</span></div>
                 <input type="text" class="user-input" id="userName" placeholder="👤 Tu nombre...">
@@ -241,130 +280,475 @@
             </div>
         </div>
     </header>
+    
     <div class="container">
+        <!-- Toolbar unificado -->
         <div class="toolbar">
-            <div class="toolbar-left">
-                <div class="semana-picker">
-                    <label>📅</label>
-                    <input type="date" id="fechaInicio" onchange="actualizarSemana()">
-                    <div class="semana-nav">
-                        <button class="btn-nav" onclick="cambiarSemana(-1)" title="Semana anterior">◀</button>
-                        <div class="semana-display"><span class="sem-num" id="semanaNum">Semana 8</span><br><span class="sem-rango" id="semanaRango">17 Feb - 23 Feb 2026</span></div>
-                        <button class="btn-nav" onclick="cambiarSemana(1)" title="Semana siguiente">▶</button>
+            <div class="toolbar-row">
+                <div class="toolbar-left">
+                    <div class="semana-picker">
+                        <label>📅</label>
+                        <input type="date" id="fechaInicio" onchange="actualizarSemana()">
+                        <div class="semana-nav">
+                            <button class="btn-nav" onclick="cambiarSemana(-1)">◀</button>
+                            <div class="semana-display"><span class="sem-num" id="semanaNum">Semana 8</span><br><span class="sem-rango" id="semanaRango">17 Feb - 23 Feb</span></div>
+                            <button class="btn-nav" onclick="cambiarSemana(1)">▶</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtros inline -->
+                    <div class="filters-inline">
+                        <div class="filter-item">
+                            <label>FUNDO</label>
+                            <div class="multi-select" id="multiSelectFundo">
+                                <div class="multi-select-display" onclick="toggleMultiSelect('multiSelectFundo')"><span class="placeholder">-- Todos --</span></div>
+                                <div class="multi-select-dropdown" id="multiSelectFundo_dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <label>ÁREA</label>
+                            <div class="multi-select" id="multiSelectArea">
+                                <div class="multi-select-display" onclick="toggleMultiSelect('multiSelectArea')"><span class="placeholder">-- Todos --</span></div>
+                                <div class="multi-select-dropdown" id="multiSelectArea_dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <label>JEFE</label>
+                            <div class="multi-select" id="multiSelectJefe">
+                                <div class="multi-select-display" onclick="toggleMultiSelect('multiSelectJefe')"><span class="placeholder">-- Todos --</span></div>
+                                <div class="multi-select-dropdown" id="multiSelectJefe_dropdown"></div>
+                            </div>
+                        </div>
+                        <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
+                        <button class="btn-agregar" onclick="agregarFila()">+ Agregar</button>
+                    </div>
+                </div>
+                
+                <div class="toolbar-right">
+                    <button class="btn-search-toggle" onclick="toggleSearch()">🔍 Buscar</button>
+                    <div class="stats">
+                        <div class="stat"><div class="stat-value" id="statLabores">0</div><div class="stat-label">Labores</div></div>
+                        <div class="stat highlight"><div class="stat-value" id="statPersonal">0</div><div class="stat-label">Personal</div></div>
+                        <div class="stat"><div class="stat-value" id="statMaestro">0</div><div class="stat-label">Maestro</div></div>
                     </div>
                 </div>
             </div>
-            <div class="stats">
-                <button class="btn-search-toggle" onclick="toggleSearch()">🔍 Buscar Labor</button>
-                <div class="stat"><div class="stat-value" id="statLabores">0</div><div class="stat-label">Labores</div></div>
-                <div class="stat highlight"><div class="stat-value" id="statPersonal">0</div><div class="stat-label">Personal</div></div>
-                <div class="stat"><div class="stat-value" id="statMaestro">0</div><div class="stat-label">Maestro</div></div>
-            </div>
         </div>
-        <div class="filter-bar">
-            <div class="filter-bar-title">🎯 Filtros de Programación</div>
-            <div class="filter-row">
-                <div class="filter-group"><label>FUNDO</label><div class="multi-select" id="multiSelectFundo"><div class="multi-select-display" onclick="toggleMultiSelect('multiSelectFundo')"><span class="placeholder">-- Seleccionar --</span></div><div class="multi-select-dropdown" id="multiSelectFundo_dropdown"></div></div></div>
-                <div class="filter-group"><label>ÁREA</label><div class="multi-select" id="multiSelectArea"><div class="multi-select-display" onclick="toggleMultiSelect('multiSelectArea')"><span class="placeholder">-- Seleccionar --</span></div><div class="multi-select-dropdown" id="multiSelectArea_dropdown"></div></div></div>
-                <div class="filter-group"><label>JEFE</label><select id="filterJefe" onchange="aplicarFiltros()"><option value="">-- Todos --</option></select></div>
-                <div class="filter-group" style="justify-content:flex-end;"><div style="display:flex;gap:6px;"><button class="btn-apply-filter" onclick="aplicarFiltros()">✓ Aplicar</button><button class="btn-clear-filter" onclick="limpiarFiltros()">✕ Limpiar</button></div></div>
-            </div>
-        </div>
+        
+        <!-- Search Box -->
         <div class="search-box" id="searchBox">
-            <div class="search-header"><h4>🔍 Buscar en MAESTRO</h4><div style="display:flex;gap:8px;"><button class="btn-export-search" onclick="exportarBusqueda()">📥 Exportar</button><button class="search-close" onclick="toggleSearch()">✕ Cerrar</button></div></div>
+            <div class="search-header"><h4>🔍 Buscar en MAESTRO</h4><div style="display:flex;gap:8px;"><button class="btn-export-search" onclick="exportarBusqueda()">📥 Exportar</button><button class="search-close" onclick="toggleSearch()">✕</button></div></div>
             <div class="search-filters"><div class="search-filter-group"><label>BUSCAR</label><input type="text" id="searchText" placeholder="Buscar labor, grupo, área..." onkeyup="buscarLabores()"></div><button class="btn-search" onclick="buscarLabores()">Buscar</button></div>
-            <div class="search-results"><table><thead><tr><th>Fundo</th><th>Cultivo</th><th>Área</th><th>Grupo</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"><tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">Ingrese filtros</td></tr></tbody></table></div>
+            <div class="search-results"><table><thead><tr><th>Fundo</th><th>Cultivo</th><th>Área</th><th>Grupo</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"><tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">Ingrese texto</td></tr></tbody></table></div>
             <div class="search-count" id="searchCount"></div>
         </div>
-        <div class="modal-bg" id="modalPassword"><div class="modal" style="max-width:300px;"><h3>🔐 Contraseña requerida</h3><div class="modal-field"><label>Ingrese la contraseña para exportar:</label><input type="password" id="exportPassword" placeholder="Contraseña..." onkeyup="if(event.key==='Enter')verificarPassword()"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button><button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button></div></div></div>
-        <div class="alert-box warning" id="alertDuplicates"><div class="alert-icon">⚠️</div><div class="alert-text"><div class="alert-title">Labores duplicadas</div><div class="alert-msg" id="alertDupMsg"></div></div></div>
-        <div class="alert-box warning" id="alertIncomplete" style="border-color:#ef4444;background:linear-gradient(135deg,#fee2e2,#fecaca);"><div class="alert-icon">❌</div><div class="alert-text"><div class="alert-title" style="color:#991b1b;">Labores incompletas</div><div class="alert-msg" id="alertIncMsg" style="color:#b91c1c;"></div></div></div>
+        
+        <div class="modal-bg" id="modalPassword"><div class="modal" style="max-width:300px;"><h3>🔐 Contraseña</h3><div class="modal-field"><label>Ingrese contraseña:</label><input type="password" id="exportPassword" placeholder="..." onkeyup="if(event.key==='Enter')verificarPassword()"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button><button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button></div></div></div>
+        
+        <div class="alert-box warning" id="alertDuplicates"><div class="alert-icon">⚠️</div><div class="alert-text"><div class="alert-title">Duplicadas</div><div class="alert-msg" id="alertDupMsg"></div></div></div>
+        <div class="alert-box warning" id="alertIncomplete" style="border-color:#ef4444;background:linear-gradient(135deg,#fee2e2,#fecaca);"><div class="alert-icon">❌</div><div class="alert-text"><div class="alert-title" style="color:#991b1b;">Incompletas</div><div class="alert-msg" id="alertIncMsg" style="color:#b91c1c;"></div></div></div>
         <div class="alert-box warning" id="alertNoPersonal" style="border-color:#f59e0b;"><div class="alert-icon">👥</div><div class="alert-text"><div class="alert-title" style="color:#92400e;">Sin personal</div><div class="alert-msg" id="alertNoPerMsg" style="color:#a16207;"></div></div></div>
+        
         <div class="table-card">
             <div class="table-scroll">
                 <table>
-                    <thead><tr><th class="col-text col-grupo">Grupo Labor</th><th class="col-text col-labor">Labor</th><th class="col-turno">Turno</th><th class="day-cell" id="th-lun"><div class="dia-nombre">LUN</div><div class="dia-fecha">-</div></th><th class="day-cell" id="th-mar"><div class="dia-nombre">MAR</div><div class="dia-fecha">-</div></th><th class="day-cell" id="th-mie"><div class="dia-nombre">MIE</div><div class="dia-fecha">-</div></th><th class="day-cell" id="th-jue"><div class="dia-nombre">JUE</div><div class="dia-fecha">-</div></th><th class="day-cell" id="th-vie"><div class="dia-nombre">VIE</div><div class="dia-fecha">-</div></th><th class="day-cell" id="th-sab"><div class="dia-nombre">SAB</div><div class="dia-fecha">-</div></th><th class="day-cell" id="th-dom"><div class="dia-nombre">DOM</div><div class="dia-fecha">-</div></th><th class="col-total">Total</th><th class="col-actions"></th></tr></thead>
+                    <thead><tr>
+                        <th class="col-text col-grupo">Grupo Labor</th>
+                        <th class="col-text col-labor">Labor</th>
+                        <th class="col-turno">Turno</th>
+                        <th class="day-cell" id="th-lun"><div class="dia-nombre">LUN</div><div class="dia-fecha">-</div></th>
+                        <th class="day-cell" id="th-mar"><div class="dia-nombre">MAR</div><div class="dia-fecha">-</div></th>
+                        <th class="day-cell" id="th-mie"><div class="dia-nombre">MIE</div><div class="dia-fecha">-</div></th>
+                        <th class="day-cell" id="th-jue"><div class="dia-nombre">JUE</div><div class="dia-fecha">-</div></th>
+                        <th class="day-cell" id="th-vie"><div class="dia-nombre">VIE</div><div class="dia-fecha">-</div></th>
+                        <th class="day-cell" id="th-sab"><div class="dia-nombre">SAB</div><div class="dia-fecha">-</div></th>
+                        <th class="day-cell" id="th-dom"><div class="dia-nombre">DOM</div><div class="dia-fecha">-</div></th>
+                        <th class="col-total">Total</th>
+                        <th class="col-actions"></th>
+                    </tr></thead>
                     <tbody id="tbody"></tbody>
                 </table>
             </div>
             <button class="add-row" onclick="agregarFila()">+ Agregar Nueva Labor</button>
         </div>
     </div>
+    
     <div class="modal-bg" id="modalNueva"><div class="modal"><h3>➕ Crear Nueva Labor</h3><input type="hidden" id="modalIdx"><div class="modal-field"><label>Grupo Labor</label><div class="input-with-btn"><select id="mGrupo"></select><input type="text" id="mGrupoNuevo" placeholder="Nuevo..." style="display:none;"><button type="button" class="btn-toggle" onclick="toggleGrupoInput()">+</button></div></div><div class="modal-field"><label>Nombre de la Labor</label><input type="text" id="mNombre" placeholder="Ingrese el nombre"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModal()">Cancelar</button><button class="btn btn-confirm" onclick="crearLabor()">Crear</button></div></div></div>
     <div class="confirm-dialog" id="confirmDialog"><div class="confirm-box"><div class="confirm-icon" id="confirmIcon">⚠️</div><div class="confirm-title" id="confirmTitle">Confirmar</div><div class="confirm-msg" id="confirmMsg">¿Está seguro?</div><div class="confirm-actions"><button class="btn btn-no" onclick="cerrarConfirm()">No</button><button class="btn btn-yes" id="confirmYes">Sí</button></div></div></div>
+
 <script>
 const SHEET_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vTtOqg02IGvkLp1AZGLwgKLV4mMJjxneSZdkXSnKQ1zwLFWP6v979iEbDu6aFotMg/pub?gid=1733470180&single=true&output=csv';
 let MAESTRO=[],progs=[],laboresCustom=[],diasSemana=[],semanaActual=1,anioActual=new Date().getFullYear();
 const DIAS=['LUN','MAR','MIE','JUE','VIE','SAB','DOM'];
-let filtrosFundos=[],filtrosAreas=[],filtroJefe='';
+let filtrosFundos=[],filtrosAreas=[],filtrosJefes=[];
 let historial=[],historialPos=-1;
 const MAX_HISTORIAL=50;
-document.addEventListener('DOMContentLoaded',()=>{const hoy=new Date();const lun=new Date(hoy);lun.setDate(hoy.getDate()-(hoy.getDay()===0?6:hoy.getDay()-1));document.getElementById('fechaInicio').value=lun.toISOString().split('T')[0];actualizarSemana();cargarMaestro();cargarAutoGuardado();document.addEventListener('keydown',(e)=>{if(e.ctrlKey||e.metaKey){if(e.key==='s'){e.preventDefault();guardarArchivo();}if(e.key==='e'){e.preventDefault();exportarExcel();}if(e.key==='f'){e.preventDefault();toggleSearch();}if(e.key==='z'){e.preventDefault();deshacer();}if(e.key==='y'){e.preventDefault();rehacer();}}});window.addEventListener('beforeunload',()=>{guardarEnLocal();});document.addEventListener('click',(e)=>{if(!e.target.closest('.multi-select')){document.querySelectorAll('.multi-select-dropdown.show').forEach(d=>d.classList.remove('show'));}});});
+
+document.addEventListener('DOMContentLoaded',()=>{
+    const hoy=new Date();const lun=new Date(hoy);lun.setDate(hoy.getDate()-(hoy.getDay()===0?6:hoy.getDay()-1));
+    document.getElementById('fechaInicio').value=lun.toISOString().split('T')[0];
+    actualizarSemana();cargarMaestro();cargarAutoGuardado();
+    document.addEventListener('keydown',(e)=>{if(e.ctrlKey||e.metaKey){if(e.key==='s'){e.preventDefault();guardarArchivo();}if(e.key==='e'){e.preventDefault();exportarExcel();}if(e.key==='f'){e.preventDefault();toggleSearch();}if(e.key==='z'){e.preventDefault();deshacer();}if(e.key==='y'){e.preventDefault();rehacer();}}});
+    window.addEventListener('beforeunload',()=>{guardarEnLocal();});
+    document.addEventListener('click',(e)=>{if(!e.target.closest('.multi-select')){document.querySelectorAll('.multi-select-dropdown.show').forEach(d=>d.classList.remove('show'));}});
+});
+
+// Multi-select con búsqueda
 function toggleMultiSelect(id){event.stopPropagation();const dropdown=document.getElementById(id+'_dropdown');const wasOpen=dropdown.classList.contains('show');document.querySelectorAll('.multi-select-dropdown.show').forEach(d=>d.classList.remove('show'));if(!wasOpen)dropdown.classList.add('show');}
-function actualizarMultiSelectFundos(){const fundos=[...new Set(MAESTRO.map(m=>m.Fundo))].filter(Boolean).sort();const dropdown=document.getElementById('multiSelectFundo_dropdown');dropdown.innerHTML=fundos.map(f=>`<label class="multi-select-option ${filtrosFundos.includes(f)?'selected':''}" onclick="event.stopPropagation()"><input type="checkbox" ${filtrosFundos.includes(f)?'checked':''} onchange="toggleFundoFilter('${f}')">${f}</label>`).join('');actualizarDisplayMultiSelect('multiSelectFundo',filtrosFundos);}
-function actualizarMultiSelectAreas(){let areas=[];if(filtrosFundos.length>0){areas=[...new Set(MAESTRO.filter(m=>filtrosFundos.includes(m.Fundo)).map(m=>m.AREA))].filter(Boolean).sort();}else{areas=[...new Set(MAESTRO.map(m=>m.AREA))].filter(Boolean).sort();}const dropdown=document.getElementById('multiSelectArea_dropdown');dropdown.innerHTML=areas.map(a=>`<label class="multi-select-option ${filtrosAreas.includes(a)?'selected':''}" onclick="event.stopPropagation()"><input type="checkbox" ${filtrosAreas.includes(a)?'checked':''} onchange="toggleAreaFilter('${a}')">${a}</label>`).join('');actualizarDisplayMultiSelect('multiSelectArea',filtrosAreas);}
-function actualizarDisplayMultiSelect(id,selected){const display=document.querySelector(`#${id} .multi-select-display`);if(selected.length===0){display.innerHTML='<span class="placeholder">-- Seleccionar --</span>';}else if(selected.length===1){display.innerHTML=`<span class="chip">${selected[0]}</span>`;}else{display.innerHTML=`<span class="chip-count">${selected.length} seleccionados</span>`;}}
-function toggleFundoFilter(fundo){const idx=filtrosFundos.indexOf(fundo);if(idx>=0)filtrosFundos.splice(idx,1);else filtrosFundos.push(fundo);actualizarMultiSelectFundos();actualizarMultiSelectAreas();actualizarFilterJefes();}
-function toggleAreaFilter(area){const idx=filtrosAreas.indexOf(area);if(idx>=0)filtrosAreas.splice(idx,1);else filtrosAreas.push(area);actualizarMultiSelectAreas();}
-function actualizarFilterJefes(){let jefes=[];if(filtrosFundos.length>0){jefes=[...new Set(MAESTRO.filter(m=>filtrosFundos.includes(m.Fundo)).map(m=>m.Jefe))].filter(Boolean).sort();}else{jefes=[...new Set(MAESTRO.map(m=>m.Jefe))].filter(Boolean).sort();}document.getElementById('filterJefe').innerHTML='<option value="">-- Todos --</option>'+jefes.map(j=>`<option value="${j}">${j}</option>`).join('');}
-function aplicarFiltros(){filtroJefe=document.getElementById('filterJefe').value;renderSinHistorial();document.querySelectorAll('.multi-select-dropdown.show').forEach(d=>d.classList.remove('show'));const msg=[];if(filtrosFundos.length)msg.push(`${filtrosFundos.length} fundo(s)`);if(filtrosAreas.length)msg.push(`${filtrosAreas.length} área(s)`);if(filtroJefe)msg.push(`Jefe: ${filtroJefe}`);if(msg.length)showToast('Filtros aplicados',msg.join(', '),'success');}
-function limpiarFiltros(){filtrosFundos=[];filtrosAreas=[];filtroJefe='';document.getElementById('filterJefe').value='';actualizarMultiSelectFundos();actualizarMultiSelectAreas();renderSinHistorial();showToast('Filtros limpiados','Mostrando todo','info');}
+
+function actualizarMultiSelectFundos(){
+    let fundos=[...new Set(MAESTRO.map(m=>m.Fundo))].filter(Boolean).sort();
+    // Filtrar por jefe si hay seleccionado
+    if(filtrosJefes.length>0){fundos=[...new Set(MAESTRO.filter(m=>filtrosJefes.includes(m.Jefe)).map(m=>m.Fundo))].filter(Boolean).sort();}
+    const dropdown=document.getElementById('multiSelectFundo_dropdown');
+    dropdown.innerHTML=`<div class="multi-select-search"><input type="text" placeholder="Buscar..." oninput="filtrarMultiOpciones(this,'multiSelectFundo')"></div>`+
+        fundos.map(f=>`<label class="multi-select-option ${filtrosFundos.includes(f)?'selected':''}" data-value="${f}" onclick="event.stopPropagation()"><input type="checkbox" ${filtrosFundos.includes(f)?'checked':''} onchange="toggleFundoFilter('${f}')">${f}</label>`).join('');
+    actualizarDisplayMultiSelect('multiSelectFundo',filtrosFundos);
+}
+
+function actualizarMultiSelectAreas(){
+    let areas=[];
+    let data=MAESTRO;
+    if(filtrosJefes.length>0)data=data.filter(m=>filtrosJefes.includes(m.Jefe));
+    if(filtrosFundos.length>0)data=data.filter(m=>filtrosFundos.includes(m.Fundo));
+    areas=[...new Set(data.map(m=>m.AREA))].filter(Boolean).sort();
+    const dropdown=document.getElementById('multiSelectArea_dropdown');
+    dropdown.innerHTML=`<div class="multi-select-search"><input type="text" placeholder="Buscar..." oninput="filtrarMultiOpciones(this,'multiSelectArea')"></div>`+
+        areas.map(a=>`<label class="multi-select-option ${filtrosAreas.includes(a)?'selected':''}" data-value="${a}" onclick="event.stopPropagation()"><input type="checkbox" ${filtrosAreas.includes(a)?'checked':''} onchange="toggleAreaFilter('${a}')">${a}</label>`).join('');
+    actualizarDisplayMultiSelect('multiSelectArea',filtrosAreas);
+}
+
+function actualizarMultiSelectJefes(){
+    let jefes=[...new Set(MAESTRO.map(m=>m.Jefe))].filter(Boolean).sort();
+    // Filtrar por fundo si hay seleccionado
+    if(filtrosFundos.length>0){jefes=[...new Set(MAESTRO.filter(m=>filtrosFundos.includes(m.Fundo)).map(m=>m.Jefe))].filter(Boolean).sort();}
+    const dropdown=document.getElementById('multiSelectJefe_dropdown');
+    dropdown.innerHTML=`<div class="multi-select-search"><input type="text" placeholder="Buscar..." oninput="filtrarMultiOpciones(this,'multiSelectJefe')"></div>`+
+        jefes.map(j=>`<label class="multi-select-option ${filtrosJefes.includes(j)?'selected':''}" data-value="${j}" onclick="event.stopPropagation()"><input type="checkbox" ${filtrosJefes.includes(j)?'checked':''} onchange="toggleJefeFilter('${j}')">${j}</label>`).join('');
+    actualizarDisplayMultiSelect('multiSelectJefe',filtrosJefes);
+}
+
+function filtrarMultiOpciones(input,id){
+    const filtro=input.value.toLowerCase();
+    const dropdown=document.getElementById(id+'_dropdown');
+    dropdown.querySelectorAll('.multi-select-option').forEach(opt=>{
+        const texto=opt.dataset.value.toLowerCase();
+        opt.style.display=texto.includes(filtro)?'flex':'none';
+    });
+}
+
+function actualizarDisplayMultiSelect(id,selected){
+    const display=document.querySelector(`#${id} .multi-select-display`);
+    if(selected.length===0){display.innerHTML='<span class="placeholder">-- Todos --</span>';}
+    else if(selected.length===1){display.innerHTML=`<span class="chip">${selected[0]}</span>`;}
+    else{display.innerHTML=`<span class="chip-count">${selected.length} sel.</span>`;}
+}
+
+function toggleFundoFilter(fundo){
+    const idx=filtrosFundos.indexOf(fundo);
+    if(idx>=0)filtrosFundos.splice(idx,1);else filtrosFundos.push(fundo);
+    actualizarMultiSelectFundos();actualizarMultiSelectAreas();actualizarMultiSelectJefes();
+}
+function toggleAreaFilter(area){
+    const idx=filtrosAreas.indexOf(area);
+    if(idx>=0)filtrosAreas.splice(idx,1);else filtrosAreas.push(area);
+    actualizarMultiSelectAreas();
+}
+function toggleJefeFilter(jefe){
+    const idx=filtrosJefes.indexOf(jefe);
+    if(idx>=0)filtrosJefes.splice(idx,1);else filtrosJefes.push(jefe);
+    actualizarMultiSelectJefes();actualizarMultiSelectFundos();actualizarMultiSelectAreas();
+}
+
+function limpiarFiltros(){
+    filtrosFundos=[];filtrosAreas=[];filtrosJefes=[];
+    actualizarMultiSelectFundos();actualizarMultiSelectAreas();actualizarMultiSelectJefes();
+    showToast('Filtros limpiados','','info');
+}
+
+// Historial
 function guardarEstado(){if(historialPos<historial.length-1)historial=historial.slice(0,historialPos+1);historial.push(JSON.stringify({progs,laboresCustom}));if(historial.length>MAX_HISTORIAL)historial.shift();else historialPos++;actualizarBotonesHistorial();guardarEnLocal();}
-function deshacer(){if(historialPos>0){historialPos--;restaurarEstado();showToast('Deshacer','Acción deshecha','info');}}
-function rehacer(){if(historialPos<historial.length-1){historialPos++;restaurarEstado();showToast('Rehacer','Acción rehecha','info');}}
+function deshacer(){if(historialPos>0){historialPos--;restaurarEstado();showToast('Deshacer','','info');}}
+function rehacer(){if(historialPos<historial.length-1){historialPos++;restaurarEstado();showToast('Rehacer','','info');}}
 function restaurarEstado(){const e=JSON.parse(historial[historialPos]);progs=e.progs;laboresCustom=e.laboresCustom;actualizarBotonesHistorial();renderSinHistorial();}
 function actualizarBotonesHistorial(){document.getElementById('btnUndo').disabled=historialPos<=0;document.getElementById('btnRedo').disabled=historialPos>=historial.length-1;}
-function guardarEnLocal(){const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};localStorage.setItem('asa_programacion',JSON.stringify(data));const indicator=document.getElementById('autosaveIndicator');indicator.classList.add('show');document.getElementById('autosaveText').textContent='Guardado';setTimeout(()=>indicator.classList.remove('show'),2000);}
-function cargarAutoGuardado(){const saved=localStorage.getItem('asa_programacion');if(saved){try{const data=JSON.parse(saved);if(data.progs&&data.progs.length>0){progs=data.progs;laboresCustom=data.laboresCustom||[];if(data.usuario)document.getElementById('userName').value=data.usuario;historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;showToast('Datos recuperados',`${progs.length} labores cargadas`,'info');}}catch(e){}}}
-function showToast(title,msg,type='success'){const container=document.getElementById('toastContainer');const toast=document.createElement('div');toast.className=`toast ${type}`;const icons={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};toast.innerHTML=`<div class="toast-icon">${icons[type]}</div><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;container.appendChild(toast);setTimeout(()=>toast.remove(),4000);}
+
+function guardarEnLocal(){const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};localStorage.setItem('asa_programacion',JSON.stringify(data));const indicator=document.getElementById('autosaveIndicator');indicator.classList.add('show');setTimeout(()=>indicator.classList.remove('show'),1500);}
+function cargarAutoGuardado(){const saved=localStorage.getItem('asa_programacion');if(saved){try{const data=JSON.parse(saved);if(data.progs&&data.progs.length>0){progs=data.progs;laboresCustom=data.laboresCustom||[];if(data.usuario)document.getElementById('userName').value=data.usuario;historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;showToast('Recuperado',`${progs.length} labores`,'info');}}catch(e){}}}
+
+function showToast(title,msg,type='success'){const container=document.getElementById('toastContainer');const toast=document.createElement('div');toast.className=`toast ${type}`;const icons={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};toast.innerHTML=`<div class="toast-icon">${icons[type]}</div><div class="toast-content"><div class="toast-title">${title}</div>${msg?`<div class="toast-msg">${msg}</div>`:''}</div><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;container.appendChild(toast);setTimeout(()=>toast.remove(),3000);}
+
 function getWeekNumber(d){d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const yearStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yearStart)/86400000)+1)/7);}
 function cambiarSemana(dir){const fi=document.getElementById('fechaInicio').value;if(!fi)return;const f=new Date(fi+'T00:00:00');f.setDate(f.getDate()+(dir*7));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];actualizarSemana();}
-function actualizarSemana(){const fi=document.getElementById('fechaInicio').value;if(!fi)return;let f=new Date(fi+'T00:00:00');const dia=f.getDay();if(dia!==1){f.setDate(f.getDate()+(dia===0?-6:1-dia));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];}semanaActual=getWeekNumber(f);anioActual=f.getFullYear();document.getElementById('semanaNum').textContent=`Semana ${semanaActual}`;diasSemana=[];const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];for(let i=0;i<7;i++){const d=new Date(f);d.setDate(f.getDate()+i);diasSemana.push({nom:DIAS[i],num:d.getDate(),mes:meses[d.getMonth()],str:d.toISOString().split('T')[0],fin:i>=5});const th=document.getElementById('th-'+DIAS[i].toLowerCase());if(th)th.querySelector('.dia-fecha').textContent=d.getDate();}const ult=new Date(f);ult.setDate(f.getDate()+6);document.getElementById('semanaRango').textContent=f.getDate()+' '+meses[f.getMonth()]+' - '+ult.getDate()+' '+meses[ult.getMonth()]+' '+ult.getFullYear();renderSinHistorial();}
-async function cargarMaestro(){const loading=document.getElementById('loadingOverlay');const statusBadge=document.getElementById('statusBadge');const statusText=document.getElementById('statusText');loading.classList.add('show');statusBadge.className='status-badge loading';statusText.textContent='Actualizando...';try{const response=await fetch(SHEET_URL);if(!response.ok)throw new Error('Error');const csvText=await response.text();MAESTRO=parseCSV(csvText);document.getElementById('statMaestro').textContent=MAESTRO.length;statusBadge.className='status-badge online';statusText.textContent=`Conectado (${MAESTRO.length})`;actualizarMultiSelectFundos();actualizarMultiSelectAreas();actualizarFilterJefes();renderSinHistorial();showToast('MAESTRO actualizado',`${MAESTRO.length} labores disponibles`,'success');}catch(error){statusBadge.className='status-badge offline';statusText.textContent='Sin conexión';showToast('Error','No se pudo actualizar el MAESTRO','error');}loading.classList.remove('show');}
+function actualizarSemana(){const fi=document.getElementById('fechaInicio').value;if(!fi)return;let f=new Date(fi+'T00:00:00');const dia=f.getDay();if(dia!==1){f.setDate(f.getDate()+(dia===0?-6:1-dia));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];}semanaActual=getWeekNumber(f);anioActual=f.getFullYear();document.getElementById('semanaNum').textContent=`Semana ${semanaActual}`;diasSemana=[];const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];for(let i=0;i<7;i++){const d=new Date(f);d.setDate(f.getDate()+i);diasSemana.push({nom:DIAS[i],num:d.getDate(),mes:meses[d.getMonth()],str:d.toISOString().split('T')[0],fin:i>=5});const th=document.getElementById('th-'+DIAS[i].toLowerCase());if(th)th.querySelector('.dia-fecha').textContent=d.getDate();}const ult=new Date(f);ult.setDate(f.getDate()+6);document.getElementById('semanaRango').textContent=f.getDate()+' '+meses[f.getMonth()]+' - '+ult.getDate()+' '+meses[ult.getMonth()];renderSinHistorial();}
+
+async function cargarMaestro(){const loading=document.getElementById('loadingOverlay');const statusBadge=document.getElementById('statusBadge');const statusText=document.getElementById('statusText');loading.classList.add('show');statusBadge.className='status-badge loading';statusText.textContent='Actualizando...';try{const response=await fetch(SHEET_URL);if(!response.ok)throw new Error('Error');const csvText=await response.text();MAESTRO=parseCSV(csvText);document.getElementById('statMaestro').textContent=MAESTRO.length;statusBadge.className='status-badge online';statusText.textContent=`OK (${MAESTRO.length})`;actualizarMultiSelectFundos();actualizarMultiSelectAreas();actualizarMultiSelectJefes();renderSinHistorial();showToast('MAESTRO',`${MAESTRO.length} labores`,'success');}catch(error){statusBadge.className='status-badge offline';statusText.textContent='Sin conexión';showToast('Error','No se pudo cargar','error');}loading.classList.remove('show');}
+
 function parseCSV(csv){const lines=csv.split('\n');const headers=parseCSVLine(lines[0]);const data=[];for(let i=1;i<lines.length;i++){if(!lines[i].trim())continue;const values=parseCSVLine(lines[i]);const row={};headers.forEach((h,idx)=>row[h.trim()]=(values[idx]||'').trim());data.push(row);}return data;}
 function parseCSVLine(line){const result=[];let current='';let inQuotes=false;for(const char of line){if(char==='"')inQuotes=!inQuotes;else if(char===','&&!inQuotes){result.push(current);current='';}else current+=char;}result.push(current);return result;}
-function getData(){return[...MAESTRO,...laboresCustom];}
-function getFilteredMaestro(){let data=MAESTRO;if(filtrosFundos.length>0)data=data.filter(m=>filtrosFundos.includes(m.Fundo));if(filtrosAreas.length>0)data=data.filter(m=>filtrosAreas.includes(m.AREA));if(filtroJefe)data=data.filter(m=>m.Jefe===filtroJefe);return data;}
-function getOpts(tipo,flt={}){let d=getFilteredMaestro();if(flt.fundo)d=d.filter(r=>r.Fundo===flt.fundo);if(flt.cultivo)d=d.filter(r=>(r.CULTIVO||r.Cultivo)===flt.cultivo);if(flt.area)d=d.filter(r=>r.AREA===flt.area);if(flt.grupo)d=d.filter(r=>r['Grupo Labor']===flt.grupo);if(tipo==='cultivo')return[...new Set(d.map(r=>r.CULTIVO||r.Cultivo))].filter(Boolean).sort();const colMap={fundo:'Fundo',area:'AREA',grupo:'Grupo Labor',labor:'Labor'};return[...new Set(d.map(r=>r[colMap[tipo]]))].filter(Boolean).sort();}
+
+function getFilteredMaestro(){
+    let data=MAESTRO;
+    if(filtrosFundos.length>0)data=data.filter(m=>filtrosFundos.includes(m.Fundo));
+    if(filtrosAreas.length>0)data=data.filter(m=>filtrosAreas.includes(m.AREA));
+    if(filtrosJefes.length>0)data=data.filter(m=>filtrosJefes.includes(m.Jefe));
+    return data;
+}
+
+function getOpts(tipo,flt={}){
+    let d=getFilteredMaestro();
+    if(flt.fundo)d=d.filter(r=>r.Fundo===flt.fundo);
+    if(flt.cultivo)d=d.filter(r=>(r.CULTIVO||r.Cultivo)===flt.cultivo);
+    if(flt.area)d=d.filter(r=>r.AREA===flt.area);
+    if(flt.grupo)d=d.filter(r=>r['Grupo Labor']===flt.grupo);
+    if(tipo==='cultivo')return[...new Set(d.map(r=>r.CULTIVO||r.Cultivo))].filter(Boolean).sort();
+    const colMap={fundo:'Fundo',area:'AREA',grupo:'Grupo Labor',labor:'Labor'};
+    return[...new Set(d.map(r=>r[colMap[tipo]]))].filter(Boolean).sort();
+}
+
 function detectarDuplicados(){const keys={},duplicados=new Set();progs.forEach((p,i)=>{if(p.fundo&&p.area&&p.grupo&&p.labor&&p.turno){const key=`${p.fundo}|${p.cultivo}|${p.area}|${p.grupo}|${p.labor}|${p.turno}`;if(keys[key]!==undefined){duplicados.add(keys[key]);duplicados.add(i);}else keys[key]=i;}});return duplicados;}
 function detectarIncompletos(){const incompletos=new Set();progs.forEach((p,i)=>{if(!p.fundo||!p.cultivo||!p.area||!p.grupo||!p.labor)incompletos.add(i);});return incompletos;}
 function detectarSinPersonal(){const sinPersonal=new Set();progs.forEach((p,i)=>{if(p.fundo&&p.cultivo&&p.area&&p.grupo&&p.labor){let tiene=false;DIAS.forEach(d=>{if(p.dias&&p.dias[d]>0)tiene=true;});if(!tiene)sinPersonal.add(i);}});return sinPersonal;}
+
 function render(){guardarEstado();renderInterno();}
 function renderSinHistorial(){renderInterno();}
-function renderInterno(){const tbody=document.getElementById('tbody');const duplicados=detectarDuplicados();const incompletos=detectarIncompletos();const sinPersonal=detectarSinPersonal();document.getElementById('alertDuplicates').classList.toggle('show',duplicados.size>0);document.getElementById('alertDupMsg').textContent=`${duplicados.size} duplicadas`;document.getElementById('alertIncomplete').classList.toggle('show',incompletos.size>0);document.getElementById('alertIncMsg').textContent=`${incompletos.size} incompletas`;document.getElementById('alertNoPersonal').classList.toggle('show',sinPersonal.size>0);document.getElementById('alertNoPerMsg').textContent=`${sinPersonal.size} sin personal`;let totalGen=0,totDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};progs.forEach(p=>DIAS.forEach(d=>{const v=(p.dias&&p.dias[d])||0;totalGen+=v;totDia[d]+=v;}));document.getElementById('statLabores').textContent=progs.length;document.getElementById('statPersonal').textContent=totalGen;if(progs.length===0){tbody.innerHTML='<tr><td colspan="12" class="empty"><div class="empty-icon">📋</div><div>No hay labores</div><div style="font-size:8px;margin-top:6px;">Use 🔍 Buscar Labor o "+ Agregar Nueva Labor"</div></td></tr>';return;}const porFundo={};progs.forEach((p,i)=>{const f=p.fundo||'Sin Fundo';const a=p.area||'Sin Área';if(!porFundo[f])porFundo[f]={jefe:p.jefe||'',cultivo:p.cultivo||'',areas:{}};if(!porFundo[f].areas[a])porFundo[f].areas[a]=[];porFundo[f].areas[a].push({...p,_i:i});});let html='';let grandTotal=0,grandTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};Object.keys(porFundo).sort().forEach(fundo=>{const fundoData=porFundo[fundo];let fundoTotal=0,fundoTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};html+=`<tr class="fundo-row"><td colspan="12"><span class="fundo-icon">🏢</span> ${fundo} ${fundoData.jefe?'| 👤 '+fundoData.jefe:''}</td></tr>`;Object.keys(fundoData.areas).sort().forEach(area=>{const items=fundoData.areas[area];let areaTot={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},areaSum=0;html+=`<tr class="area-row"><td colspan="12">📍 ${area} (${items.length})</td></tr>`;items.forEach(p=>{const i=p._i;const isDup=duplicados.has(i),isInc=incompletos.has(i),isNoPer=sinPersonal.has(i);let rowTot=0;DIAS.forEach(d=>{const v=(p.dias&&p.dias[d])||0;rowTot+=v;areaTot[d]+=v;});areaSum+=rowTot;let rowClass=isInc?'incomplete':isNoPer?'no-personal':isDup?'duplicated':'';html+=`<tr class="${rowClass}">`;html+=`<td class="col-grupo">${selGrupoHTML(i,p)}</td>`;html+=`<td class="col-labor">${selLaborHTML(i,p,isDup,isInc,isNoPer)}</td>`;html+=`<td class="col-turno">${turnoHTML(i,p.turno)}</td>`;DIAS.forEach((d,di)=>{const v=(p.dias&&p.dias[d])||0;let cls='day-input'+(di>=5?' finde':'');if(v>0){cls+=' has-value';if(p.turno==='TARDE')cls+=' tarde';if(p.turno==='NOCHE')cls+=' noche';}html+=`<td class="day-cell"><input type="number" class="${cls}" data-row="${i}" data-col="${di}" data-dia="${d}" value="${v||''}" min="0" placeholder="-" oninput="guardarDia(this,${i},'${d}')" onfocus="this.select()" onkeydown="navegarInput(event,${i},${di})"></td>`;});html+=`<td class="col-total"><span class="tot-badge">${rowTot}</span></td>`;html+=`<td class="col-actions"><div class="row-actions"><button class="btn-row btn-dup" onclick="duplicar(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><button class="btn-row btn-del" onclick="confirmarEliminar(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></td></tr>`;});html+=`<tr class="subtotal-area"><td colspan="3" style="text-align:right;padding-right:8px;">Subtotal ${area}:</td>`;DIAS.forEach(d=>{html+=`<td class="day-cell"><span class="subtot-area-num">${areaTot[d]}</span></td>`;fundoTotDia[d]+=areaTot[d];});html+=`<td class="col-total"><span class="subtot-area-num">${areaSum}</span></td><td></td></tr>`;fundoTotal+=areaSum;});html+=`<tr class="total-fundo"><td colspan="3" style="text-align:right;padding-right:8px;">🏢 TOTAL ${fundo}:</td>`;DIAS.forEach(d=>{html+=`<td class="day-cell"><span class="total-fundo-num">${fundoTotDia[d]}</span></td>`;grandTotDia[d]+=fundoTotDia[d];});html+=`<td class="col-total"><span class="total-fundo-num">${fundoTotal}</span></td><td></td></tr>`;grandTotal+=fundoTotal;});html+=`<tr class="total-row"><td colspan="3" style="text-align:right;padding-right:8px;">📊 TOTAL GENERAL:</td>`;DIAS.forEach(d=>html+=`<td class="day-cell"><span class="total-num">${grandTotDia[d]}</span></td>`);html+=`<td class="col-total"><span class="total-num">${grandTotal}</span></td><td></td></tr>`;tbody.innerHTML=html;}
-function selGrupoHTML(i,p){const id=`sel_${i}_grupo`;return`<div class="select-search-container"><div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','grupo',${i})" data-val="${p.grupo||''}" data-tipo="grupo" data-row="${i}">${p.grupo||'--'}</div><div class="select-dropdown" id="${id}_dropdown"></div></div>`;}
-function selLaborHTML(i,p,isDup,isInc,isNoPer){const id=`sel_${i}_labor`;const hl=isInc||isDup;let h=`<div class="select-search-container labor-sel${hl?' dup-select':''}"><div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','labor',${i})" data-val="${p.labor||''}" data-tipo="labor" data-row="${i}">${p.labor||'--'}</div><div class="select-dropdown" id="${id}_dropdown"></div></div>`;if(p.esNueva)h+='<span class="new-badge">NUEVA</span>';else if(isInc)h+='<span class="incomplete-badge">INCOMPLETA</span>';else if(isNoPer)h+='<span class="no-personal-badge">SIN PERS</span>';else if(isDup)h+='<span class="dup-badge">DUP</span>';return h;}
-function turnoHTML(i,t){t=t||'DIA';const cls=t==='TARDE'?'t-tarde':(t==='NOCHE'?'t-noche':'t-dia');return`<select class="turno-sel ${cls}" onchange="setTurno(${i},this.value)"><option value="DIA"${t==='DIA'?' selected':''}>☀️</option><option value="TARDE"${t==='TARDE'?' selected':''}>🌅</option><option value="NOCHE"${t==='NOCHE'?' selected':''}>🌙</option></select>`;}
-function abrirSelectSearch(id,tipo,row){document.querySelectorAll('.select-dropdown.show').forEach(d=>d.classList.remove('show'));const display=document.getElementById(id);const dropdown=document.getElementById(id+'_dropdown');const p=progs[row];let opts=[];if(tipo==='grupo'){opts=getOpts('grupo',{fundo:p.fundo,cultivo:p.cultivo,area:p.area});}else if(tipo==='labor'){opts=getOpts('labor',{fundo:p.fundo,cultivo:p.cultivo,area:p.area,grupo:p.grupo});}const currentVal=display.dataset.val;const rect=display.getBoundingClientRect();dropdown.style.top=(rect.bottom+2)+'px';dropdown.style.left=Math.max(rect.left,10)+'px';let html=`<div class="search-input-wrapper"><input type="text" placeholder="Buscar..." id="${id}_search" onkeyup="filtrarSelectSearch('${id}')" autocomplete="off"></div>`;html+='<div class="select-options">';html+=`<div class="select-option" data-value="" onclick="seleccionarOpcion('${id}','')">--</div>`;opts.forEach(o=>{const selected=o===currentVal?' selected':'';const oEscaped=String(o).replace(/'/g,"\\'").replace(/"/g,'&quot;');html+=`<div class="select-option${selected}" data-value="${oEscaped}" onclick="seleccionarOpcion('${id}','${oEscaped}')">${o}</div>`;});if(tipo==='labor'){html+=`<div class="select-option new-option" onclick="seleccionarOpcion('${id}','__NEW__')">➕ Crear nueva labor...</div>`;}html+='</div>';dropdown.innerHTML=html;dropdown.classList.add('show');setTimeout(()=>{const si=document.getElementById(id+'_search');if(si)si.focus();},50);}
+
+function renderInterno(){
+    const tbody=document.getElementById('tbody');
+    const duplicados=detectarDuplicados();
+    const incompletos=detectarIncompletos();
+    const sinPersonal=detectarSinPersonal();
+    
+    document.getElementById('alertDuplicates').classList.toggle('show',duplicados.size>0);
+    document.getElementById('alertDupMsg').textContent=`${duplicados.size} duplicadas`;
+    document.getElementById('alertIncomplete').classList.toggle('show',incompletos.size>0);
+    document.getElementById('alertIncMsg').textContent=`${incompletos.size} incompletas`;
+    document.getElementById('alertNoPersonal').classList.toggle('show',sinPersonal.size>0);
+    document.getElementById('alertNoPerMsg').textContent=`${sinPersonal.size} sin personal`;
+    
+    let totalGen=0;
+    progs.forEach(p=>DIAS.forEach(d=>{totalGen+=(p.dias&&p.dias[d])||0;}));
+    document.getElementById('statLabores').textContent=progs.length;
+    document.getElementById('statPersonal').textContent=totalGen;
+    
+    if(progs.length===0){
+        tbody.innerHTML='<tr><td colspan="12" class="empty"><div class="empty-icon">📋</div><div>No hay labores</div></td></tr>';
+        return;
+    }
+    
+    // Agrupar por Fundo -> Área
+    const porFundo={};
+    progs.forEach((p,i)=>{
+        const f=p.fundo||'Sin Fundo';
+        const a=p.area||'Sin Área';
+        if(!porFundo[f])porFundo[f]={jefe:p.jefe||'',areas:{}};
+        if(!porFundo[f].areas[a])porFundo[f].areas[a]=[];
+        porFundo[f].areas[a].push({...p,_i:i});
+    });
+    
+    let html='';
+    let grandTotal=0,grandTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};
+    
+    Object.keys(porFundo).sort().forEach(fundo=>{
+        const fundoData=porFundo[fundo];
+        let fundoTotal=0,fundoTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};
+        
+        Object.keys(fundoData.areas).sort().forEach(area=>{
+            const items=fundoData.areas[area];
+            let areaTot={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},areaSum=0;
+            
+            // Fila combinada: Fundo | Jefe | Área
+            html+=`<tr class="fundo-area-row"><td colspan="12"><span class="info-fundo">🏢 ${fundo}</span><span class="info-jefe">👤 ${fundoData.jefe||'-'}</span><span class="info-area">📍 ${area} (${items.length})</span></td></tr>`;
+            
+            items.forEach(p=>{
+                const i=p._i;
+                const isDup=duplicados.has(i),isInc=incompletos.has(i),isNoPer=sinPersonal.has(i);
+                let rowTot=0;
+                DIAS.forEach(d=>{const v=(p.dias&&p.dias[d])||0;rowTot+=v;areaTot[d]+=v;});
+                areaSum+=rowTot;
+                
+                let rowClass=isInc?'incomplete':isNoPer?'no-personal':isDup?'duplicated':'';
+                
+                // Badge al costado
+                let badge='';
+                if(p.esNueva)badge='<span class="labor-badge badge-nueva">NUEVA</span>';
+                else if(isInc)badge='<span class="labor-badge badge-inc">INC</span>';
+                else if(isNoPer)badge='<span class="labor-badge badge-noper">SIN</span>';
+                else if(isDup)badge='<span class="labor-badge badge-dup">DUP</span>';
+                
+                html+=`<tr class="${rowClass}">`;
+                html+=`<td class="col-grupo">${selGrupoHTML(i,p)}</td>`;
+                html+=`<td class="col-labor"><div class="labor-cell">${selLaborHTML(i,p)}${badge}</div></td>`;
+                html+=`<td class="col-turno">${turnoHTML(i,p.turno)}</td>`;
+                
+                DIAS.forEach((d,di)=>{
+                    const v=(p.dias&&p.dias[d])||0;
+                    let cls='day-input'+(di>=5?' finde':'');
+                    if(v>0){cls+=' has-value';if(p.turno==='TARDE')cls+=' tarde';if(p.turno==='NOCHE')cls+=' noche';}
+                    html+=`<td class="day-cell"><input type="number" class="${cls}" data-row="${i}" data-col="${di}" data-dia="${d}" value="${v||''}" min="0" placeholder="-" oninput="guardarDia(this,${i},'${d}')" onfocus="this.select()" onkeydown="navegarInput(event,${i},${di})"></td>`;
+                });
+                
+                html+=`<td class="col-total"><span class="tot-badge">${rowTot}</span></td>`;
+                html+=`<td class="col-actions"><div class="row-actions"><button class="btn-row btn-dup" onclick="duplicar(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><button class="btn-row btn-del" onclick="confirmarEliminar(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></td></tr>`;
+            });
+            
+            // Subtotal Área
+            html+=`<tr class="subtotal-area"><td colspan="3" style="text-align:right;padding-right:6px;">Subtotal:</td>`;
+            DIAS.forEach(d=>{html+=`<td class="day-cell"><span class="subtot-area-num">${areaTot[d]}</span></td>`;fundoTotDia[d]+=areaTot[d];});
+            html+=`<td class="col-total"><span class="subtot-area-num">${areaSum}</span></td><td></td></tr>`;
+            fundoTotal+=areaSum;
+        });
+        
+        // Total Fundo
+        html+=`<tr class="total-fundo"><td colspan="3" style="text-align:right;padding-right:6px;">TOTAL ${fundo}:</td>`;
+        DIAS.forEach(d=>{html+=`<td class="day-cell"><span class="total-fundo-num">${fundoTotDia[d]}</span></td>`;grandTotDia[d]+=fundoTotDia[d];});
+        html+=`<td class="col-total"><span class="total-fundo-num">${fundoTotal}</span></td><td></td></tr>`;
+        grandTotal+=fundoTotal;
+    });
+    
+    // Total General
+    html+=`<tr class="total-row"><td colspan="3" style="text-align:right;padding-right:6px;">TOTAL GENERAL:</td>`;
+    DIAS.forEach(d=>html+=`<td class="day-cell"><span class="total-num">${grandTotDia[d]}</span></td>`);
+    html+=`<td class="col-total"><span class="total-num">${grandTotal}</span></td><td></td></tr>`;
+    
+    tbody.innerHTML=html;
+}
+
+function selGrupoHTML(i,p){
+    const id=`sel_${i}_grupo`;
+    return`<div class="select-search-container"><div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','grupo',${i})" data-val="${p.grupo||''}" data-tipo="grupo" data-row="${i}">${p.grupo||'--'}</div><div class="select-dropdown" id="${id}_dropdown"></div></div>`;
+}
+
+function selLaborHTML(i,p){
+    const id=`sel_${i}_labor`;
+    return`<div class="select-search-container labor-sel"><div class="select-display" id="${id}" onclick="abrirSelectSearch('${id}','labor',${i})" data-val="${p.labor||''}" data-tipo="labor" data-row="${i}">${p.labor||'--'}</div><div class="select-dropdown" id="${id}_dropdown"></div></div>`;
+}
+
+function turnoHTML(i,t){
+    t=t||'DIA';
+    const cls=t==='TARDE'?'t-tarde':(t==='NOCHE'?'t-noche':'t-dia');
+    return`<select class="turno-sel ${cls}" onchange="setTurno(${i},this.value)"><option value="DIA"${t==='DIA'?' selected':''}>DIA</option><option value="TARDE"${t==='TARDE'?' selected':''}>TARDE</option><option value="NOCHE"${t==='NOCHE'?' selected':''}>NOCHE</option></select>`;
+}
+
+function abrirSelectSearch(id,tipo,row){
+    document.querySelectorAll('.select-dropdown.show').forEach(d=>d.classList.remove('show'));
+    const display=document.getElementById(id);
+    const dropdown=document.getElementById(id+'_dropdown');
+    const p=progs[row];
+    let opts=[];
+    if(tipo==='grupo'){opts=getOpts('grupo',{fundo:p.fundo,cultivo:p.cultivo,area:p.area});}
+    else if(tipo==='labor'){opts=getOpts('labor',{fundo:p.fundo,cultivo:p.cultivo,area:p.area,grupo:p.grupo});}
+    const currentVal=display.dataset.val;
+    const rect=display.getBoundingClientRect();
+    dropdown.style.top=(rect.bottom+2)+'px';
+    dropdown.style.left=Math.max(rect.left,10)+'px';
+    let html=`<div class="search-input-wrapper"><input type="text" placeholder="Buscar..." id="${id}_search" onkeyup="filtrarSelectSearch('${id}')" autocomplete="off"></div>`;
+    html+='<div class="select-options">';
+    html+=`<div class="select-option" data-value="" onclick="seleccionarOpcion('${id}','')">--</div>`;
+    opts.forEach(o=>{const selected=o===currentVal?' selected':'';const oEsc=String(o).replace(/'/g,"\\'").replace(/"/g,'&quot;');html+=`<div class="select-option${selected}" data-value="${oEsc}" onclick="seleccionarOpcion('${id}','${oEsc}')">${o}</div>`;});
+    if(tipo==='labor'){html+=`<div class="select-option new-option" onclick="seleccionarOpcion('${id}','__NEW__')">➕ Crear nueva...</div>`;}
+    html+='</div>';
+    dropdown.innerHTML=html;dropdown.classList.add('show');
+    setTimeout(()=>{const si=document.getElementById(id+'_search');if(si)si.focus();},50);
+}
+
 function filtrarSelectSearch(id){const searchInput=document.getElementById(id+'_search');const dropdown=document.getElementById(id+'_dropdown');const filtro=searchInput.value.toLowerCase();dropdown.querySelectorAll('.select-option').forEach(opt=>{const texto=opt.textContent.toLowerCase();const isSpecial=opt.dataset.value===''||opt.classList.contains('new-option');opt.style.display=texto.includes(filtro)||isSpecial?'block':'none';});}
-function seleccionarOpcion(id,valor){const display=document.getElementById(id);const dropdown=document.getElementById(id+'_dropdown');const tipo=display.dataset.tipo;const row=parseInt(display.dataset.row);dropdown.classList.remove('show');if(valor==='__NEW__'){abrirModal(row);return;}valor=valor.replace(/&quot;/g,'"').replace(/\\'/g,"'");display.textContent=valor||'--';display.dataset.val=valor;if(tipo==='labor'&&valor){autocompletarDesdeLabor(row,valor);}else{setVal(row,tipo,valor);}}
-function autocompletarDesdeLabor(row,laborSeleccionada){const p=progs[row];const filteredData=getFilteredMaestro();const registro=filteredData.find(m=>m.Labor===laborSeleccionada);if(registro){progs[row].fundo=registro.Fundo||'';progs[row].cultivo=registro.CULTIVO||registro.Cultivo||'';progs[row].area=registro.AREA||'';progs[row].grupo=registro['Grupo Labor']||'';progs[row].labor=laborSeleccionada;progs[row].cc=registro.CodCentroCosto||'';progs[row].jefe=registro.Jefe||'';progs[row].esNueva=false;render();showToast('Autocompletado',`${registro.Fundo} → ${registro.AREA}`,'success');}else{setVal(row,'labor',laborSeleccionada);}}
+
+function seleccionarOpcion(id,valor){
+    const display=document.getElementById(id);
+    const dropdown=document.getElementById(id+'_dropdown');
+    const tipo=display.dataset.tipo;
+    const row=parseInt(display.dataset.row);
+    dropdown.classList.remove('show');
+    if(valor==='__NEW__'){abrirModal(row);return;}
+    valor=valor.replace(/&quot;/g,'"').replace(/\\'/g,"'");
+    display.textContent=valor||'--';display.dataset.val=valor;
+    if(tipo==='labor'&&valor){autocompletarDesdeLabor(row,valor);}else{setVal(row,tipo,valor);}
+}
+
+function autocompletarDesdeLabor(row,laborSeleccionada){
+    const filteredData=getFilteredMaestro();
+    const registro=filteredData.find(m=>m.Labor===laborSeleccionada);
+    if(registro){
+        progs[row].fundo=registro.Fundo||'';
+        progs[row].cultivo=registro.CULTIVO||registro.Cultivo||'';
+        progs[row].area=registro.AREA||'';
+        progs[row].grupo=registro['Grupo Labor']||'';
+        progs[row].labor=laborSeleccionada;
+        progs[row].cc=registro.CodCentroCosto||'';
+        progs[row].jefe=registro.Jefe||'';
+        progs[row].esNueva=false;
+        render();
+        showToast('Autocompletado',`${registro.Fundo} → ${registro.AREA}`,'success');
+    }else{setVal(row,'labor',laborSeleccionada);}
+}
+
 document.addEventListener('mousedown',function(e){const dropdown=e.target.closest('.select-dropdown');const container=e.target.closest('.select-search-container');if(!dropdown&&!container){document.querySelectorAll('.select-dropdown.show').forEach(d=>d.classList.remove('show'));}});
-function agregarFila(){const filteredData=getFilteredMaestro();const fundo=filtrosFundos.length===1?filtrosFundos[0]:'';const area=filtrosAreas.length===1?filtrosAreas[0]:'';let cultivo='';if(fundo){const m=filteredData.find(r=>r.Fundo===fundo);if(m)cultivo=m.CULTIVO||m.Cultivo||'';}progs.push({id:Date.now(),fundo,cultivo,area,grupo:'',labor:'',cc:'',turno:'DIA',dias:{},esNueva:false,jefe:filtroJefe||''});render();}
-function duplicar(i){const c=JSON.parse(JSON.stringify(progs[i]));c.id=Date.now();progs.splice(i+1,0,c);render();showToast('Duplicada','Labor duplicada','success');}
+
+function agregarFila(){
+    const filteredData=getFilteredMaestro();
+    const fundo=filtrosFundos.length===1?filtrosFundos[0]:'';
+    const area=filtrosAreas.length===1?filtrosAreas[0]:'';
+    const jefe=filtrosJefes.length===1?filtrosJefes[0]:'';
+    let cultivo='';
+    if(fundo){const m=filteredData.find(r=>r.Fundo===fundo);if(m)cultivo=m.CULTIVO||m.Cultivo||'';}
+    progs.push({id:Date.now(),fundo,cultivo,area,grupo:'',labor:'',cc:'',turno:'DIA',dias:{},esNueva:false,jefe});
+    render();
+}
+
+function duplicar(i){const c=JSON.parse(JSON.stringify(progs[i]));c.id=Date.now();progs.splice(i+1,0,c);render();showToast('Duplicada','','success');}
 function setVal(i,tipo,val){progs[i][tipo]=val;if(tipo==='grupo'){progs[i].labor='';progs[i].cc='';}if(tipo==='labor'){const dat=getFilteredMaestro().find(r=>r['Grupo Labor']===progs[i].grupo&&r.Labor===val);if(dat){progs[i].cc=dat.CodCentroCosto||'';progs[i].esNueva=false;}}render();}
 function setTurno(i,v){progs[i].turno=v;render();}
-function guardarDia(input,row,dia){const val=parseInt(input.value)||0;if(!progs[row].dias)progs[row].dias={};progs[row].dias[dia]=val;input.classList.remove('has-value','tarde','noche');if(val>0){input.classList.add('has-value');if(progs[row].turno==='TARDE')input.classList.add('tarde');if(progs[row].turno==='NOCHE')input.classList.add('noche');}let totalGen=0;progs.forEach(p=>DIAS.forEach(d=>{totalGen+=(p.dias&&p.dias[d])||0;}));document.getElementById('statPersonal').textContent=totalGen;guardarEnLocalSilencioso();}
+
+function guardarDia(input,row,dia){
+    const val=parseInt(input.value)||0;
+    if(!progs[row].dias)progs[row].dias={};
+    progs[row].dias[dia]=val;
+    input.classList.remove('has-value','tarde','noche');
+    if(val>0){input.classList.add('has-value');if(progs[row].turno==='TARDE')input.classList.add('tarde');if(progs[row].turno==='NOCHE')input.classList.add('noche');}
+    let totalGen=0;progs.forEach(p=>DIAS.forEach(d=>{totalGen+=(p.dias&&p.dias[d])||0;}));
+    document.getElementById('statPersonal').textContent=totalGen;
+    guardarEnLocalSilencioso();
+}
 function guardarEnLocalSilencioso(){const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};localStorage.setItem('asa_programacion',JSON.stringify(data));}
+
 function mostrarConfirm(icon,title,msg,onYes,green=false){document.getElementById('confirmIcon').textContent=icon;document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMsg').textContent=msg;const btn=document.getElementById('confirmYes');btn.className='btn btn-yes'+(green?' green':'');btn.onclick=()=>{cerrarConfirm();onYes();};document.getElementById('confirmDialog').classList.add('open');}
 function cerrarConfirm(){document.getElementById('confirmDialog').classList.remove('open');}
-function confirmarEliminar(i){mostrarConfirm('🗑️','¿Eliminar?',`¿Eliminar "${progs[i].labor||'labor'}"?`,()=>{progs.splice(i,1);render();showToast('Eliminada','Labor eliminada','success');});}
-function confirmarBorrarTodo(){if(!progs.length)return;mostrarConfirm('⚠️','¿Borrar todo?','No se puede deshacer.',()=>{progs=[];render();showToast('Borrado','Programación borrada','warning');});}
+function confirmarEliminar(i){mostrarConfirm('🗑️','¿Eliminar?',`"${progs[i].labor||'labor'}"`,()=>{progs.splice(i,1);render();showToast('Eliminada','','success');});}
+function confirmarBorrarTodo(){if(!progs.length)return;mostrarConfirm('⚠️','¿Borrar todo?','No se puede deshacer',()=>{progs=[];render();showToast('Borrado','','warning');});}
+
 let grupoInputMode=false;
 function toggleGrupoInput(){grupoInputMode=!grupoInputMode;document.getElementById('mGrupo').style.display=grupoInputMode?'none':'block';document.getElementById('mGrupoNuevo').style.display=grupoInputMode?'block':'none';document.querySelector('.btn-toggle').textContent=grupoInputMode?'⌄':'+';}
 function abrirModal(i){const p=progs[i];document.getElementById('modalIdx').value=i;grupoInputMode=false;document.getElementById('mGrupo').style.display='block';document.getElementById('mGrupoNuevo').style.display='none';document.querySelector('.btn-toggle').textContent='+';document.getElementById('mGrupo').innerHTML='<option value="">--</option>'+getOpts('grupo',{fundo:p.fundo,cultivo:p.cultivo,area:p.area}).map(g=>`<option>${g}</option>`).join('');document.getElementById('mNombre').value='';document.getElementById('mGrupoNuevo').value='';document.getElementById('modalNueva').classList.add('open');}
 function cerrarModal(){document.getElementById('modalNueva').classList.remove('open');renderSinHistorial();}
-function crearLabor(){const i=+document.getElementById('modalIdx').value;const p=progs[i];const grupo=grupoInputMode?document.getElementById('mGrupoNuevo').value.trim().toUpperCase():document.getElementById('mGrupo').value;const nombre=document.getElementById('mNombre').value.trim().toUpperCase();if(!grupo||!nombre){showToast('Error','Complete todos los campos','error');return;}laboresCustom.push({Fundo:p.fundo,CULTIVO:p.cultivo,AREA:p.area,'Grupo Labor':grupo,Labor:nombre,CodCentroCosto:'',_custom:true});progs[i].grupo=grupo;progs[i].labor=nombre;progs[i].esNueva=true;cerrarModal();render();showToast('Labor creada',nombre,'success');}
+function crearLabor(){const i=+document.getElementById('modalIdx').value;const p=progs[i];const grupo=grupoInputMode?document.getElementById('mGrupoNuevo').value.trim().toUpperCase():document.getElementById('mGrupo').value;const nombre=document.getElementById('mNombre').value.trim().toUpperCase();if(!grupo||!nombre){showToast('Error','Complete campos','error');return;}laboresCustom.push({Fundo:p.fundo,CULTIVO:p.cultivo,AREA:p.area,'Grupo Labor':grupo,Labor:nombre,CodCentroCosto:'',_custom:true});progs[i].grupo=grupo;progs[i].labor=nombre;progs[i].esNueva=true;cerrarModal();render();showToast('Creada',nombre,'success');}
+
 function toggleSearch(){document.getElementById('searchBox').classList.toggle('show');}
-function buscarLabores(){const texto=document.getElementById('searchText').value.toLowerCase().trim();if(!texto){document.getElementById('searchResultsBody').innerHTML='<tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">Ingrese texto</td></tr>';document.getElementById('searchCount').textContent='';return;}let res=getFilteredMaestro().filter(m=>{const searchIn=[m.Fundo||'',m.AREA||'',m['Grupo Labor']||'',m.Labor||'',m.CULTIVO||m.Cultivo||''].join(' ').toLowerCase();return searchIn.includes(texto);});const total=res.length;res=res.slice(0,100);window.searchResultados=res;window.searchResultadosTotal=getFilteredMaestro().filter(m=>{const searchIn=[m.Fundo||'',m.AREA||'',m['Grupo Labor']||'',m.Labor||'',m.CULTIVO||m.Cultivo||''].join(' ').toLowerCase();return searchIn.includes(texto);});if(!res.length){document.getElementById('searchResultsBody').innerHTML='<tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">Sin resultados</td></tr>';document.getElementById('searchCount').textContent='0 resultados';return;}let html='';res.forEach((m,idx)=>{html+=`<tr><td>${m.Fundo||'-'}</td><td>${m.CULTIVO||m.Cultivo||'-'}</td><td>${m.AREA||'-'}</td><td>${m['Grupo Labor']||'-'}</td><td><strong>${m.Labor||'-'}</strong></td><td><button class="btn-add" onclick="agregarDesdeSearch(${idx})">+ Agregar</button></td></tr>`;});document.getElementById('searchResultsBody').innerHTML=html;document.getElementById('searchCount').textContent=total>100?`Mostrando 100 de ${total}`:`${total} resultado(s)`;}
-function agregarDesdeSearch(idx){const m=window.searchResultados[idx];if(!m)return;progs.push({id:Date.now(),fundo:m.Fundo||'',cultivo:m.CULTIVO||m.Cultivo||'',area:m.AREA||'',grupo:m['Grupo Labor']||'',labor:m.Labor||'',cc:m.CodCentroCosto||'',turno:'DIA',dias:{},esNueva:false,jefe:m.Jefe||''});render();showToast('Agregada',`"${m.Labor}"`,'success');}
-function exportarBusqueda(){if(!window.searchResultadosTotal||window.searchResultadosTotal.length===0){showToast('Sin datos','Primero realice una búsqueda','warning');return;}document.getElementById('exportPassword').value='';document.getElementById('modalPassword').classList.add('open');document.getElementById('exportPassword').focus();}
+function buscarLabores(){const texto=document.getElementById('searchText').value.toLowerCase().trim();if(!texto){document.getElementById('searchResultsBody').innerHTML='<tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">Ingrese texto</td></tr>';document.getElementById('searchCount').textContent='';return;}let res=getFilteredMaestro().filter(m=>{const searchIn=[m.Fundo||'',m.AREA||'',m['Grupo Labor']||'',m.Labor||'',m.CULTIVO||m.Cultivo||''].join(' ').toLowerCase();return searchIn.includes(texto);});const total=res.length;res=res.slice(0,100);window.searchResultados=res;window.searchResultadosTotal=getFilteredMaestro().filter(m=>{const searchIn=[m.Fundo||'',m.AREA||'',m['Grupo Labor']||'',m.Labor||'',m.CULTIVO||m.Cultivo||''].join(' ').toLowerCase();return searchIn.includes(texto);});if(!res.length){document.getElementById('searchResultsBody').innerHTML='<tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px;">Sin resultados</td></tr>';document.getElementById('searchCount').textContent='0';return;}let html='';res.forEach((m,idx)=>{html+=`<tr><td>${m.Fundo||'-'}</td><td>${m.CULTIVO||m.Cultivo||'-'}</td><td>${m.AREA||'-'}</td><td>${m['Grupo Labor']||'-'}</td><td><strong>${m.Labor||'-'}</strong></td><td><button class="btn-add" onclick="agregarDesdeSearch(${idx})">+</button></td></tr>`;});document.getElementById('searchResultsBody').innerHTML=html;document.getElementById('searchCount').textContent=total>100?`100/${total}`:total;}
+function agregarDesdeSearch(idx){const m=window.searchResultados[idx];if(!m)return;progs.push({id:Date.now(),fundo:m.Fundo||'',cultivo:m.CULTIVO||m.Cultivo||'',area:m.AREA||'',grupo:m['Grupo Labor']||'',labor:m.Labor||'',cc:m.CodCentroCosto||'',turno:'DIA',dias:{},esNueva:false,jefe:m.Jefe||''});render();showToast('Agregada',m.Labor,'success');}
+
+function exportarBusqueda(){if(!window.searchResultadosTotal||window.searchResultadosTotal.length===0){showToast('Sin datos','','warning');return;}document.getElementById('exportPassword').value='';document.getElementById('modalPassword').classList.add('open');document.getElementById('exportPassword').focus();}
 function cerrarModalPassword(){document.getElementById('modalPassword').classList.remove('open');}
 function verificarPassword(){const pass=document.getElementById('exportPassword').value;if(pass==='1234santa'){cerrarModalPassword();ejecutarExportBusqueda();}else{showToast('Error','Contraseña incorrecta','error');document.getElementById('exportPassword').value='';document.getElementById('exportPassword').focus();}}
-function ejecutarExportBusqueda(){const datos=window.searchResultadosTotal;let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC\n';datos.forEach(m=>{csv+=[m.Fundo||'',m.CULTIVO||m.Cultivo||'',m.AREA||'',m['Grupo Labor']||'',m.Labor||'',m.CodCentroCosto||''].join(';')+'\n';});const b=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Busqueda_MAESTRO_${new Date().toISOString().split('T')[0]}.csv`;a.click();showToast('Exportado',`${datos.length} registros exportados`,'success');}
-function guardarArchivo(){const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Programacion_S${semanaActual}_${anioActual}.json`;a.click();showToast('Guardado','Archivo JSON descargado','success');}
-function cargarArchivo(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=(e)=>{try{const data=JSON.parse(e.target.result);progs=data.progs||[];laboresCustom=data.laboresCustom||[];if(data.usuario)document.getElementById('userName').value=data.usuario;historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;renderSinHistorial();showToast('Archivo cargado',`${progs.length} labores`,'success');}catch(e){showToast('Error','Archivo no válido','error');}};reader.readAsText(file);event.target.value='';}
-function exportarExcel(){if(progs.length===0){showToast('Sin datos','No hay labores','warning');return;}let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Turno;LUN;MAR;MIE;JUE;VIE;SAB;DOM;Total\n';progs.forEach(p=>{let tot=0;DIAS.forEach(d=>tot+=(p.dias&&p.dias[d])||0);csv+=[p.fundo||'',p.cultivo||'',p.area||'',p.grupo||'',p.labor||'',p.cc||'',p.turno||'DIA',(p.dias&&p.dias.LUN)||0,(p.dias&&p.dias.MAR)||0,(p.dias&&p.dias.MIE)||0,(p.dias&&p.dias.JUE)||0,(p.dias&&p.dias.VIE)||0,(p.dias&&p.dias.SAB)||0,(p.dias&&p.dias.DOM)||0,tot].join(';')+'\n';});const b=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Programacion_S${semanaActual}_${anioActual}.csv`;a.click();showToast('Exportado',`${progs.length} labores`,'success');}
+function ejecutarExportBusqueda(){const datos=window.searchResultadosTotal;let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC\n';datos.forEach(m=>{csv+=[m.Fundo||'',m.CULTIVO||m.Cultivo||'',m.AREA||'',m['Grupo Labor']||'',m.Labor||'',m.CodCentroCosto||''].join(';')+'\n';});const b=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Busqueda_${new Date().toISOString().split('T')[0]}.csv`;a.click();showToast('Exportado',`${datos.length} registros`,'success');}
+
+function guardarArchivo(){const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Prog_S${semanaActual}_${anioActual}.json`;a.click();showToast('Guardado','JSON','success');}
+function cargarArchivo(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=(e)=>{try{const data=JSON.parse(e.target.result);progs=data.progs||[];laboresCustom=data.laboresCustom||[];if(data.usuario)document.getElementById('userName').value=data.usuario;historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;renderSinHistorial();showToast('Cargado',`${progs.length} labores`,'success');}catch(e){showToast('Error','Archivo inválido','error');}};reader.readAsText(file);event.target.value='';}
+
+function exportarExcel(){
+    if(progs.length===0){showToast('Sin datos','','warning');return;}
+    let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Jefe;Turno;LUN;MAR;MIE;JUE;VIE;SAB;DOM;Total\n';
+    progs.forEach(p=>{
+        let tot=0;DIAS.forEach(d=>tot+=(p.dias&&p.dias[d])||0);
+        csv+=[p.fundo||'',p.cultivo||'',p.area||'',p.grupo||'',p.labor||'',p.cc||'',p.jefe||'',p.turno||'DIA',
+            (p.dias&&p.dias.LUN)||0,(p.dias&&p.dias.MAR)||0,(p.dias&&p.dias.MIE)||0,(p.dias&&p.dias.JUE)||0,
+            (p.dias&&p.dias.VIE)||0,(p.dias&&p.dias.SAB)||0,(p.dias&&p.dias.DOM)||0,tot].join(';')+'\n';
+    });
+    const b=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Prog_S${semanaActual}_${anioActual}.csv`;a.click();
+    showToast('Exportado',`${progs.length} labores`,'success');
+}
+
 function navegarInput(event,row,col){const key=event.key;if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Enter','Tab'].includes(key))return;event.preventDefault();let newRow=row,newCol=col;if(key==='ArrowRight'||(key==='Tab'&&!event.shiftKey)){if(col<6)newCol=col+1;}else if(key==='ArrowLeft'||(key==='Tab'&&event.shiftKey)){if(col>0)newCol=col-1;}else if(key==='ArrowDown'||key==='Enter'){if(row<progs.length-1)newRow=row+1;}else if(key==='ArrowUp'){if(row>0)newRow=row-1;}const newInput=document.querySelector(`input.day-input[data-row="${newRow}"][data-col="${newCol}"]`);if(newInput){newInput.focus();newInput.select();}}
 </script>
 </body>
