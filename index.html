@@ -567,14 +567,16 @@ function renderInterno(){
         return;
     }
     
-    // Agrupar por Fundo -> Área
+    // Agrupar por Fundo -> Área (con jefe por área)
     const porFundo={};
     progs.forEach((p,i)=>{
         const f=p.fundo||'Sin Fundo';
         const a=p.area||'Sin Área';
-        if(!porFundo[f])porFundo[f]={jefe:p.jefe||'',areas:{}};
-        if(!porFundo[f].areas[a])porFundo[f].areas[a]=[];
-        porFundo[f].areas[a].push({...p,_i:i});
+        if(!porFundo[f])porFundo[f]={areas:{}};
+        if(!porFundo[f].areas[a])porFundo[f].areas[a]={jefe:p.jefe||'',items:[]};
+        porFundo[f].areas[a].items.push({...p,_i:i});
+        // Actualizar jefe si esta fila tiene uno (el último gana)
+        if(p.jefe)porFundo[f].areas[a].jefe=p.jefe;
     });
     
     let html='';
@@ -585,10 +587,12 @@ function renderInterno(){
         let fundoTotal=0,fundoTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};
         
         Object.keys(fundoData.areas).sort().forEach(area=>{
-            const items=fundoData.areas[area];
+            const areaData=fundoData.areas[area];
+            const items=areaData.items;
+            const jefeArea=areaData.jefe||'-';
             let areaTot={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},areaSum=0;
             
-            html+=`<tr class="fundo-area-row"><td colspan="12"><span class="info-fundo">🏢 ${fundo}</span><span class="info-jefe">👤 ${fundoData.jefe||'-'}</span><span class="info-area">📍 ${area} (${items.length})</span></td></tr>`;
+            html+=`<tr class="fundo-area-row"><td colspan="12"><span class="info-fundo">🏢 ${fundo}</span><span class="info-jefe">👤 ${jefeArea}</span><span class="info-area">📍 ${area} (${items.length})</span></td></tr>`;
             
             items.forEach(p=>{
                 const i=p._i;
@@ -711,16 +715,39 @@ function autocompletarDesdeLabor(row,laborSeleccionada){
 }
 
 function agregarFila(){
-    if(!filtroFundo || !filtroArea || !filtroJefe){
+    // Capturar valores actuales de los filtros EN ESTE MOMENTO
+    const fundoActual = filtroFundo;
+    const areaActual = filtroArea;
+    const jefeActual = filtroJefe;
+    
+    if(!fundoActual || !areaActual || !jefeActual){
         showToast('Seleccione Fundo, Área y Jefe','','warning');
         return;
     }
+    
+    // Buscar cultivo del maestro filtrado
     const maestroFiltrado=getMaestroFiltrado();
     let cultivo='';
     if(maestroFiltrado.length>0){cultivo=maestroFiltrado[0].CULTIVO||maestroFiltrado[0].Cultivo||'';}
-    progs.push({id:Date.now(),fundo:filtroFundo,cultivo,area:filtroArea,grupo:'',labor:'',cc:'',turno:'DIA',dias:{},esNueva:false,jefe:filtroJefe});
+    
+    // Crear nueva fila con los valores capturados
+    const nuevaFila = {
+        id: Date.now(),
+        fundo: fundoActual,
+        cultivo: cultivo,
+        area: areaActual,
+        grupo: '',
+        labor: '',
+        cc: '',
+        turno: 'DIA',
+        dias: {},
+        esNueva: false,
+        jefe: jefeActual
+    };
+    
+    progs.push(nuevaFila);
     render();
-    showToast('Fila agregada','Complete grupo y labor','success');
+    showToast('Fila agregada',`${fundoActual} | ${areaActual} | ${jefeActual}`,'success');
 }
 
 function duplicar(i){const c=JSON.parse(JSON.stringify(progs[i]));c.id=Date.now();progs.splice(i+1,0,c);render();showToast('Duplicada','','success');}
@@ -811,7 +838,13 @@ function cargarArchivo(event){const file=event.target.files[0];if(!file)return;c
 
 function exportarExcel(){
     if(progs.length===0){showToast('Sin datos','','warning');return;}
-    let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Jefe;Turno;LUN;MAR;MIE;JUE;VIE;SAB;DOM;Total\n';
+    
+    // Obtener fechas de la semana actual
+    const fechasCols = diasSemana.map(d => d.str); // formato YYYY-MM-DD
+    
+    // Header con fechas completas
+    let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Jefe;Turno;'+fechasCols.join(';')+';Total\n';
+    
     progs.forEach(p=>{
         let tot=0;DIAS.forEach(d=>tot+=(p.dias&&p.dias[d])||0);
         csv+=[p.fundo||'',p.cultivo||'',p.area||'',p.grupo||'',p.labor||'',p.cc||'',p.jefe||'',p.turno||'DIA',
