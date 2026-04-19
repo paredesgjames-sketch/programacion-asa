@@ -839,8 +839,8 @@ function cargarArchivo(event){const file=event.target.files[0];if(!file)return;c
 function exportarExcel(){
     if(progs.length===0){showToast('Sin datos','','warning');return;}
     
-    // Formato: Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad
-    let csv='\uFEFF'+'Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad\n';
+    // Formato: Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva
+    let csv='\uFEFF'+'Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva\n';
     
     let totalFilas = 0;
     progs.forEach(p=>{
@@ -861,7 +861,8 @@ function exportarExcel(){
                     p.labor||'',
                     p.cc||'',
                     p.jefe||'',
-                    cantidad
+                    cantidad,
+                    p.esNueva ? 'SI' : 'NO'
                 ].join(';')+'\n';
                 totalFilas++;
             }
