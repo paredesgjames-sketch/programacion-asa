@@ -618,28 +618,31 @@ function renderInterno(){
                     const v=(p.dias&&p.dias[d])||0;
                     let cls='day-input'+(di>=5?' finde':'');
                     if(v>0){cls+=' has-value';if(p.turno==='TARDE')cls+=' tarde';if(p.turno==='NOCHE')cls+=' noche';}
-                    html+=`<td class="day-cell"><input type="number" class="${cls}" data-row="${i}" data-col="${di}" data-dia="${d}" value="${v||''}" min="0" placeholder="-" oninput="guardarDia(this,${i},'${d}')" onfocus="this.select()" onkeydown="navegarInput(event,${i},${di})"></td>`;
+                    html+=`<td class="day-cell"><input type="number" class="${cls}" data-row="${i}" data-col="${di}" data-dia="${d}" value="${v||''}" min="0" placeholder="-" oninput="guardarDia(this,${i},'${d}')" onchange="guardarDia(this,${i},'${d}')" onblur="guardarDia(this,${i},'${d}')" onfocus="this.select()" onkeydown="navegarInput(event,${i},${di})"></td>`;
                 });
                 
-                html+=`<td class="col-total"><span class="tot-badge">${rowTot}</span></td>`;
+                html+=`<td class="col-total"><span class="tot-badge" id="tot_${i}">${rowTot}</span></td>`;
                 html+=`<td class="col-actions"><div class="row-actions"><button class="btn-row btn-dup" onclick="duplicar(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button><button class="btn-row btn-del" onclick="confirmarEliminar(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button></div></td></tr>`;
             });
             
+            const fKey=fundo.replace(/[^a-zA-Z0-9]/g,'_');
+            const aKey=area.replace(/[^a-zA-Z0-9]/g,'_');
             html+=`<tr class="subtotal-area"><td colspan="3" style="text-align:right;padding-right:6px;">Subtotal:</td>`;
-            DIAS.forEach(d=>{html+=`<td class="day-cell"><span class="subtot-area-num">${areaTot[d]}</span></td>`;fundoTotDia[d]+=areaTot[d];});
-            html+=`<td class="col-total"><span class="subtot-area-num">${areaSum}</span></td><td></td></tr>`;
+            DIAS.forEach((d,di)=>{html+=`<td class="day-cell"><span class="subtot-area-num" id="subtot_${fKey}_${aKey}_${di}">${areaTot[d]}</span></td>`;fundoTotDia[d]+=areaTot[d];});
+            html+=`<td class="col-total"><span class="subtot-area-num" id="subtot_${fKey}_${aKey}_tot">${areaSum}</span></td><td></td></tr>`;
             fundoTotal+=areaSum;
         });
         
+        const fKey=fundo.replace(/[^a-zA-Z0-9]/g,'_');
         html+=`<tr class="total-fundo"><td colspan="3" style="text-align:right;padding-right:6px;">TOTAL ${fundo}:</td>`;
-        DIAS.forEach(d=>{html+=`<td class="day-cell"><span class="total-fundo-num">${fundoTotDia[d]}</span></td>`;grandTotDia[d]+=fundoTotDia[d];});
-        html+=`<td class="col-total"><span class="total-fundo-num">${fundoTotal}</span></td><td></td></tr>`;
+        DIAS.forEach((d,di)=>{html+=`<td class="day-cell"><span class="total-fundo-num" id="fundotot_${fKey}_${di}">${fundoTotDia[d]}</span></td>`;grandTotDia[d]+=fundoTotDia[d];});
+        html+=`<td class="col-total"><span class="total-fundo-num" id="fundotot_${fKey}_tot">${fundoTotal}</span></td><td></td></tr>`;
         grandTotal+=fundoTotal;
     });
     
     html+=`<tr class="total-row"><td colspan="3" style="text-align:right;padding-right:6px;">TOTAL GENERAL:</td>`;
-    DIAS.forEach(d=>html+=`<td class="day-cell"><span class="total-num">${grandTotDia[d]}</span></td>`);
-    html+=`<td class="col-total"><span class="total-num">${grandTotal}</span></td><td></td></tr>`;
+    DIAS.forEach((d,di)=>html+=`<td class="day-cell"><span class="total-num" id="grandtot_${di}">${grandTotDia[d]}</span></td>`);
+    html+=`<td class="col-total"><span class="total-num" id="grandtot_tot">${grandTotal}</span></td><td></td></tr>`;
     
     tbody.innerHTML=html;
 }
@@ -835,72 +838,75 @@ function actualizarEstados(){
 
 function actualizarTotales(){
     // Recalcular todo desde progs
-    const porFundo={};
     let grandTotal=0;
     const grandTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};
     
+    // Primero actualizar totales de cada fila
     progs.forEach((p,i)=>{
-        const f=p.fundo||'Sin Fundo';
-        const a=p.area||'Sin Área';
-        if(!porFundo[f])porFundo[f]={areas:{},totDia:{LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},total:0};
-        if(!porFundo[f].areas[a])porFundo[f].areas[a]={totDia:{LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},total:0,rows:[]};
-        
         let rowTot=0;
         DIAS.forEach(d=>{
             const v=(p.dias&&p.dias[d])||0;
             rowTot+=v;
-            porFundo[f].areas[a].totDia[d]+=v;
-            porFundo[f].totDia[d]+=v;
             grandTotDia[d]+=v;
         });
-        porFundo[f].areas[a].total+=rowTot;
-        porFundo[f].total+=rowTot;
-        porFundo[f].areas[a].rows.push(i);
         grandTotal+=rowTot;
-    });
-    
-    // Actualizar badges de total por fila
-    progs.forEach((p,i)=>{
-        let rowTot=0;
-        DIAS.forEach(d=>rowTot+=(p.dias&&p.dias[d])||0);
-        const badge=document.querySelector(`tr:has(input[data-row="${i}"]) .tot-badge`);
+        
+        // Actualizar badge de total de esta fila
+        const badge=document.getElementById('tot_'+i);
         if(badge)badge.textContent=rowTot;
     });
     
-    // Actualizar subtotales de área y totales de fundo
-    let areaIdx=0,fundoIdx=0;
-    const subtotalRows=document.querySelectorAll('tr.subtotal-area');
-    const fundoRows=document.querySelectorAll('tr.total-fundo');
+    // Actualizar subtotales y totales usando los spans con ID
+    const allSubtots=document.querySelectorAll('[id^="subtot_"]');
+    const allFundoTots=document.querySelectorAll('[id^="fundotot_"]');
     
-    Object.keys(porFundo).sort().forEach(fundo=>{
-        const fundoData=porFundo[fundo];
-        Object.keys(fundoData.areas).sort().forEach(area=>{
-            const areaData=fundoData.areas[area];
-            const subRow=subtotalRows[areaIdx];
-            if(subRow){
-                const cells=subRow.querySelectorAll('.subtot-area-num');
-                DIAS.forEach((d,di)=>{if(cells[di])cells[di].textContent=areaData.totDia[d];});
-                if(cells[7])cells[7].textContent=areaData.total;
-            }
-            areaIdx++;
+    // Recalcular por área y fundo
+    const porFundo={};
+    progs.forEach((p,i)=>{
+        const f=p.fundo||'Sin Fundo';
+        const a=p.area||'Sin Área';
+        if(!porFundo[f])porFundo[f]={areas:{},totDia:{LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},total:0};
+        if(!porFundo[f].areas[a])porFundo[f].areas[a]={totDia:{LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},total:0};
+        
+        DIAS.forEach(d=>{
+            const v=(p.dias&&p.dias[d])||0;
+            porFundo[f].areas[a].totDia[d]+=v;
+            porFundo[f].areas[a].total+=v;
+            porFundo[f].totDia[d]+=v;
+            porFundo[f].total+=v;
+        });
+    });
+    
+    // Actualizar subtotales de área
+    Object.keys(porFundo).forEach(fundo=>{
+        const fKey=fundo.replace(/[^a-zA-Z0-9]/g,'_');
+        Object.keys(porFundo[fundo].areas).forEach(area=>{
+            const aKey=area.replace(/[^a-zA-Z0-9]/g,'_');
+            const areaData=porFundo[fundo].areas[area];
+            DIAS.forEach((d,di)=>{
+                const el=document.getElementById(`subtot_${fKey}_${aKey}_${di}`);
+                if(el)el.textContent=areaData.totDia[d];
+            });
+            const totEl=document.getElementById(`subtot_${fKey}_${aKey}_tot`);
+            if(totEl)totEl.textContent=areaData.total;
         });
         
-        const fRow=fundoRows[fundoIdx];
-        if(fRow){
-            const cells=fRow.querySelectorAll('.total-fundo-num');
-            DIAS.forEach((d,di)=>{if(cells[di])cells[di].textContent=fundoData.totDia[d];});
-            if(cells[7])cells[7].textContent=fundoData.total;
-        }
-        fundoIdx++;
+        // Actualizar total de fundo
+        DIAS.forEach((d,di)=>{
+            const el=document.getElementById(`fundotot_${fKey}_${di}`);
+            if(el)el.textContent=porFundo[fundo].totDia[d];
+        });
+        const totEl=document.getElementById(`fundotot_${fKey}_tot`);
+        if(totEl)totEl.textContent=porFundo[fundo].total;
     });
     
     // Actualizar total general
-    const totalRow=document.querySelector('tr.total-row');
-    if(totalRow){
-        const cells=totalRow.querySelectorAll('.total-num');
-        DIAS.forEach((d,di)=>{if(cells[di])cells[di].textContent=grandTotDia[d];});
-        if(cells[7])cells[7].textContent=grandTotal;
-    }
+    DIAS.forEach((d,di)=>{
+        const el=document.getElementById('grandtot_'+di);
+        if(el)el.textContent=grandTotDia[d];
+    });
+    const grandTotEl=document.getElementById('grandtot_tot');
+    if(grandTotEl)grandTotEl.textContent=grandTotal;
     
     // Actualizar stat en header
     document.getElementById('statPersonal').textContent=grandTotal;
