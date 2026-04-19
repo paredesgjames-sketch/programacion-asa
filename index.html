@@ -760,9 +760,83 @@ function guardarDia(input,row,dia){
     progs[row].dias[dia]=val;
     input.classList.remove('has-value','tarde','noche');
     if(val>0){input.classList.add('has-value');if(progs[row].turno==='TARDE')input.classList.add('tarde');if(progs[row].turno==='NOCHE')input.classList.add('noche');}
-    let totalGen=0;progs.forEach(p=>DIAS.forEach(d=>{totalGen+=(p.dias&&p.dias[d])||0;}));
-    document.getElementById('statPersonal').textContent=totalGen;
+    
+    // Actualizar totales en tiempo real
+    actualizarTotales();
     guardarEnLocalSilencioso();
+}
+
+function actualizarTotales(){
+    // Recalcular todo desde progs
+    const porFundo={};
+    let grandTotal=0;
+    const grandTotDia={LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0};
+    
+    progs.forEach((p,i)=>{
+        const f=p.fundo||'Sin Fundo';
+        const a=p.area||'Sin Área';
+        if(!porFundo[f])porFundo[f]={areas:{},totDia:{LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},total:0};
+        if(!porFundo[f].areas[a])porFundo[f].areas[a]={totDia:{LUN:0,MAR:0,MIE:0,JUE:0,VIE:0,SAB:0,DOM:0},total:0,rows:[]};
+        
+        let rowTot=0;
+        DIAS.forEach(d=>{
+            const v=(p.dias&&p.dias[d])||0;
+            rowTot+=v;
+            porFundo[f].areas[a].totDia[d]+=v;
+            porFundo[f].totDia[d]+=v;
+            grandTotDia[d]+=v;
+        });
+        porFundo[f].areas[a].total+=rowTot;
+        porFundo[f].total+=rowTot;
+        porFundo[f].areas[a].rows.push(i);
+        grandTotal+=rowTot;
+    });
+    
+    // Actualizar badges de total por fila
+    progs.forEach((p,i)=>{
+        let rowTot=0;
+        DIAS.forEach(d=>rowTot+=(p.dias&&p.dias[d])||0);
+        const badge=document.querySelector(`tr:has(input[data-row="${i}"]) .tot-badge`);
+        if(badge)badge.textContent=rowTot;
+    });
+    
+    // Actualizar subtotales de área y totales de fundo
+    let areaIdx=0,fundoIdx=0;
+    const subtotalRows=document.querySelectorAll('tr.subtotal-area');
+    const fundoRows=document.querySelectorAll('tr.total-fundo');
+    
+    Object.keys(porFundo).sort().forEach(fundo=>{
+        const fundoData=porFundo[fundo];
+        Object.keys(fundoData.areas).sort().forEach(area=>{
+            const areaData=fundoData.areas[area];
+            const subRow=subtotalRows[areaIdx];
+            if(subRow){
+                const cells=subRow.querySelectorAll('.subtot-area-num');
+                DIAS.forEach((d,di)=>{if(cells[di])cells[di].textContent=areaData.totDia[d];});
+                if(cells[7])cells[7].textContent=areaData.total;
+            }
+            areaIdx++;
+        });
+        
+        const fRow=fundoRows[fundoIdx];
+        if(fRow){
+            const cells=fRow.querySelectorAll('.total-fundo-num');
+            DIAS.forEach((d,di)=>{if(cells[di])cells[di].textContent=fundoData.totDia[d];});
+            if(cells[7])cells[7].textContent=fundoData.total;
+        }
+        fundoIdx++;
+    });
+    
+    // Actualizar total general
+    const totalRow=document.querySelector('tr.total-row');
+    if(totalRow){
+        const cells=totalRow.querySelectorAll('.total-num');
+        DIAS.forEach((d,di)=>{if(cells[di])cells[di].textContent=grandTotDia[d];});
+        if(cells[7])cells[7].textContent=grandTotal;
+    }
+    
+    // Actualizar stat en header
+    document.getElementById('statPersonal').textContent=grandTotal;
 }
 function guardarEnLocalSilencioso(){const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};localStorage.setItem('asa_programacion',JSON.stringify(data));}
 
