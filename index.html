@@ -839,8 +839,8 @@ function cargarArchivo(event){const file=event.target.files[0];if(!file)return;c
 function exportarExcel(){
     if(progs.length===0){showToast('Sin datos','','warning');return;}
     
-    // Formato vertical: Fecha;Fundo;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Turno;Cantidad
-    let csv='\uFEFF'+'Fecha;Fundo;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Turno;Cantidad\n';
+    // Formato: Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad
+    let csv='\uFEFF'+'Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad\n';
     
     let totalFilas = 0;
     progs.forEach(p=>{
@@ -854,13 +854,13 @@ function exportarExcel(){
                 csv+=[
                     fechaFormato,
                     p.fundo||'',
+                    p.turno||'DIA',
                     p.area||'',
                     p.cultivo||'',
                     p.grupo||'',
                     p.labor||'',
                     p.cc||'',
                     p.jefe||'',
-                    p.turno||'DIA',
                     cantidad
                 ].join(';')+'\n';
                 totalFilas++;
