@@ -419,9 +419,14 @@ function actualizarSingleSelectArea(){
 }
 
 function actualizarSingleSelectJefe(){
-    let jefes=[...new Set(MAESTRO.map(m=>m.Jefe))].filter(Boolean).sort();
+    let data = MAESTRO;
     // Filtrar por fundo si está seleccionado
-    if(filtroFundo){jefes=[...new Set(MAESTRO.filter(m=>m.Fundo===filtroFundo).map(m=>m.Jefe))].filter(Boolean).sort();}
+    if(filtroFundo) data = data.filter(m => m.Fundo === filtroFundo);
+    // Filtrar por área si está seleccionada
+    if(filtroArea) data = data.filter(m => m.AREA === filtroArea);
+    
+    let jefes = [...new Set(data.map(m => m.Jefe))].filter(Boolean).sort();
+    
     const dropdown=document.getElementById('singleSelectJefe_dropdown');
     dropdown.innerHTML=`<div class="single-select-search"><input type="text" placeholder="Buscar..." oninput="filtrarSingleOpciones(this,'singleSelectJefe')"></div>`+
         jefes.map(j=>`<div class="single-select-option ${filtroJefe===j?'selected':''}" data-value="${j}" onclick="selectJefe('${j.replace(/'/g,"\\'")}')">${j}</div>`).join('');
