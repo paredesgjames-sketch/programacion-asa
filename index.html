@@ -752,7 +752,22 @@ function agregarFila(){
 
 function duplicar(i){const c=JSON.parse(JSON.stringify(progs[i]));c.id=Date.now();progs.splice(i+1,0,c);render();showToast('Duplicada','','success');}
 function setVal(i,tipo,val){progs[i][tipo]=val;if(tipo==='grupo'){progs[i].labor='';progs[i].cc='';}if(tipo==='labor'){const dat=MAESTRO.find(r=>r['Grupo Labor']===progs[i].grupo&&r.Labor===val);if(dat){progs[i].cc=dat.CodCentroCosto||'';progs[i].esNueva=false;}}render();}
-function setTurno(i,v){progs[i].turno=v;render();}
+function setTurno(i,v){
+    progs[i].turno=v;
+    // Actualizar colores de inputs de esa fila
+    const inputs=document.querySelectorAll(`input.day-input[data-row="${i}"]`);
+    inputs.forEach(inp=>{
+        inp.classList.remove('tarde','noche');
+        if(parseInt(inp.value)>0){
+            if(v==='TARDE')inp.classList.add('tarde');
+            if(v==='NOCHE')inp.classList.add('noche');
+        }
+    });
+    // Actualizar estados y totales
+    actualizarEstados();
+    actualizarTotales();
+    guardarEnLocalSilencioso();
+}
 
 function guardarDia(input,row,dia){
     const val=parseInt(input.value)||0;
@@ -761,9 +776,61 @@ function guardarDia(input,row,dia){
     input.classList.remove('has-value','tarde','noche');
     if(val>0){input.classList.add('has-value');if(progs[row].turno==='TARDE')input.classList.add('tarde');if(progs[row].turno==='NOCHE')input.classList.add('noche');}
     
-    // Actualizar totales en tiempo real
+    // Actualizar estados y totales en tiempo real
+    actualizarEstados();
     actualizarTotales();
     guardarEnLocalSilencioso();
+}
+
+function actualizarEstados(){
+    // Detectar duplicados, incompletos y sin personal
+    const duplicados=detectarDuplicados();
+    const incompletos=detectarIncompletos();
+    const sinPersonal=detectarSinPersonal();
+    
+    // Actualizar alertas
+    document.getElementById('alertDuplicates').classList.toggle('show',duplicados.size>0);
+    document.getElementById('alertDupMsg').textContent=`${duplicados.size} duplicadas`;
+    document.getElementById('alertIncomplete').classList.toggle('show',incompletos.size>0);
+    document.getElementById('alertIncMsg').textContent=`${incompletos.size} incompletas`;
+    document.getElementById('alertNoPersonal').classList.toggle('show',sinPersonal.size>0);
+    document.getElementById('alertNoPerMsg').textContent=`${sinPersonal.size} sin personal`;
+    
+    // Actualizar clases y badges de cada fila
+    progs.forEach((p,i)=>{
+        const tr=document.querySelector(`tr:has(input.day-input[data-row="${i}"])`);
+        if(!tr)return;
+        
+        const isDup=duplicados.has(i);
+        const isInc=incompletos.has(i);
+        const isNoPer=sinPersonal.has(i);
+        
+        // Actualizar clase de fila
+        tr.classList.remove('duplicated','incomplete','no-personal');
+        if(isInc)tr.classList.add('incomplete');
+        else if(isNoPer)tr.classList.add('no-personal');
+        else if(isDup)tr.classList.add('duplicated');
+        
+        // Actualizar badge
+        const badgeContainer=tr.querySelector('.labor-cell');
+        if(badgeContainer){
+            // Remover badges existentes
+            const oldBadge=badgeContainer.querySelector('.labor-badge');
+            if(oldBadge)oldBadge.remove();
+            
+            // Agregar nuevo badge si aplica
+            let badgeHTML='';
+            if(p.esNueva)badgeHTML='<span class="labor-badge badge-nueva">NUEVA</span>';
+            else if(isInc)badgeHTML='<span class="labor-badge badge-inc">INC</span>';
+            else if(isNoPer)badgeHTML='<span class="labor-badge badge-noper">SIN</span>';
+            else if(isDup)badgeHTML='<span class="labor-badge badge-dup">DUP</span>';
+            
+            if(badgeHTML)badgeContainer.insertAdjacentHTML('beforeend',badgeHTML);
+        }
+    });
+    
+    // Actualizar stat de labores
+    document.getElementById('statLabores').textContent=progs.length;
 }
 
 function actualizarTotales(){
