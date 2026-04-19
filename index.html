@@ -839,21 +839,39 @@ function cargarArchivo(event){const file=event.target.files[0];if(!file)return;c
 function exportarExcel(){
     if(progs.length===0){showToast('Sin datos','','warning');return;}
     
-    // Obtener fechas de la semana actual
-    const fechasCols = diasSemana.map(d => d.str); // formato YYYY-MM-DD
+    // Formato vertical: una fila por cada día, Fecha al inicio
+    let csv='\uFEFF'+'Fecha;Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Jefe;Turno;Cantidad\n';
     
-    // Header con fechas completas
-    let csv='\uFEFF'+'Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Jefe;Turno;'+fechasCols.join(';')+';Total\n';
-    
+    let totalFilas = 0;
     progs.forEach(p=>{
-        let tot=0;DIAS.forEach(d=>tot+=(p.dias&&p.dias[d])||0);
-        csv+=[p.fundo||'',p.cultivo||'',p.area||'',p.grupo||'',p.labor||'',p.cc||'',p.jefe||'',p.turno||'DIA',
-            (p.dias&&p.dias.LUN)||0,(p.dias&&p.dias.MAR)||0,(p.dias&&p.dias.MIE)||0,(p.dias&&p.dias.JUE)||0,
-            (p.dias&&p.dias.VIE)||0,(p.dias&&p.dias.SAB)||0,(p.dias&&p.dias.DOM)||0,tot].join(';')+'\n';
+        DIAS.forEach((d,idx)=>{
+            const cantidad = (p.dias && p.dias[d]) || 0;
+            if(cantidad > 0 && diasSemana[idx]){
+                // Formatear fecha como DD/MM/YYYY
+                const fechaISO = diasSemana[idx].str; // 2026-04-12
+                const partes = fechaISO.split('-');
+                const fechaFormato = partes[2] + '/' + partes[1] + '/' + partes[0]; // 12/04/2026
+                
+                csv+=[
+                    fechaFormato,
+                    p.fundo||'',
+                    p.cultivo||'',
+                    p.area||'',
+                    p.grupo||'',
+                    p.labor||'',
+                    p.cc||'',
+                    p.jefe||'',
+                    p.turno||'DIA',
+                    cantidad
+                ].join(';')+'\n';
+                totalFilas++;
+            }
+        });
     });
+    
     const b=new Blob([csv],{type:'text/csv;charset=utf-8;'});
     const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Prog_S${semanaActual}_${anioActual}.csv`;a.click();
-    showToast('Exportado',`${progs.length} labores`,'success');
+    showToast('Exportado',`${totalFilas} registros`,'success');
 }
 
 function navegarInput(event,row,col){const key=event.key;if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Enter','Tab'].includes(key))return;event.preventDefault();let newRow=row,newCol=col;if(key==='ArrowRight'||(key==='Tab'&&!event.shiftKey)){if(col<6)newCol=col+1;}else if(key==='ArrowLeft'||(key==='Tab'&&event.shiftKey)){if(col>0)newCol=col-1;}else if(key==='ArrowDown'||key==='Enter'){if(row<progs.length-1)newRow=row+1;}else if(key==='ArrowUp'){if(row>0)newRow=row-1;}const newInput=document.querySelector(`input.day-input[data-row="${newRow}"][data-col="${newCol}"]`);if(newInput){newInput.focus();newInput.select();}}
