@@ -839,24 +839,23 @@ function cargarArchivo(event){const file=event.target.files[0];if(!file)return;c
 function exportarExcel(){
     if(progs.length===0){showToast('Sin datos','','warning');return;}
     
-    // Formato vertical: una fila por cada día, Fecha al inicio
-    let csv='\uFEFF'+'Fecha;Fundo;Cultivo;Area;Grupo Labor;Labor;CC;Jefe;Turno;Cantidad\n';
+    // Formato vertical: Fecha;Fundo;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Turno;Cantidad
+    let csv='\uFEFF'+'Fecha;Fundo;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Turno;Cantidad\n';
     
     let totalFilas = 0;
     progs.forEach(p=>{
         DIAS.forEach((d,idx)=>{
             const cantidad = (p.dias && p.dias[d]) || 0;
             if(cantidad > 0 && diasSemana[idx]){
-                // Formatear fecha como DD/MM/YYYY
-                const fechaISO = diasSemana[idx].str; // 2026-04-12
+                const fechaISO = diasSemana[idx].str;
                 const partes = fechaISO.split('-');
-                const fechaFormato = partes[2] + '/' + partes[1] + '/' + partes[0]; // 12/04/2026
+                const fechaFormato = partes[2] + '/' + partes[1] + '/' + partes[0];
                 
                 csv+=[
                     fechaFormato,
                     p.fundo||'',
-                    p.cultivo||'',
                     p.area||'',
+                    p.cultivo||'',
                     p.grupo||'',
                     p.labor||'',
                     p.cc||'',
