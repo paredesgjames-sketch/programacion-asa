@@ -112,6 +112,16 @@
         .search-count { font-size: 8px; color: #64748b; margin-top: 6px; }
         .search-info { font-size: 9px; color: #64748b; padding: 12px; text-align: center; background: #f8fafc; border-radius: 4px; }
         
+        .filter-table-box { background: #fff; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .filter-table-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .filter-table-header span:first-child { font-size: 10px; font-weight: 600; color: #1a1a2e; }
+        .filter-table-header input { flex: 1; min-width: 200px; padding: 6px 10px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 10px; transition: border-color 0.2s; }
+        .filter-table-header input:focus { outline: none; border-color: #10b981; }
+        .btn-limpiar-filtro { background: #ef4444; color: #fff; border: none; border-radius: 4px; padding: 6px 10px; cursor: pointer; font-size: 9px; font-weight: 600; }
+        .btn-limpiar-filtro:hover { background: #dc2626; }
+        .filter-count { font-size: 9px; color: #64748b; font-weight: 600; }
+        tr.fila-oculta { display: none !important; }
+        
         .table-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
         .table-scroll { overflow-x: auto; max-height: calc(100vh - 340px); }
         table { width: 100%; border-collapse: collapse; }
@@ -335,6 +345,16 @@
         <div class="alert-box warning" id="alertDuplicates"><div class="alert-icon">⚠️</div><div class="alert-text"><div class="alert-title">Duplicadas</div><div class="alert-msg" id="alertDupMsg"></div></div></div>
         <div class="alert-box warning" id="alertIncomplete" style="border-color:#ef4444;background:linear-gradient(135deg,#fee2e2,#fecaca);"><div class="alert-icon">❌</div><div class="alert-text"><div class="alert-title" style="color:#991b1b;">Incompletas</div><div class="alert-msg" id="alertIncMsg" style="color:#b91c1c;"></div></div></div>
         <div class="alert-box warning" id="alertNoPersonal" style="border-color:#f59e0b;"><div class="alert-icon">👥</div><div class="alert-text"><div class="alert-title" style="color:#92400e;">Sin personal</div><div class="alert-msg" id="alertNoPerMsg" style="color:#a16207;"></div></div></div>
+        
+        <!-- Filtro para labores añadidas -->
+        <div class="filter-table-box">
+            <div class="filter-table-header">
+                <span>🔎 Filtrar labores añadidas:</span>
+                <input type="text" id="filtroTabla" placeholder="Buscar por labor, grupo, área, fundo, jefe..." oninput="filtrarTabla()">
+                <button class="btn-limpiar-filtro" onclick="limpiarFiltroTabla()">✕</button>
+                <span class="filter-count" id="filterCount"></span>
+            </div>
+        </div>
         
         <div class="table-card">
             <div class="table-scroll">
@@ -618,7 +638,7 @@ function renderInterno(){
                 else if(isNoPer)badge='<span class="labor-badge badge-noper">SIN</span>';
                 else if(isDup)badge='<span class="labor-badge badge-dup">DUP</span>';
                 
-                html+=`<tr class="${rowClass}">`;
+                html+=`<tr class="${rowClass}" data-prog-row="${i}">`;
                 html+=`<td class="col-grupo">${selGrupoHTML(i,p)}</td>`;
                 html+=`<td class="col-labor"><div class="labor-cell">${selLaborHTML(i,p)}${badge}</div></td>`;
                 html+=`<td class="col-turno">${turnoHTML(i,p.turno)}</td>`;
@@ -1031,6 +1051,100 @@ function exportarExcel(){
 }
 
 function navegarInput(event,row,col){const key=event.key;if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Enter','Tab'].includes(key))return;event.preventDefault();let newRow=row,newCol=col;if(key==='ArrowRight'||(key==='Tab'&&!event.shiftKey)){if(col<6)newCol=col+1;}else if(key==='ArrowLeft'||(key==='Tab'&&event.shiftKey)){if(col>0)newCol=col-1;}else if(key==='ArrowDown'||key==='Enter'){if(row<progs.length-1)newRow=row+1;}else if(key==='ArrowUp'){if(row>0)newRow=row-1;}const newInput=document.querySelector(`input.day-input[data-row="${newRow}"][data-col="${newCol}"]`);if(newInput){newInput.focus();newInput.select();}}
+
+// Filtro de labores añadidas (como Excel)
+let filtroTablaTexto = '';
+
+function filtrarTabla(){
+    filtroTablaTexto = document.getElementById('filtroTabla').value.toLowerCase().trim();
+    
+    if(!filtroTablaTexto){
+        // Mostrar todo
+        document.querySelectorAll('tr[data-prog-row]').forEach(tr => tr.classList.remove('fila-oculta'));
+        document.querySelectorAll('tr.fundo-area-row, tr.subtotal-area, tr.total-fundo').forEach(tr => tr.classList.remove('fila-oculta'));
+        document.getElementById('filterCount').textContent = '';
+        return;
+    }
+    
+    // Filtrar filas de datos
+    let visibles = 0;
+    let fundosVisibles = new Set();
+    let areasVisibles = new Set();
+    
+    progs.forEach((p, i) => {
+        const textoFila = [
+            p.fundo || '',
+            p.cultivo || '',
+            p.area || '',
+            p.grupo || '',
+            p.labor || '',
+            p.jefe || '',
+            p.turno || ''
+        ].join(' ').toLowerCase();
+        
+        const coincide = textoFila.includes(filtroTablaTexto);
+        const tr = document.querySelector(`tr[data-prog-row="${i}"]`);
+        
+        if(tr){
+            if(coincide){
+                tr.classList.remove('fila-oculta');
+                visibles++;
+                fundosVisibles.add(p.fundo || 'Sin Fundo');
+                areasVisibles.add(`${p.fundo}|${p.area}`);
+            } else {
+                tr.classList.add('fila-oculta');
+            }
+        }
+    });
+    
+    // Mostrar/ocultar filas de grupo (fundo-area-row)
+    document.querySelectorAll('tr.fundo-area-row').forEach(tr => {
+        const texto = tr.textContent;
+        // Extraer fundo y área del texto
+        let mostrar = false;
+        areasVisibles.forEach(key => {
+            const [f, a] = key.split('|');
+            if(texto.includes(f) && texto.includes(a)) mostrar = true;
+        });
+        tr.classList.toggle('fila-oculta', !mostrar);
+    });
+    
+    // Mostrar/ocultar subtotales
+    document.querySelectorAll('tr.subtotal-area').forEach((tr, idx) => {
+        // Mostrar si hay filas visibles en esa área
+        const prevRows = [];
+        let prev = tr.previousElementSibling;
+        while(prev && !prev.classList.contains('fundo-area-row') && !prev.classList.contains('subtotal-area')){
+            if(prev.hasAttribute('data-prog-row')) prevRows.push(prev);
+            prev = prev.previousElementSibling;
+        }
+        const tieneVisibles = prevRows.some(r => !r.classList.contains('fila-oculta'));
+        tr.classList.toggle('fila-oculta', !tieneVisibles);
+    });
+    
+    // Mostrar/ocultar totales de fundo
+    document.querySelectorAll('tr.total-fundo').forEach(tr => {
+        const texto = tr.textContent;
+        let mostrar = false;
+        fundosVisibles.forEach(f => {
+            if(texto.includes(f)) mostrar = true;
+        });
+        tr.classList.toggle('fila-oculta', !mostrar);
+    });
+    
+    // Siempre mostrar total general si hay algo visible
+    const totalGeneral = document.querySelector('tr.total-row');
+    if(totalGeneral) totalGeneral.classList.toggle('fila-oculta', visibles === 0);
+    
+    document.getElementById('filterCount').textContent = `${visibles} de ${progs.length} labores`;
+}
+
+function limpiarFiltroTabla(){
+    document.getElementById('filtroTabla').value = '';
+    filtroTablaTexto = '';
+    document.querySelectorAll('.fila-oculta').forEach(tr => tr.classList.remove('fila-oculta'));
+    document.getElementById('filterCount').textContent = '';
+}
 </script>
 </body>
 </html>
