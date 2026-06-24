@@ -594,23 +594,9 @@ let historial=[],historialPos=-1;
 const MAX_HISTORIAL=50;
 
 document.addEventListener('DOMContentLoaded',()=>{
-    // Primero cargar metadata para saber qué semana mostrar
-    const metaStr=localStorage.getItem(claveMetadata());
-    let semInicial=null;
-    if(metaStr){try{const meta=JSON.parse(metaStr);if(meta.ultimaSemana&&meta.ultimoAnio){semInicial=getLunesDeSemana(meta.ultimaSemana,meta.ultimoAnio);}}catch(e){}}
-    // Si no hay semana guardada, usar lunes de la semana actual
-    if(!semInicial){const hoy=new Date();const lun=new Date(hoy);lun.setDate(hoy.getDate()-(hoy.getDay()===0?6:hoy.getDay()-1));semInicial=lun.toISOString().split('T')[0];}
-    document.getElementById('fechaInicio').value=semInicial;
-    // Inicializar variables de semana sin cargar progs aún
-    const f=new Date(semInicial+'T00:00:00');
-    semanaActual=getWeekNumber(f);anioActual=f.getFullYear();
-    const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-    document.getElementById('semanaNum').textContent=`Semana ${semanaActual}`;
-    diasSemana=[];
-    for(let i=0;i<7;i++){const d=new Date(f);d.setDate(f.getDate()+i);diasSemana.push({nom:DIAS[i],num:d.getDate(),mes:meses[d.getMonth()],str:d.toISOString().split('T')[0],fin:i>=5});const th=document.getElementById('th-'+DIAS[i].toLowerCase());if(th)th.querySelector('.dia-fecha').textContent=d.getDate();}
-    const ult=new Date(f);ult.setDate(f.getDate()+6);
-    document.getElementById('semanaRango').textContent=f.getDate()+' '+meses[f.getMonth()]+' - '+ult.getDate()+' '+meses[ult.getMonth()];
-    // Cargar MAESTRO y autoguardado
+    const hoy=new Date();const lun=new Date(hoy);lun.setDate(hoy.getDate()-(hoy.getDay()===0?6:hoy.getDay()-1));
+    document.getElementById('fechaInicio').value=lun.toISOString().split('T')[0];
+    actualizarSemana();
     cargarMaestro();
     cargarAutoGuardado();
     document.addEventListener('keydown',(e)=>{if(e.ctrlKey||e.metaKey){if(e.key==='s'){e.preventDefault();guardarArchivo();}if(e.key==='e'){e.preventDefault();exportarExcel();}if(e.key==='z'){e.preventDefault();deshacer();}if(e.key==='y'){e.preventDefault();rehacer();}}});
@@ -744,131 +730,35 @@ function rehacer(){if(historialPos<historial.length-1){historialPos++;restaurarE
 function restaurarEstado(){const e=JSON.parse(historial[historialPos]);progs=e.progs;laboresCustom=e.laboresCustom;actualizarBotonesHistorial();renderSinHistorial();}
 function actualizarBotonesHistorial(){document.getElementById('btnUndo').disabled=historialPos<=0;document.getElementById('btnRedo').disabled=historialPos>=historial.length-1;}
 
-// ── SISTEMA DE GUARDADO POR SEMANA ──
-// Cada semana tiene su propia clave: asa_prog_ANIO_SEMANA
-// Al cambiar de semana, carga los progs de esa semana
-// Las labores sin días se copian como plantilla a la nueva semana
-
-function claveLocal(anio,sem){return`asa_prog_${anio}_${String(sem).padStart(2,'0')}`;}
-function claveMetadata(){return'asa_meta';}
-
+// ── GUARDADO SIMPLE (una sola clave, igual que antes) ──
 function guardarEnLocal(){
-    const clave=claveLocal(anioActual,semanaActual);
     const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};
-    try{localStorage.setItem(clave,JSON.stringify(data));}catch(e){console.warn('localStorage lleno');}
-    // Guardar metadata global (usuario, última semana visitada)
-    const meta={usuario:document.getElementById('userName').value,ultimaSemana:semanaActual,ultimoAnio:anioActual,fecha:new Date().toISOString()};
-    try{localStorage.setItem(claveMetadata(),JSON.stringify(meta));}catch(e){}
+    localStorage.setItem('asa_programacion',JSON.stringify(data));
     const indicator=document.getElementById('autosaveIndicator');
     indicator.classList.add('show');setTimeout(()=>indicator.classList.remove('show'),1500);
 }
 
 function guardarEnLocalSilencioso(){
-    const clave=claveLocal(anioActual,semanaActual);
     const data={progs,laboresCustom,semana:semanaActual,anio:anioActual,usuario:document.getElementById('userName').value,fecha:new Date().toISOString()};
-    try{localStorage.setItem(clave,JSON.stringify(data));}catch(e){}
-    const meta={usuario:document.getElementById('userName').value,ultimaSemana:semanaActual,ultimoAnio:anioActual,fecha:new Date().toISOString()};
-    try{localStorage.setItem(claveMetadata(),JSON.stringify(meta));}catch(e){}
-}
-
-function cargarProgsDeSemana(anio,sem){
-    // Buscar datos de esa semana específica
-    const clave=claveLocal(anio,sem);
-    const saved=localStorage.getItem(clave);
-    if(saved){
-        try{
-            const data=JSON.parse(saved);
-            progs=data.progs||[];
-            laboresCustom=data.laboresCustom||[];
-            if(data.usuario)document.getElementById('userName').value=data.usuario;
-            historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;
-            return true;
-        }catch(e){return false;}
-    }
-    return false;
+    localStorage.setItem('asa_programacion',JSON.stringify(data));
 }
 
 function cargarAutoGuardado(){
-    // 1. Intentar recuperar metadata (última semana visitada)
-    const metaStr=localStorage.getItem(claveMetadata());
-    let semRecuperar=semanaActual, anioRecuperar=anioActual, usuarioGuardado='';
-    if(metaStr){
+    const saved=localStorage.getItem('asa_programacion');
+    if(saved){
         try{
-            const meta=JSON.parse(metaStr);
-            semRecuperar=meta.ultimaSemana||semanaActual;
-            anioRecuperar=meta.ultimoAnio||anioActual;
-            usuarioGuardado=meta.usuario||'';
+            const data=JSON.parse(saved);
+            if(data.progs&&data.progs.length>0){
+                progs=data.progs;
+                laboresCustom=data.laboresCustom||[];
+                if(data.usuario)document.getElementById('userName').value=data.usuario;
+                historial=[JSON.stringify({progs,laboresCustom})];
+                historialPos=0;
+                renderSinHistorial();
+                showToast('📂 Recuperado',`${progs.length} labores guardadas`,'info');
+            }
         }catch(e){}
     }
-    // 2. Restaurar usuario
-    if(usuarioGuardado)document.getElementById('userName').value=usuarioGuardado;
-    // 3. Cargar progs de la semana recuperada
-    const ok=cargarProgsDeSemana(semRecuperar,anioRecuperar);
-    if(ok && progs.length>0){
-        // Si la semana guardada difiere de la que muestra el input, actualizar el input
-        if(semRecuperar!==semanaActual || anioRecuperar!==anioActual){
-            // Calcular la fecha lunes de esa semana
-            const fecha=getLunesDeSemana(semRecuperar,anioRecuperar);
-            if(fecha){
-                document.getElementById('fechaInicio').value=fecha;
-                actualizarSemana(); // Esto actualiza semanaActual/anioActual y hace render
-            }
-        } else {
-            renderSinHistorial();
-        }
-        showToast('📂 Recuperado',`S${semRecuperar}: ${progs.length} labores`,'info');
-    }
-}
-
-function getLunesDeSemana(sem,anio){
-    // ISO 8601: semana 1 = semana que contiene el primer jueves del año
-    const d=new Date(anio,0,1);
-    const dia=d.getDay()||7; // 1=lun ... 7=dom
-    // Ir al lunes de la semana 1
-    if(dia<=4) d.setDate(d.getDate()-(dia-1));
-    else d.setDate(d.getDate()+(8-dia));
-    // Avanzar (sem-1) semanas
-    d.setDate(d.getDate()+(sem-1)*7);
-    return d.toISOString().split('T')[0];
-}
-
-// Al cambiar semana: guardar semana actual, cargar la nueva
-function actualizarSemanaYCargar(fecha){
-    // Guardar semana actual antes de cambiar
-    if(progs.length>0) guardarEnLocalSilencioso();
-    // Actualizar variables de semana
-    let f=new Date(fecha+'T00:00:00');
-    const dia=f.getDay();
-    if(dia!==1){f.setDate(f.getDate()+(dia===0?-6:1-dia));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];}
-    const semAnterior=semanaActual, anioAnterior=anioActual;
-    semanaActual=getWeekNumber(f);anioActual=f.getFullYear();
-    // Actualizar UI de semana
-    document.getElementById('semanaNum').textContent=`Semana ${semanaActual}`;
-    diasSemana=[];
-    const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-    for(let i=0;i<7;i++){const d=new Date(f);d.setDate(f.getDate()+i);diasSemana.push({nom:DIAS[i],num:d.getDate(),mes:meses[d.getMonth()],str:d.toISOString().split('T')[0],fin:i>=5});const th=document.getElementById('th-'+DIAS[i].toLowerCase());if(th)th.querySelector('.dia-fecha').textContent=d.getDate();}
-    const ult=new Date(f);ult.setDate(f.getDate()+6);
-    document.getElementById('semanaRango').textContent=f.getDate()+' '+meses[f.getMonth()]+' - '+ult.getDate()+' '+meses[ult.getMonth()];
-    // Cargar progs de la nueva semana
-    const ok=cargarProgsDeSemana(semanaActual,anioActual);
-    if(!ok){
-        // Semana nueva sin datos: copiar labores de semana anterior como plantilla (sin días)
-        if(progs.length>0 && (semanaActual!==semAnterior||anioActual!==anioAnterior)){
-            // Preguntar si quiere copiar plantilla
-            const plantilla=progs.map(p=>({...p,id:Date.now()+Math.random(),dias:{},esNueva:p.esNueva}));
-            progs=plantilla;
-            showToast('📋 Plantilla copiada',`${plantilla.length} labores de S${semAnterior} (sin días)`,'info');
-        } else {
-            progs=[];
-        }
-        laboresCustom=[];
-        historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;
-    } else {
-        showToast('📂 Cargado',`S${semanaActual}: ${progs.length} labores`,'info');
-    }
-    actualizarTodosFiltros();
-    renderSinHistorial();
-    buscarLabores();
 }
 
 function showToast(title,msg,type='success'){const container=document.getElementById('toastContainer');const toast=document.createElement('div');toast.className=`toast ${type}`;const icons={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};toast.innerHTML=`<div class="toast-icon">${icons[type]}</div><div class="toast-content"><div class="toast-title">${title}</div>${msg?`<div class="toast-msg">${msg}</div>`:''}</div><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;container.appendChild(toast);setTimeout(()=>toast.remove(),3000);}
@@ -902,16 +792,24 @@ function ejecutarCambioSemana(dir){
     if(!fi)return;
     const f=new Date(fi+'T00:00:00');
     f.setDate(f.getDate()+(dir*7));
-    const nuevaFecha=f.toISOString().split('T')[0];
-    document.getElementById('fechaInicio').value=nuevaFecha;
-    actualizarSemanaYCargar(nuevaFecha);
+    document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];
+    actualizarSemana();
 }
 
-// Wrapper para compatibilidad con onchange del input de fecha
 function actualizarSemana(){
     const fi=document.getElementById('fechaInicio').value;
     if(!fi)return;
-    actualizarSemanaYCargar(fi);
+    let f=new Date(fi+'T00:00:00');
+    const dia=f.getDay();
+    if(dia!==1){f.setDate(f.getDate()+(dia===0?-6:1-dia));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];}
+    semanaActual=getWeekNumber(f);anioActual=f.getFullYear();
+    document.getElementById('semanaNum').textContent=`Semana ${semanaActual}`;
+    diasSemana=[];
+    const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    for(let i=0;i<7;i++){const d=new Date(f);d.setDate(f.getDate()+i);diasSemana.push({nom:DIAS[i],num:d.getDate(),mes:meses[d.getMonth()],str:d.toISOString().split('T')[0],fin:i>=5});const th=document.getElementById('th-'+DIAS[i].toLowerCase());if(th)th.querySelector('.dia-fecha').textContent=d.getDate();}
+    const ult=new Date(f);ult.setDate(f.getDate()+6);
+    document.getElementById('semanaRango').textContent=f.getDate()+' '+meses[f.getMonth()]+' - '+ult.getDate()+' '+meses[ult.getMonth()];
+    renderSinHistorial();
 }
 
 function cancelarCambioSemana(){
