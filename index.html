@@ -427,49 +427,61 @@
                 </div>
 
                 <!-- Filtros -->
-                <div class="sidebar-section filtros-white">
-                    <div class="sidebar-section-title">🎯 Filtros de selección</div>
+                <div class="sidebar-section" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);">
+                    <div class="sidebar-section-title" style="color:#10b981;font-size:9px;font-weight:800;letter-spacing:1.5px;">🎯 FILTROS DE SELECCIÓN</div>
                     <div class="filter-item">
-                        <label>Fundo</label>
+                        <label style="color:rgba(255,255,255,0.6);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Jefe</label>
+                        <div class="single-select" id="singleSelectJefe">
+                            <div class="single-select-display" onclick="toggleSingleSelect('singleSelectJefe')"><span class="placeholder">-- Seleccionar --</span></div>
+                            <div class="single-select-dropdown" id="singleSelectJefe_dropdown"></div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label style="color:rgba(255,255,255,0.6);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Fundo</label>
                         <div class="single-select" id="singleSelectFundo">
-                            <div class="single-select-display filtros-white-sel" onclick="toggleSingleSelect('singleSelectFundo')"><span class="placeholder">-- Seleccionar --</span></div>
+                            <div class="single-select-display" onclick="toggleSingleSelect('singleSelectFundo')"><span class="placeholder">-- Seleccionar --</span></div>
                             <div class="single-select-dropdown" id="singleSelectFundo_dropdown"></div>
                         </div>
                     </div>
                     <div class="filter-item">
-                        <label>Área</label>
+                        <label style="color:rgba(255,255,255,0.6);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Área</label>
                         <div class="single-select" id="singleSelectArea">
-                            <div class="single-select-display filtros-white-sel" onclick="toggleSingleSelect('singleSelectArea')"><span class="placeholder">-- Seleccionar --</span></div>
+                            <div class="single-select-display" onclick="toggleSingleSelect('singleSelectArea')"><span class="placeholder">-- Seleccionar --</span></div>
                             <div class="single-select-dropdown" id="singleSelectArea_dropdown"></div>
                         </div>
                     </div>
-                    <div class="filter-item">
-                        <label>Jefe</label>
-                        <div class="single-select" id="singleSelectJefe">
-                            <div class="single-select-display filtros-white-sel" onclick="toggleSingleSelect('singleSelectJefe')"><span class="placeholder">-- Seleccionar --</span></div>
-                            <div class="single-select-dropdown" id="singleSelectJefe_dropdown"></div>
-                        </div>
-                    </div>
-                    <div class="sidebar-actions" style="margin-top:4px;">
+                    <div class="sidebar-actions" style="margin-top:6px;">
                         <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
                         <button class="btn-agregar" id="btnAgregar" onclick="agregarFila()" disabled>+ Agregar</button>
                     </div>
                 </div>
 
-                <!-- Buscador MAESTRO -->
-                <div class="search-box sidebar-section" id="searchBox" style="flex:1;min-height:0;">
-                    <div class="search-header">
-                        <h4>🔍 Buscar en MAESTRO</h4>
-                        <button class="btn-export-search" onclick="exportarBusqueda()">📥</button>
+                <!-- Buscador MAESTRO — tabla fija, siempre visible -->
+                <div class="sidebar-section" id="searchBox" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:9px;font-weight:800;color:#10b981;letter-spacing:1px;">🔍 BUSCAR EN MAESTRO</span>
+                        <button class="btn-export-search" onclick="exportarBusqueda()" title="Exportar búsqueda">📥</button>
                     </div>
-                    <div class="search-filters">
-                        <div class="search-filter-group">
-                            <input type="text" id="searchText" placeholder="Labor, grupo..." onkeyup="buscarLabores()">
-                        </div>
+                    <div style="display:flex;gap:4px;">
+                        <input type="text" id="searchText" placeholder="Labor, grupo..." onkeyup="buscarLabores()"
+                            style="flex:1;padding:5px 8px;border:1.5px solid rgba(255,255,255,0.15);border-radius:5px;font-size:9px;background:rgba(255,255,255,0.08);color:#fff;min-width:0;">
                         <button class="btn-search" onclick="buscarLabores()">Buscar</button>
                     </div>
-                    <div class="search-results" style="flex:1;min-height:120px;">
-                        <table><thead><tr><th>Fundo</th><th>Cultivo</th><th>Área</th><th>Grupo</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"></tbody></table>
+                    <!-- Tabla resultados: scroll interno, siempre fija en el sidebar -->
+                    <div style="flex:1;min-height:0;overflow-y:auto;border-radius:6px;border:1px solid rgba(255,255,255,0.1);">
+                        <table style="width:100%;border-collapse:collapse;font-size:8px;">
+                            <thead>
+                                <tr>
+                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Fundo</th>
+                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Cultivo</th>
+                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Área</th>
+                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Grupo</th>
+                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Labor</th>
+                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;position:sticky;top:0;z-index:1;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchResultsBody"></tbody>
+                        </table>
                     </div>
                     <div class="search-count" id="searchCount"></div>
                 </div>
