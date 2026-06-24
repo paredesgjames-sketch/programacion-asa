@@ -295,10 +295,30 @@
         .autosave-indicator { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 9px; font-weight: 600; display: none; align-items: center; gap: 6px; z-index: 1000; box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
         .autosave-indicator.show { display: flex; }
         
-        .shortcuts-hint { position: fixed; bottom: 20px; left: 20px; background: rgba(26,26,46,0.9); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 7px; z-index: 1000; }
-        .shortcuts-hint kbd { background: rgba(255,255,255,0.2); padding: 1px 4px; border-radius: 3px; margin: 0 2px; }
+        .shortcuts-hint { display: none; }
         
         .modal-bg#modalPassword .modal { max-width: 300px; }
+
+        /* Modal resumen pre-exportar */
+        .modal-resumen { max-width: 680px !important; width: 95% !important; }
+        .resumen-bloqueo { background: linear-gradient(135deg,#fee2e2,#fecaca); border:1px solid #ef4444; border-radius:8px; padding:10px 14px; margin-bottom:12px; }
+        .resumen-bloqueo-title { font-size:11px; font-weight:700; color:#991b1b; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+        .resumen-bloqueo-list { list-style:none; }
+        .resumen-bloqueo-list li { font-size:9px; color:#b91c1c; padding:2px 0; border-bottom:1px solid rgba(239,68,68,0.2); }
+        .resumen-bloqueo-list li:last-child { border:none; }
+        .resumen-tabla-wrap { overflow-x:auto; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; }
+        .resumen-tabla { width:100%; border-collapse:collapse; font-size:8px; }
+        .resumen-tabla th { background:linear-gradient(135deg,#1a1a2e,#16213e); color:#fff; padding:5px 6px; text-align:left; font-size:8px; font-weight:600; text-transform:uppercase; white-space:nowrap; }
+        .resumen-tabla th.num { text-align:center; }
+        .resumen-tabla td { padding:4px 6px; border-bottom:1px solid #f1f5f9; font-size:8px; }
+        .resumen-tabla td.num { text-align:center; font-weight:700; }
+        .resumen-tabla tr:hover td { background:#f8fafc; }
+        .resumen-tabla tr.subtotal td { background:linear-gradient(135deg,#d1fae5,#a7f3d0); font-weight:700; font-size:8px; }
+        .resumen-tabla tr.total-g td { background:linear-gradient(135deg,#7c3aed,#6d28d9); color:#fff; font-weight:800; font-size:9px; }
+        .resumen-num-badge { display:inline-block; background:linear-gradient(135deg,#10b981,#059669); color:#fff; padding:1px 6px; border-radius:4px; font-weight:700; min-width:24px; text-align:center; }
+        .resumen-num-badge.zero { background:#e2e8f0; color:#94a3b8; }
+        .resumen-semana-info { font-size:9px; color:#64748b; margin-bottom:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .resumen-semana-info strong { color:#1a1a2e; }
     </style>
 </head>
 <body>
@@ -457,6 +477,26 @@
     </div>
 
     <div class="modal-bg" id="modalPassword"><div class="modal"><h3>🔐 Contraseña</h3><div class="modal-field"><label>Ingrese contraseña:</label><input type="password" id="exportPassword" placeholder="..." onkeyup="if(event.key==='Enter')verificarPassword()"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button><button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button></div></div></div>
+
+    <!-- Modal resumen pre-exportar -->
+    <div class="modal-bg" id="modalResumen">
+        <div class="modal modal-resumen">
+            <h3>📊 Resumen de Programación — Semana <span id="resumenSemNum"></span></h3>
+            <div class="resumen-semana-info">
+                <span>📅 <strong id="resumenRango"></strong></span>
+                <span>🏷️ <strong id="resumenTotalLabores"></strong> labores</span>
+                <span>👥 <strong id="resumenTotalPersonal"></strong> personas·día</span>
+            </div>
+            <!-- Bloqueos -->
+            <div id="resumenBloqueos"></div>
+            <!-- Tabla resumen -->
+            <div class="resumen-tabla-wrap" id="resumenTablaWrap"></div>
+            <div class="modal-actions" style="margin-top:14px;">
+                <button class="btn btn-cancel" onclick="document.getElementById('modalResumen').classList.remove('open')">Cerrar</button>
+                <button class="btn btn-confirm" id="btnConfirmarExport" onclick="ejecutarExportFinal()">✅ Exportar CSV</button>
+            </div>
+        </div>
+    </div>
     <div class="modal-bg" id="modalNueva"><div class="modal"><h3>➕ Crear Nueva Labor</h3><input type="hidden" id="modalIdx"><div class="modal-field"><label>Grupo Labor</label><div class="input-with-btn"><select id="mGrupo"></select><input type="text" id="mGrupoNuevo" placeholder="Nuevo..." style="display:none;"><button type="button" class="btn-toggle" onclick="toggleGrupoInput()">+</button></div></div><div class="modal-field"><label>Nombre de la Labor</label><input type="text" id="mNombre" placeholder="Ingrese el nombre"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModal()">Cancelar</button><button class="btn btn-confirm" onclick="crearLabor()">Crear</button></div></div></div>
     <div class="confirm-dialog" id="confirmDialog"><div class="confirm-box"><div class="confirm-icon" id="confirmIcon">⚠️</div><div class="confirm-title" id="confirmTitle">Confirmar</div><div class="confirm-msg" id="confirmMsg">¿Está seguro?</div><div class="confirm-actions"><button class="btn btn-no" onclick="cerrarConfirm()">No</button><button class="btn btn-yes" id="confirmYes">Sí</button></div></div></div>
 
@@ -1102,46 +1142,139 @@ function cargarArchivo(event){const file=event.target.files[0];if(!file)return;c
 function exportarExcel(){
     if(progs.length===0){showToast('Sin datos','Agregue labores primero','warning');return;}
     
-    // Verificar que al menos una labor tenga personal en algún día
-    const tienePersonal=progs.some(p=>DIAS.some(d=>(p.dias&&p.dias[d]||0)>0));
-    if(!tienePersonal){
-        showToast('Sin personal asignado','Ingrese al menos 1 persona en cualquier día antes de exportar','warning');
-        return;
+    // ── VALIDACIONES ──
+    const duplicados=detectarDuplicados();
+    const incompletos=detectarIncompletos();
+    
+    // Labores completas (con fundo/area/grupo/labor) sin personal
+    const laborasSinPersonal=progs.filter((p,i)=>{
+        if(!p.fundo||!p.cultivo||!p.area||!p.grupo||!p.labor)return false; // incompletas las ignoramos aquí
+        return !DIAS.some(d=>(p.dias&&p.dias[d]||0)>0);
+    });
+    
+    // Labores incompletas (campos vacíos)
+    const laborasIncompletas=progs.filter((p,i)=>incompletos.has(i));
+    
+    // Labores duplicadas
+    const laborasDuplicadas=[...duplicados].map(i=>progs[i]).filter(Boolean);
+    
+    // ── CONSTRUIR BLOQUEOS ──
+    let bloqueosHTML='';
+    let hayBloqueo=false;
+    
+    if(laborasIncompletas.length>0){
+        hayBloqueo=true;
+        const lista=laborasIncompletas.map(p=>`<li>⚠️ ${p.fundo||'?'} | ${p.area||'?'} | ${p.grupo||'Sin grupo'} | ${p.labor||'Sin labor'}</li>`).join('');
+        bloqueosHTML+=`<div class="resumen-bloqueo"><div class="resumen-bloqueo-title">❌ Labores incompletas (${laborasIncompletas.length}) — Complételas antes de exportar</div><ul class="resumen-bloqueo-list">${lista}</ul></div>`;
     }
     
-    // Formato: Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva
-    let csv='\uFEFF'+'Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva\n';
+    if(laborasDuplicadas.length>0){
+        hayBloqueo=true;
+        const uniq=[];const seen=new Set();
+        laborasDuplicadas.forEach(p=>{const k=`${p.fundo}|${p.area}|${p.grupo}|${p.labor}|${p.turno}`;if(!seen.has(k)){seen.add(k);uniq.push(p);}});
+        const lista=uniq.map(p=>`<li>🔁 ${p.fundo||'?'} | ${p.area||'?'} | ${p.grupo||'?'} | <strong>${p.labor||'?'}</strong> (${p.turno||'DIA'})</li>`).join('');
+        bloqueosHTML+=`<div class="resumen-bloqueo"><div class="resumen-bloqueo-title">🔁 Labores duplicadas (${uniq.length}) — Elimine los duplicados antes de exportar</div><ul class="resumen-bloqueo-list">${lista}</ul></div>`;
+    }
     
-    let totalFilas = 0;
+    if(laborasSinPersonal.length>0){
+        hayBloqueo=true;
+        const lista=laborasSinPersonal.map(p=>`<li>👥 ${p.fundo||'?'} | ${p.area||'?'} | ${p.grupo||'?'} | <strong>${p.labor||'?'}</strong></li>`).join('');
+        bloqueosHTML+=`<div class="resumen-bloqueo"><div class="resumen-bloqueo-title">👥 Labores sin personal asignado (${laborasSinPersonal.length}) — Asigne personas o elimínelas</div><ul class="resumen-bloqueo-list">${lista}</ul></div>`;
+    }
+    
+    // ── CONSTRUIR TABLA RESUMEN ──
+    // Agrupar: Jefe → Fundo → Área → días
+    const resumen={};
+    progs.forEach(p=>{
+        if(!p.fundo||!p.area)return;
+        const jefe=p.jefe||'Sin Jefe';
+        const fundo=p.fundo;
+        const area=p.area;
+        if(!resumen[jefe])resumen[jefe]={fundos:{},totDia:{},tot:0};
+        if(!resumen[jefe].fundos[fundo])resumen[jefe].fundos[fundo]={areas:{},totDia:{},tot:0};
+        if(!resumen[jefe].fundos[fundo].areas[area])resumen[jefe].fundos[fundo].areas[area]={totDia:{},tot:0};
+        DIAS.forEach(d=>{
+            const v=(p.dias&&p.dias[d])||0;
+            resumen[jefe].fundos[fundo].areas[area].totDia[d]=(resumen[jefe].fundos[fundo].areas[area].totDia[d]||0)+v;
+            resumen[jefe].fundos[fundo].areas[area].tot=(resumen[jefe].fundos[fundo].areas[area].tot||0)+v;
+            resumen[jefe].fundos[fundo].totDia[d]=(resumen[jefe].fundos[fundo].totDia[d]||0)+v;
+            resumen[jefe].fundos[fundo].tot=(resumen[jefe].fundos[fundo].tot||0)+v;
+            resumen[jefe].totDia[d]=(resumen[jefe].totDia[d]||0)+v;
+            resumen[jefe].tot=(resumen[jefe].tot||0)+v;
+        });
+    });
+    
+    // Total general
+    let grandDia={};let grandTot=0;
+    DIAS.forEach(d=>grandDia[d]=0);
+    progs.forEach(p=>DIAS.forEach(d=>{const v=(p.dias&&p.dias[d])||0;grandDia[d]+=v;grandTot+=v;}));
+    
+    // Cabecera días (solo los que tienen fecha)
+    const diasHdr=DIAS.map((d,i)=>diasSemana[i]?`<th class="num">${diasSemana[i].num}<br><span style="font-size:6px;opacity:.7">${d}</span></th>`:`<th class="num">${d}</th>`).join('');
+    
+    let tablaHTML=`<table class="resumen-tabla"><thead><tr><th>Jefe</th><th>Fundo</th><th>Área</th>${diasHdr}<th class="num">TOTAL</th></tr></thead><tbody>`;
+    
+    Object.keys(resumen).sort().forEach(jefe=>{
+        const jData=resumen[jefe];
+        Object.keys(jData.fundos).sort().forEach(fundo=>{
+            const fData=jData.fundos[fundo];
+            let primeraFila=true;
+            const numAreas=Object.keys(fData.areas).length;
+            Object.keys(fData.areas).sort().forEach(area=>{
+                const aData=fData.areas[area];
+                const jCell=primeraFila?`<td rowspan="${numAreas}" style="font-weight:700;color:#10b981;vertical-align:middle;">${jefe}</td><td rowspan="${numAreas}" style="font-weight:600;vertical-align:middle;">${fundo}</td>`:'';
+                primeraFila=false;
+                const diasCells=DIAS.map(d=>{const v=aData.totDia[d]||0;return`<td class="num"><span class="resumen-num-badge ${v===0?'zero':''}">${v}</span></td>`;}).join('');
+                const totCell=`<td class="num"><span class="resumen-num-badge">${aData.tot||0}</span></td>`;
+                tablaHTML+=`<tr>${jCell}<td>${area}</td>${diasCells}${totCell}</tr>`;
+            });
+            // Subtotal fundo
+            const fDiasCells=DIAS.map(d=>{const v=fData.totDia[d]||0;return`<td class="num"><strong>${v}</strong></td>`;}).join('');
+            tablaHTML+=`<tr class="subtotal"><td colspan="3" style="text-align:right;padding-right:8px;">Subtotal ${fundo}:</td>${fDiasCells}<td class="num"><strong>${fData.tot}</strong></td></tr>`;
+        });
+    });
+    
+    // Total general
+    const grandCells=DIAS.map(d=>`<td class="num">${grandDia[d]||0}</td>`).join('');
+    tablaHTML+=`<tr class="total-g"><td colspan="3" style="text-align:right;padding-right:8px;">TOTAL GENERAL:</td>${grandCells}<td class="num">${grandTot}</td></tr>`;
+    tablaHTML+=`</tbody></table>`;
+    
+    // ── POBLAR MODAL ──
+    document.getElementById('resumenSemNum').textContent=semanaActual;
+    document.getElementById('resumenRango').textContent=document.getElementById('semanaRango').textContent;
+    document.getElementById('resumenTotalLabores').textContent=progs.length;
+    document.getElementById('resumenTotalPersonal').textContent=grandTot;
+    document.getElementById('resumenBloqueos').innerHTML=bloqueosHTML;
+    document.getElementById('resumenTablaWrap').innerHTML=tablaHTML;
+    
+    // Deshabilitar botón exportar si hay bloqueos
+    const btnExp=document.getElementById('btnConfirmarExport');
+    btnExp.disabled=hayBloqueo;
+    btnExp.style.opacity=hayBloqueo?'0.4':'1';
+    btnExp.title=hayBloqueo?'Corrija los errores antes de exportar':'';
+    
+    document.getElementById('modalResumen').classList.add('open');
+}
+
+function ejecutarExportFinal(){
+    let csv='\uFEFF'+'Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva\n';
+    let totalFilas=0;
     progs.forEach(p=>{
         DIAS.forEach((d,idx)=>{
-            const cantidad = (p.dias && p.dias[d]) || 0;
-            if(cantidad > 0 && diasSemana[idx]){
-                const fechaISO = diasSemana[idx].str;
-                const partes = fechaISO.split('-');
-                const fechaFormato = partes[2] + '/' + partes[1] + '/' + partes[0];
-                
-                csv+=[
-                    fechaFormato,
-                    p.fundo||'',
-                    p.turno||'DIA',
-                    p.area||'',
-                    p.cultivo||'',
-                    p.grupo||'',
-                    p.labor||'',
-                    p.cc||'',
-                    p.jefe||'',
-                    cantidad,
-                    p.esNueva ? 'SI' : 'NO'
-                ].join(';')+'\n';
+            const cantidad=(p.dias&&p.dias[d])||0;
+            if(cantidad>0&&diasSemana[idx]){
+                const fechaISO=diasSemana[idx].str;
+                const partes=fechaISO.split('-');
+                const fechaFormato=partes[2]+'/'+partes[1]+'/'+partes[0];
+                csv+=[fechaFormato,p.fundo||'',p.turno||'DIA',p.area||'',p.cultivo||'',p.grupo||'',p.labor||'',p.cc||'',p.jefe||'',cantidad,p.esNueva?'SI':'NO'].join(';')+'\n';
                 totalFilas++;
             }
         });
     });
-    
     const b=new Blob([csv],{type:'text/csv;charset=utf-8;'});
     const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`Prog_S${semanaActual}_${anioActual}.csv`;a.click();
-    showToast('Exportado',`${totalFilas} registros`,'success');
+    document.getElementById('modalResumen').classList.remove('open');
+    showToast('✅ Exportado',`${totalFilas} registros CSV`,'success');
 }
 
 function navegarInput(event,row,col){const key=event.key;if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Enter','Tab'].includes(key))return;event.preventDefault();let newRow=row,newCol=col;if(key==='ArrowRight'||(key==='Tab'&&!event.shiftKey)){if(col<6)newCol=col+1;}else if(key==='ArrowLeft'||(key==='Tab'&&event.shiftKey)){if(col>0)newCol=col-1;}else if(key==='ArrowDown'||key==='Enter'){if(row<progs.length-1)newRow=row+1;}else if(key==='ArrowUp'){if(row>0)newRow=row-1;}const newInput=document.querySelector(`input.day-input[data-row="${newRow}"][data-col="${newCol}"]`);if(newInput){newInput.focus();newInput.select();}}
