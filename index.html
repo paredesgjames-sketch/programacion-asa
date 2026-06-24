@@ -465,7 +465,7 @@
                     <div style="display:flex;gap:4px;position:relative;">
                         <input type="text" id="searchText" placeholder="Labor, grupo..." 
                             onkeyup="buscarLabores()"
-                            onfocus="if(this.value.trim())buscarLabores()"
+                            onfocus="buscarLabores()"
                             autocomplete="off"
                             style="flex:1;padding:5px 8px;border:1.5px solid rgba(255,255,255,0.15);border-radius:5px;font-size:9px;background:rgba(255,255,255,0.08);color:#fff;min-width:0;">
                         <button class="btn-search" onclick="buscarLabores()">Buscar</button>
@@ -1503,7 +1503,7 @@ function buscarLabores(){
         html=`<tr><td colspan="5" style="padding:12px;text-align:center;color:rgba(255,255,255,0.4);font-size:8px;">Sin resultados</td></tr>`;
     } else {
         res.forEach((m,idx)=>{
-            html+=`<tr style="cursor:pointer;" onmouseover="this.style.background='rgba(16,185,129,0.15)'" onmouseout="this.style.background=''" >
+            html+=`<tr style="cursor:pointer;" onmouseover="this.style.background='rgba(16,185,129,0.18)'" onmouseout="this.style.background='transparent'" >
                 <td style="padding:4px 5px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;white-space:nowrap;">${m.Fundo||'-'}</td>
                 <td style="padding:4px 5px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;">${m.AREA||'-'}</td>
                 <td style="padding:4px 5px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;">${m['Grupo Labor']||'-'}</td>
