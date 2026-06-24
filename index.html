@@ -1528,10 +1528,30 @@ function buscarLabores(){
         total>50?`Mostrando 50 de ${total} labores`:`${total} labor${total!==1?'es':''}`;
     document.getElementById('searchCount').textContent='';
 
-    // Posicionar dropdown flotante debajo del input
+    // Posicionar dropdown inteligentemente (arriba o abajo según espacio)
     const rect=input.getBoundingClientRect();
+    const spaceBelow=window.innerHeight - rect.bottom - 8;
+    const spaceAbove=rect.top - 8;
+    const dropH=Math.min(420, Math.max(spaceBelow, spaceAbove) - 10);
+    
+    dropdown.style.width=Math.max(rect.width + 200, 500)+'px';
     dropdown.style.left=rect.left+'px';
-    dropdown.style.top=(rect.bottom+4)+'px';
+    
+    if(spaceBelow >= 200 || spaceBelow >= spaceAbove){
+        // Abrir hacia abajo
+        dropdown.style.top=(rect.bottom+4)+'px';
+        dropdown.style.bottom='auto';
+        dropdown.style.maxHeight=spaceBelow-8+'px';
+    } else {
+        // Abrir hacia arriba
+        dropdown.style.bottom=(window.innerHeight - rect.top + 4)+'px';
+        dropdown.style.top='auto';
+        dropdown.style.maxHeight=spaceAbove-8+'px';
+    }
+    // Ajustar el div interno de scroll también
+    const inner=dropdown.querySelector('div[style*="overflow-y"]');
+    if(inner) inner.style.maxHeight=(parseInt(dropdown.style.maxHeight)-34)+'px';
+    
     dropdown.style.display='flex';
 }
 
