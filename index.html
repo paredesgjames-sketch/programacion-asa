@@ -58,6 +58,11 @@
         .filter-item label { font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; }
         .filter-item .single-select { width: 100%; min-width: unset; }
 
+        /* Sección filtros en blanco */
+        .sidebar-section.filtros-white { background: #fff; border-color: #e2e8f0; }
+        .sidebar-section.filtros-white .sidebar-section-title { color: #64748b; }
+        .sidebar-section.filtros-white .filter-item label { color: #475569; }
+
         /* Botones sidebar */
         .sidebar-actions { display: flex; gap: 6px; }
         .btn-limpiar { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); border-radius: 5px; padding: 5px 10px; cursor: pointer; font-size: 8px; transition: all 0.15s; flex:1; }
@@ -189,6 +194,13 @@
         tr.total-row td { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-weight: 700; font-size: 10px; }
         .total-num { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a2e; padding: 3px 8px; border-radius: 4px; font-weight: 800; font-size: 11px; display: inline-block; min-width: 28px; text-align: center; }
         
+        /* Single select fondo blanco (sección filtros) */
+        .filtros-white-sel { background: #fff !important; border-color: #cbd5e1 !important; color: #1a1a2e !important; }
+        .filtros-white-sel:hover { border-color: #10b981 !important; }
+        .filtros-white-sel .placeholder { color: #94a3b8 !important; }
+        .sidebar-section.filtros-white .btn-limpiar { background: #f1f5f9; color: #64748b; border-color: #e2e8f0; }
+        .sidebar-section.filtros-white .btn-limpiar:hover { background: #e2e8f0; color: #1a1a2e; }
+
         .select-search-container { position: relative; width: 100%; }
         .select-search-container .select-display { width: 100%; padding: 2px 12px 2px 4px; border: 1px solid #e2e8f0; border-radius: 3px; font-size: 7px; background: #fff; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 16px; line-height: 12px; position: relative; }
         .select-search-container .select-display:hover { border-color: #10b981; }
@@ -341,26 +353,26 @@
                 </div>
 
                 <!-- Filtros -->
-                <div class="sidebar-section">
+                <div class="sidebar-section filtros-white">
                     <div class="sidebar-section-title">🎯 Filtros de selección</div>
                     <div class="filter-item">
                         <label>Fundo</label>
                         <div class="single-select" id="singleSelectFundo">
-                            <div class="single-select-display" onclick="toggleSingleSelect('singleSelectFundo')"><span class="placeholder">-- Seleccionar --</span></div>
+                            <div class="single-select-display filtros-white-sel" onclick="toggleSingleSelect('singleSelectFundo')"><span class="placeholder">-- Seleccionar --</span></div>
                             <div class="single-select-dropdown" id="singleSelectFundo_dropdown"></div>
                         </div>
                     </div>
                     <div class="filter-item">
                         <label>Área</label>
                         <div class="single-select" id="singleSelectArea">
-                            <div class="single-select-display" onclick="toggleSingleSelect('singleSelectArea')"><span class="placeholder">-- Seleccionar --</span></div>
+                            <div class="single-select-display filtros-white-sel" onclick="toggleSingleSelect('singleSelectArea')"><span class="placeholder">-- Seleccionar --</span></div>
                             <div class="single-select-dropdown" id="singleSelectArea_dropdown"></div>
                         </div>
                     </div>
                     <div class="filter-item">
                         <label>Jefe</label>
                         <div class="single-select" id="singleSelectJefe">
-                            <div class="single-select-display" onclick="toggleSingleSelect('singleSelectJefe')"><span class="placeholder">-- Seleccionar --</span></div>
+                            <div class="single-select-display filtros-white-sel" onclick="toggleSingleSelect('singleSelectJefe')"><span class="placeholder">-- Seleccionar --</span></div>
                             <div class="single-select-dropdown" id="singleSelectJefe_dropdown"></div>
                         </div>
                     </div>
@@ -383,7 +395,7 @@
                         <button class="btn-search" onclick="buscarLabores()">Buscar</button>
                     </div>
                     <div class="search-results" style="flex:1;min-height:120px;">
-                        <table><thead><tr><th>Fundo</th><th>Área</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"></tbody></table>
+                        <table><thead><tr><th>Fundo</th><th>Cultivo</th><th>Área</th><th>Grupo</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"></tbody></table>
                     </div>
                     <div class="search-count" id="searchCount"></div>
                 </div>
@@ -764,12 +776,21 @@ function abrirSelectSearch(id,tipo,row){
     const dropdown=document.getElementById(id+'_dropdown');
     const p=progs[row];
     let opts=[];
-    // USA getOptsParaFila que NO depende de los filtros de arriba
     if(tipo==='grupo'){opts=getOptsParaFila('grupo',{fundo:p.fundo,cultivo:p.cultivo,area:p.area});}
     else if(tipo==='labor'){opts=getOptsParaFila('labor',{fundo:p.fundo,cultivo:p.cultivo,area:p.area,grupo:p.grupo});}
     const currentVal=display.dataset.val;
     const rect=display.getBoundingClientRect();
-    dropdown.style.top=(rect.bottom+2)+'px';
+    const dropH=280;
+    const spaceBelow=window.innerHeight-rect.bottom-8;
+    const spaceAbove=rect.top-8;
+    // Si no hay espacio abajo y hay más espacio arriba: abre hacia arriba
+    if(spaceBelow<dropH && spaceAbove>spaceBelow){
+        dropdown.style.bottom=(window.innerHeight-rect.top+2)+'px';
+        dropdown.style.top='auto';
+    } else {
+        dropdown.style.top=(rect.bottom+2)+'px';
+        dropdown.style.bottom='auto';
+    }
     dropdown.style.left=Math.max(rect.left,10)+'px';
     let html=`<div class="search-input-wrapper"><input type="text" placeholder="Buscar..." id="${id}_search" onkeyup="filtrarSelectSearch('${id}')" autocomplete="off"></div>`;
     html+='<div class="select-options">';
@@ -1079,7 +1100,14 @@ function guardarArchivo(){const data={progs,laboresCustom,semana:semanaActual,an
 function cargarArchivo(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=(e)=>{try{const data=JSON.parse(e.target.result);progs=data.progs||[];laboresCustom=data.laboresCustom||[];if(data.usuario)document.getElementById('userName').value=data.usuario;historial=[JSON.stringify({progs,laboresCustom})];historialPos=0;renderSinHistorial();showToast('Cargado',`${progs.length} labores`,'success');}catch(e){showToast('Error','Archivo inválido','error');}};reader.readAsText(file);event.target.value='';}
 
 function exportarExcel(){
-    if(progs.length===0){showToast('Sin datos','','warning');return;}
+    if(progs.length===0){showToast('Sin datos','Agregue labores primero','warning');return;}
+    
+    // Verificar que al menos una labor tenga personal en algún día
+    const tienePersonal=progs.some(p=>DIAS.some(d=>(p.dias&&p.dias[d]||0)>0));
+    if(!tienePersonal){
+        showToast('Sin personal asignado','Ingrese al menos 1 persona en cualquier día antes de exportar','warning');
+        return;
+    }
     
     // Formato: Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva
     let csv='\uFEFF'+'Fecha;Fundo;Turno;Area;Cultivo;Grupo Labor;Labor;CC;Jefe;Cantidad;Nueva\n';
