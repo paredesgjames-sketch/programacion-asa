@@ -456,34 +456,54 @@
                     </div>
                 </div>
 
-                <!-- Buscador MAESTRO — tabla fija, siempre visible -->
-                <div class="sidebar-section" id="searchBox" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                <!-- Buscador MAESTRO — compacto, dropdown flotante al buscar -->
+                <div class="sidebar-section" id="searchBox" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);gap:5px;position:relative;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                         <span style="font-size:9px;font-weight:800;color:#10b981;letter-spacing:1px;">🔍 BUSCAR EN MAESTRO</span>
                         <button class="btn-export-search" onclick="exportarBusqueda()" title="Exportar búsqueda">📥</button>
                     </div>
-                    <div style="display:flex;gap:4px;">
-                        <input type="text" id="searchText" placeholder="Labor, grupo..." onkeyup="buscarLabores()"
+                    <div style="display:flex;gap:4px;position:relative;">
+                        <input type="text" id="searchText" placeholder="Labor, grupo..." 
+                            onkeyup="buscarLabores()"
+                            onfocus="if(this.value.trim())buscarLabores()"
+                            autocomplete="off"
                             style="flex:1;padding:5px 8px;border:1.5px solid rgba(255,255,255,0.15);border-radius:5px;font-size:9px;background:rgba(255,255,255,0.08);color:#fff;min-width:0;">
                         <button class="btn-search" onclick="buscarLabores()">Buscar</button>
                     </div>
-                    <!-- Tabla resultados: scroll interno, siempre fija en el sidebar -->
-                    <div style="flex:1;min-height:0;overflow-y:auto;border-radius:6px;border:1px solid rgba(255,255,255,0.1);">
-                        <table style="width:100%;border-collapse:collapse;font-size:8px;">
-                            <thead>
-                                <tr>
-                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Fundo</th>
-                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Cultivo</th>
-                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Área</th>
-                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Grupo</th>
-                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;font-weight:700;text-transform:uppercase;">Labor</th>
-                                    <th style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:5px 4px;position:sticky;top:0;z-index:1;"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="searchResultsBody"></tbody>
-                        </table>
+                    <div id="searchCount" class="search-count" style="min-height:10px;"></div>
+                    <!-- Dropdown flotante de resultados -->
+                    <div id="searchDropdown" style="
+                        display:none;
+                        position:fixed;
+                        z-index:99999;
+                        background:#1e293b;
+                        border:1px solid #10b981;
+                        border-radius:8px;
+                        box-shadow:0 12px 40px rgba(0,0,0,0.6);
+                        width:480px;
+                        max-height:320px;
+                        overflow:hidden;
+                        flex-direction:column;
+                    ">
+                        <div style="background:linear-gradient(135deg,#10b981,#059669);padding:5px 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+                            <span style="color:#fff;font-size:8px;font-weight:700;letter-spacing:.5px;" id="searchDropdownTitle">Resultados</span>
+                            <button onclick="cerrarSearchDropdown()" style="background:rgba(255,255,255,0.2);border:none;border-radius:3px;color:#fff;cursor:pointer;padding:2px 6px;font-size:9px;">✕</button>
+                        </div>
+                        <div style="overflow-y:auto;flex:1;">
+                            <table style="width:100%;border-collapse:collapse;font-size:8px;">
+                                <thead>
+                                    <tr>
+                                        <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Fundo</th>
+                                        <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Área</th>
+                                        <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Grupo</th>
+                                        <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Labor</th>
+                                        <th style="background:#0f3460;color:#fff;padding:4px 5px;position:sticky;top:0;z-index:1;width:28px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="searchResultsBody"></tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="search-count" id="searchCount"></div>
                 </div>
 
                 <!-- Stats -->
@@ -616,6 +636,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.addEventListener('click',(e)=>{
         if(!e.target.closest('.single-select')){document.querySelectorAll('.single-select-dropdown.show').forEach(d=>d.classList.remove('show'));}
         if(!e.target.closest('.select-search-container')){document.querySelectorAll('.select-dropdown.show').forEach(d=>d.classList.remove('show'));}
+        if(!e.target.closest('#searchBox')&&!e.target.closest('#searchDropdown')){cerrarSearchDropdown();}
     });
 });
 
@@ -1450,22 +1471,24 @@ function crearLabor(){const i=+document.getElementById('modalIdx').value;const p
 function buscarLabores(){
     const texto=document.getElementById('searchText').value.toLowerCase().trim();
     const maestroFiltrado=getMaestroFiltrado();
-    
-    // Si no hay filtros seleccionados, mostrar mensaje
+    const dropdown=document.getElementById('searchDropdown');
+    const input=document.getElementById('searchText');
+
+    // Sin texto y sin filtros → cerrar dropdown
     if(!filtroFundo && !filtroArea && !filtroJefe && !texto){
-        document.getElementById('searchResultsBody').innerHTML='<tr><td colspan="6" class="search-info">Seleccione Fundo, Área y Jefe para ver labores disponibles</td></tr>';
+        cerrarSearchDropdown();
         document.getElementById('searchCount').textContent='';
         return;
     }
-    
+
     let res=maestroFiltrado;
     if(texto){
         res=res.filter(m=>{
-            const searchIn=[m['Grupo Labor']||'',m.Labor||''].join(' ').toLowerCase();
+            const searchIn=[m['Grupo Labor']||'',m.Labor||'',m.Fundo||'',m.AREA||''].join(' ').toLowerCase();
             return searchIn.includes(texto);
         });
     }
-    
+
     const total=res.length;
     res=res.slice(0,50);
     window.searchResultados=res;
@@ -1474,19 +1497,37 @@ function buscarLabores(){
         const searchIn=[m['Grupo Labor']||'',m.Labor||''].join(' ').toLowerCase();
         return searchIn.includes(texto);
     });
-    
-    if(!res.length){
-        document.getElementById('searchResultsBody').innerHTML='<tr><td colspan="6" class="search-info">Sin resultados para esta selección</td></tr>';
-        document.getElementById('searchCount').textContent='0 labores';
-        return;
-    }
-    
+
     let html='';
-    res.forEach((m,idx)=>{
-        html+=`<tr><td>${m.Fundo||'-'}</td><td>${m.CULTIVO||m.Cultivo||'-'}</td><td>${m.AREA||'-'}</td><td>${m['Grupo Labor']||'-'}</td><td><strong>${m.Labor||'-'}</strong></td><td><button class="btn-add" onclick="agregarDesdeSearch(${idx})">+</button></td></tr>`;
-    });
+    if(!res.length){
+        html=`<tr><td colspan="5" style="padding:12px;text-align:center;color:rgba(255,255,255,0.4);font-size:8px;">Sin resultados</td></tr>`;
+    } else {
+        res.forEach((m,idx)=>{
+            html+=`<tr style="cursor:pointer;" onmouseover="this.style.background='rgba(16,185,129,0.15)'" onmouseout="this.style.background=''" >
+                <td style="padding:4px 5px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;white-space:nowrap;">${m.Fundo||'-'}</td>
+                <td style="padding:4px 5px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;">${m.AREA||'-'}</td>
+                <td style="padding:4px 5px;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;">${m['Grupo Labor']||'-'}</td>
+                <td style="padding:4px 5px;color:#fff;border-bottom:1px solid rgba(255,255,255,0.06);font-size:8px;font-weight:600;">${m.Labor||'-'}</td>
+                <td style="padding:3px 4px;border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <button class="btn-add" onclick="agregarDesdeSearch(${idx})" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:9px;font-weight:700;">+</button>
+                </td>
+            </tr>`;
+        });
+    }
     document.getElementById('searchResultsBody').innerHTML=html;
-    document.getElementById('searchCount').textContent=total>50?`Mostrando 50 de ${total}`:total+' labores';
+    document.getElementById('searchDropdownTitle').textContent=
+        total>50?`Mostrando 50 de ${total} labores`:`${total} labor${total!==1?'es':''}`;
+    document.getElementById('searchCount').textContent='';
+
+    // Posicionar dropdown flotante debajo del input
+    const rect=input.getBoundingClientRect();
+    dropdown.style.left=rect.left+'px';
+    dropdown.style.top=(rect.bottom+4)+'px';
+    dropdown.style.display='flex';
+}
+
+function cerrarSearchDropdown(){
+    document.getElementById('searchDropdown').style.display='none';
 }
 
 function agregarDesdeSearch(idx){
