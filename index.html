@@ -837,33 +837,37 @@ function abrirModalNuevas(semActual, semSig, rangoSig, laborasNuevas){
     document.getElementById('modalNuevas').classList.add('open');
 }
 
-function renderModalNuevas(laborasNuevas){
-    const total=laborasNuevas.length;
+// Lista original de labores nuevas (guardada al abrir el modal)
+let _nv_laboras=[];
+
+function abrirModalNuevas(semActual, semSig, rangoSig, laborasNuevas){
+    document.getElementById('nv_semActual').textContent=`S${semActual}`;
+    document.getElementById('nv_semSiguiente').textContent=`S${semSig} (${rangoSig})`;
+    _nv_estado={};
+    _nv_laboras=[...laborasNuevas];
+    laborasNuevas.forEach(p=>{ _nv_estado[p.id]=null; });
+    renderModalNuevas();
+    document.getElementById('modalNuevas').classList.add('open');
+}
+
+function renderModalNuevas(){
+    const total=_nv_laboras.length;
     const resueltas=Object.values(_nv_estado).filter(v=>v!==null).length;
-    // Progress
     const pct=total>0?Math.round(resueltas/total*100):0;
     document.getElementById('nv_progBar').style.width=pct+'%';
     document.getElementById('nv_progLabel').textContent=`${resueltas} / ${total} resueltas`;
-    // Habilitar continuar solo si todas resueltas
     document.getElementById('nv_btnContinuar').disabled=resueltas<total;
 
     let html='';
-    laborasNuevas.forEach((p,idx)=>{
+    _nv_laboras.forEach(p=>{
         const estado=_nv_estado[p.id];
-        // Buscar candidatos en el MAESTRO (por similitud de nombre de labor)
-        const laborNorm=(p.labor||'').toLowerCase().trim();
-        const candidatos=MAESTRO.filter(m=>{
-            const mNorm=(m.Labor||'').toLowerCase();
-            return mNorm.includes(laborNorm.substring(0,4))||laborNorm.includes((m.Labor||'').toLowerCase().substring(0,4));
-        }).slice(0,6);
-
         let cardClass='nueva-card';
         let estadoLabel='';
-        if(estado==='ok'){cardClass+=' resuelta-ok';estadoLabel='<span class="nueva-card-estado ok">✅ Actualizada</span>';}
-        else if(estado==='del'){cardClass+=' resuelta-del';estadoLabel='<span class="nueva-card-estado del">🗑️ Eliminada</span>';}
+        if(estado==='ok') { cardClass+=' resuelta-ok'; estadoLabel='<span class="nueva-card-estado ok">✅ Actualizada</span>'; }
+        else if(estado==='del') { cardClass+=' resuelta-del'; estadoLabel='<span class="nueva-card-estado del">🗑️ Eliminada</span>'; }
 
-        const btnMatchDis=estado!==null?'disabled':'';
-        const btnDelDis=estado!==null?'disabled':'';
+        const dis=estado!==null?'disabled':'';
+        const panelShow=estado===null?'show':'';
 
         html+=`<div class="${cardClass}" id="nv_card_${p.id}">
             ${estadoLabel}
@@ -876,80 +880,100 @@ function renderModalNuevas(laborasNuevas){
                     <span>📁 ${p.grupo||'?'}</span>
                     <span>👤 ${p.jefe||'?'}</span>
                 </div>
-                <div class="match-panel ${estado===null?'show':''}" id="nv_match_${p.id}">
-                    <div class="match-panel-title">🔍 Posibles coincidencias en MAESTRO — selecciona para actualizar:</div>
-                    <div class="match-list">
-                        ${candidatos.length>0
-                            ? candidatos.map(m=>`<div class="match-item" onclick="nv_actualizar(${p.id},'${(m.Labor||'').replace(/'/g,"\\'")}')">
-                                <span class="match-item-labor">${m.Labor}</span>
-                                <span class="match-item-meta">${m.Fundo||''} · ${m.AREA||''} · ${m['Grupo Labor']||''}</span>
-                              </div>`).join('')
-                            : '<div class="match-none">No se encontraron coincidencias. Puedes igualmente confirmar o eliminar.</div>'
-                        }
-                        <div class="match-item" style="background:#fef3c7;" onclick="nv_mantener(${p.id})">
-                            <span class="match-item-labor" style="color:#92400e;">✔️ Mantener como está (confirmar labor provisional)</span>
-                            <span class="match-item-meta">Se quitará el badge NUEVA</span>
-                        </div>
+                <div class="match-panel ${panelShow}" id="nv_match_${p.id}">
+                    <div class="match-panel-title">🔍 Buscar en MAESTRO para vincular:</div>
+                    <input type="text"
+                        id="nv_search_${p.id}"
+                        placeholder="Escribe grupo o nombre de labor..."
+                        oninput="nv_filtrarMaestro(${p.id})"
+                        style="width:100%;padding:5px 8px;border:1.5px solid #10b981;border-radius:5px;font-size:9px;margin-bottom:6px;"
+                        ${dis}>
+                    <div class="match-list" id="nv_results_${p.id}">
+                        <div class="match-none" style="color:#64748b;">Escribe para buscar en el MAESTRO...</div>
+                    </div>
+                    <div class="match-item" style="background:#fef3c7;margin-top:4px;" onclick="nv_mantener(${p.id})">
+                        <span class="match-item-labor" style="color:#92400e;">✔️ Mantener como está</span>
+                        <span class="match-item-meta">Acepta la labor provisional, se quita el badge NUEVA</span>
                     </div>
                 </div>
             </div>
             <div class="nueva-card-actions">
-                <button class="btn-nueva-match" onclick="nv_toggleMatch(${p.id})" ${btnMatchDis}>🔄 Actualizar</button>
-                <button class="btn-nueva-del" onclick="nv_eliminar(${p.id})" ${btnDelDis}>🗑️ Eliminar</button>
+                <button class="btn-nueva-match" onclick="nv_toggleMatch(${p.id})" ${dis}>🔄 Vincular al MAESTRO</button>
+                <button class="btn-nueva-del" onclick="nv_eliminar(${p.id})" ${dis}>🗑️ Eliminar</button>
             </div>
         </div>`;
     });
     document.getElementById('nv_lista').innerHTML=html;
 }
 
+function nv_filtrarMaestro(id){
+    const q=(document.getElementById('nv_search_'+id).value||'').toLowerCase().trim();
+    const container=document.getElementById('nv_results_'+id);
+    if(!q){ container.innerHTML='<div class="match-none" style="color:#64748b;">Escribe para buscar...</div>'; return; }
+    const res=MAESTRO.filter(m=>{
+        const labor=(m.Labor||'').toLowerCase();
+        const grupo=(m['Grupo Labor']||'').toLowerCase();
+        const fundo=(m.Fundo||'').toLowerCase();
+        const area=(m.AREA||'').toLowerCase();
+        return labor.includes(q)||grupo.includes(q)||fundo.includes(q)||area.includes(q);
+    }).slice(0,12);
+    if(!res.length){ container.innerHTML='<div class="match-none">Sin resultados — intenta con otra palabra</div>'; return; }
+    container.innerHTML=res.map(m=>{
+        const laborEsc=(m.Labor||'').replace(/'/g,"\\'");
+        return`<div class="match-item" onclick="nv_actualizar(${id},'${laborEsc}')">
+            <span class="match-item-labor">${m.Labor||'-'}</span>
+            <span class="match-item-meta">${m.Fundo||''} · ${m.AREA||''} · ${m['Grupo Labor']||''}</span>
+        </div>`;
+    }).join('');
+}
+
 function nv_toggleMatch(id){
     const panel=document.getElementById('nv_match_'+id);
-    if(panel) panel.classList.toggle('show');
+    if(panel){ panel.classList.toggle('show'); setTimeout(()=>{ const inp=document.getElementById('nv_search_'+id); if(inp)inp.focus(); },80); }
 }
 
 function nv_actualizar(id, laborMaestro){
-    // Buscar el registro completo en el MAESTRO
     const reg=MAESTRO.find(m=>m.Labor===laborMaestro);
-    if(!reg)return;
+    if(!reg){ showToast('Error','Labor no encontrada en MAESTRO','error'); return; }
     const idx=progs.findIndex(p=>p.id===id);
     if(idx<0)return;
-    progs[idx].fundo=reg.Fundo||progs[idx].fundo;
-    progs[idx].cultivo=reg.CULTIVO||reg.Cultivo||progs[idx].cultivo;
-    progs[idx].area=reg.AREA||progs[idx].area;
-    progs[idx].grupo=reg['Grupo Labor']||progs[idx].grupo;
-    progs[idx].labor=reg.Labor;
-    progs[idx].cc=reg.CodCentroCosto||'';
-    progs[idx].jefe=reg.Jefe||progs[idx].jefe;
-    progs[idx].esNueva=false;
+    // Actualizar todos los datos desde el MAESTRO
+    progs[idx].fundo   = reg.Fundo||progs[idx].fundo;
+    progs[idx].cultivo = reg.CULTIVO||reg.Cultivo||progs[idx].cultivo;
+    progs[idx].area    = reg.AREA||progs[idx].area;
+    progs[idx].grupo   = reg['Grupo Labor']||progs[idx].grupo;
+    progs[idx].labor   = reg.Labor;
+    progs[idx].cc      = reg.CodCentroCosto||'';
+    progs[idx].jefe    = reg.Jefe||progs[idx].jefe;
+    progs[idx].esNueva = false;
     _nv_estado[id]='ok';
-    showToast('✅ Actualizada',reg.Labor,'success');
-    const laborasNuevas=progs.filter(p=>p.esNueva||Object.keys(_nv_estado).map(Number).includes(p.id));
-    renderModalNuevas(progs.filter(p=>Object.keys(_nv_estado).map(Number).includes(p.id)));
+    // Actualizar también en _nv_laboras para que renderice el nombre correcto
+    const li=_nv_laboras.findIndex(p=>p.id===id);
+    if(li>=0) _nv_laboras[li]={..._nv_laboras[li],...progs[idx]};
     guardarEnLocalSilencioso();
+    showToast('✅ Vinculada',`"${reg.Labor}" actualizada desde MAESTRO`,'success');
+    renderModalNuevas();
 }
 
 function nv_mantener(id){
     const idx=progs.findIndex(p=>p.id===id);
-    if(idx<0)return;
-    progs[idx].esNueva=false;
+    if(idx>=0){ progs[idx].esNueva=false; }
     _nv_estado[id]='ok';
-    showToast('✔️ Confirmada','Labor provisional aceptada','info');
-    renderModalNuevas(progs.filter(p=>Object.keys(_nv_estado).map(Number).includes(p.id)));
     guardarEnLocalSilencioso();
+    showToast('✔️ Confirmada','Labor aceptada como provisional','info');
+    renderModalNuevas();
 }
 
 function nv_eliminar(id){
     _nv_estado[id]='del';
-    // Marcar visualmente pero no eliminar hasta confirmar
     const card=document.getElementById('nv_card_'+id);
     if(card){
         card.className='nueva-card resuelta-del';
         const actions=card.querySelector('.nueva-card-actions');
-        if(actions) actions.innerHTML='<span style="font-size:8px;color:#ef4444;font-weight:700;">🗑️ Será eliminada</span>';
+        if(actions) actions.innerHTML='<span style="font-size:8px;color:#ef4444;font-weight:700;">🗑️ Será eliminada al continuar</span>';
         const match=document.getElementById('nv_match_'+id);
         if(match) match.classList.remove('show');
     }
-    // Actualizar progress
     const total=Object.keys(_nv_estado).length;
     const resueltas=Object.values(_nv_estado).filter(v=>v!==null).length;
     const pct=total>0?Math.round(resueltas/total*100):0;
