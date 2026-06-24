@@ -881,10 +881,10 @@ function renderModalNuevas(){
                     <span>👤 ${p.jefe||'?'}</span>
                 </div>
                 <div class="match-panel ${panelShow}" id="nv_match_${p.id}">
-                    <div class="match-panel-title">🔍 Buscar en MAESTRO para vincular:</div>
+                    <div class="match-panel-title">🔍 Buscar en <strong>${p.fundo||'?'} / ${p.area||'?'} / ${p.jefe||'?'}</strong>:</div>
                     <input type="text"
                         id="nv_search_${p.id}"
-                        placeholder="Escribe grupo o nombre de labor..."
+                        placeholder="Escribe labor o grupo labor..."
                         oninput="nv_filtrarMaestro(${p.id})"
                         style="width:100%;padding:5px 8px;border:1.5px solid #10b981;border-radius:5px;font-size:9px;margin-bottom:6px;"
                         ${dis}>
@@ -910,19 +910,34 @@ function nv_filtrarMaestro(id){
     const q=(document.getElementById('nv_search_'+id).value||'').toLowerCase().trim();
     const container=document.getElementById('nv_results_'+id);
     if(!q){ container.innerHTML='<div class="match-none" style="color:#64748b;">Escribe para buscar...</div>'; return; }
-    const res=MAESTRO.filter(m=>{
+
+    // Obtener el contexto de ESA labor (fundo, area, jefe)
+    const prog=_nv_laboras.find(p=>p.id===id)||{};
+    const fundo=prog.fundo||'';
+    const area=prog.area||'';
+    const jefe=prog.jefe||'';
+
+    // Filtrar MAESTRO por fundo + area + jefe de la labor, luego por texto
+    let base=MAESTRO;
+    if(fundo) base=base.filter(m=>m.Fundo===fundo);
+    if(area)  base=base.filter(m=>m.AREA===area);
+    if(jefe)  base=base.filter(m=>m.Jefe===jefe);
+
+    const res=base.filter(m=>{
         const labor=(m.Labor||'').toLowerCase();
         const grupo=(m['Grupo Labor']||'').toLowerCase();
-        const fundo=(m.Fundo||'').toLowerCase();
-        const area=(m.AREA||'').toLowerCase();
-        return labor.includes(q)||grupo.includes(q)||fundo.includes(q)||area.includes(q);
+        return labor.includes(q)||grupo.includes(q);
     }).slice(0,12);
-    if(!res.length){ container.innerHTML='<div class="match-none">Sin resultados — intenta con otra palabra</div>'; return; }
+
+    if(!res.length){
+        container.innerHTML=`<div class="match-none">Sin resultados en <strong>${fundo||'?'} / ${area||'?'}</strong> — intenta otra palabra</div>`;
+        return;
+    }
     container.innerHTML=res.map(m=>{
         const laborEsc=(m.Labor||'').replace(/'/g,"\\'");
         return`<div class="match-item" onclick="nv_actualizar(${id},'${laborEsc}')">
             <span class="match-item-labor">${m.Labor||'-'}</span>
-            <span class="match-item-meta">${m.Fundo||''} · ${m.AREA||''} · ${m['Grupo Labor']||''}</span>
+            <span class="match-item-meta">${m['Grupo Labor']||''} · ${m.Jefe||''}</span>
         </div>`;
     }).join('');
 }
