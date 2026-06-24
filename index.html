@@ -320,6 +320,59 @@
         .resumen-num-badge.zero { background:#e2e8f0; color:#94a3b8; }
         .resumen-semana-info { font-size:9px; color:#64748b; margin-bottom:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
         .resumen-semana-info strong { color:#1a1a2e; }
+
+        /* ── Modal gestión labores NUEVAS al cambiar semana ── */
+        .modal-nuevas { max-width:700px !important; width:96% !important; }
+        .nuevas-header-banner { background:linear-gradient(135deg,#1a1a2e,#0f3460); border-radius:10px; padding:14px 16px; margin-bottom:14px; display:flex; align-items:center; gap:12px; }
+        .nuevas-header-icon { font-size:32px; }
+        .nuevas-header-text h4 { color:#fff; font-size:13px; font-weight:800; margin-bottom:3px; }
+        .nuevas-header-text p { color:rgba(255,255,255,0.65); font-size:9px; line-height:1.5; }
+        .nuevas-semana-chips { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+        .chip-sem { padding:4px 12px; border-radius:20px; font-size:9px; font-weight:700; }
+        .chip-sem.actual { background:rgba(16,185,129,0.15); color:#059669; border:1px solid #10b981; }
+        .chip-sem.siguiente { background:rgba(245,158,11,0.15); color:#d97706; border:1px solid #f59e0b; }
+        .chip-sem .arrow { margin:0 4px; }
+        .nuevas-lista { display:flex; flex-direction:column; gap:6px; max-height:420px; overflow-y:auto; padding-right:2px; }
+        .nuevas-lista::-webkit-scrollbar { width:4px; }
+        .nuevas-lista::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:2px; }
+        .nueva-card { background:#fff; border:1.5px solid #e2e8f0; border-radius:8px; padding:10px 12px; display:flex; align-items:center; gap:10px; transition:all 0.2s; position:relative; }
+        .nueva-card:hover { border-color:#10b981; box-shadow:0 2px 10px rgba(16,185,129,0.12); }
+        .nueva-card.resuelta { opacity:0.45; background:#f8fafc; border-color:#e2e8f0; }
+        .nueva-card.resuelta-ok { border-color:#10b981; background:#f0fdf4; opacity:1; }
+        .nueva-card.resuelta-del { border-color:#ef4444; background:#fff5f5; opacity:0.5; }
+        .nueva-card-badge { background:linear-gradient(135deg,#8b5cf6,#7c3aed); color:#fff; padding:3px 8px; border-radius:10px; font-size:7px; font-weight:700; white-space:nowrap; flex-shrink:0; }
+        .nueva-card-info { flex:1; min-width:0; }
+        .nueva-card-labor { font-size:10px; font-weight:700; color:#1a1a2e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .nueva-card-meta { font-size:8px; color:#64748b; margin-top:2px; display:flex; gap:8px; flex-wrap:wrap; }
+        .nueva-card-meta span { display:flex; align-items:center; gap:3px; }
+        .nueva-card-actions { display:flex; gap:6px; flex-shrink:0; }
+        .btn-nueva-match { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:8px; font-weight:700; display:flex; align-items:center; gap:4px; transition:all 0.15s; }
+        .btn-nueva-match:hover:not(:disabled) { filter:brightness(1.1); box-shadow:0 3px 10px rgba(16,185,129,0.4); }
+        .btn-nueva-match:disabled { background:#cbd5e1; cursor:not-allowed; }
+        .btn-nueva-del { background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; border:none; border-radius:6px; padding:5px 10px; cursor:pointer; font-size:8px; font-weight:700; display:flex; align-items:center; gap:4px; transition:all 0.15s; }
+        .btn-nueva-del:hover:not(:disabled) { filter:brightness(1.1); }
+        .btn-nueva-del:disabled { background:#cbd5e1; cursor:not-allowed; }
+        .nueva-card-estado { position:absolute; top:6px; right:10px; font-size:8px; font-weight:700; }
+        .nueva-card-estado.ok { color:#10b981; }
+        .nueva-card-estado.del { color:#ef4444; }
+        .nuevas-progress { background:#f1f5f9; border-radius:20px; height:6px; margin-bottom:12px; overflow:hidden; }
+        .nuevas-progress-bar { height:100%; background:linear-gradient(90deg,#10b981,#059669); border-radius:20px; transition:width 0.4s ease; }
+        .nuevas-progress-label { font-size:8px; color:#64748b; margin-bottom:4px; display:flex; justify-content:space-between; }
+        .nuevas-footer { margin-top:14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+        .btn-nueva-continuar { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; border-radius:8px; padding:8px 20px; cursor:pointer; font-size:10px; font-weight:700; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+        .btn-nueva-continuar:disabled { background:#cbd5e1; cursor:not-allowed; }
+        .btn-nueva-continuar:not(:disabled):hover { box-shadow:0 4px 14px rgba(16,185,129,0.4); }
+        .btn-nueva-cancelar { background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0; border-radius:8px; padding:8px 16px; cursor:pointer; font-size:10px; font-weight:600; }
+        .btn-nueva-cancelar:hover { background:#e2e8f0; }
+        .match-panel { background:#f0fdf4; border:1px solid #10b981; border-radius:6px; padding:8px; margin-top:8px; display:none; }
+        .match-panel.show { display:block; }
+        .match-panel-title { font-size:8px; font-weight:700; color:#065f46; margin-bottom:6px; }
+        .match-list { max-height:120px; overflow-y:auto; }
+        .match-item { padding:5px 8px; border-radius:4px; cursor:pointer; font-size:8px; border-bottom:1px solid #d1fae5; display:flex; justify-content:space-between; align-items:center; }
+        .match-item:hover { background:#d1fae5; }
+        .match-item-labor { font-weight:600; color:#1a1a2e; }
+        .match-item-meta { color:#64748b; font-size:7px; }
+        .match-none { font-size:8px; color:#64748b; padding:8px; text-align:center; }
     </style>
 </head>
 <body>
@@ -477,7 +530,35 @@
         </main>
     </div>
 
-    <div class="modal-bg" id="modalPassword"><div class="modal"><h3>🔐 Contraseña</h3><div class="modal-field"><label>Ingrese contraseña:</label><input type="password" id="exportPassword" placeholder="..." onkeyup="if(event.key==='Enter')verificarPassword()"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button><button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button></div></div></div>
+    <!-- Modal gestión labores NUEVAS al cambiar semana -->
+    <div class="modal-bg" id="modalNuevas">
+        <div class="modal modal-nuevas">
+            <div class="nuevas-header-banner">
+                <div class="nuevas-header-icon">🔄</div>
+                <div class="nuevas-header-text">
+                    <h4>Labores NUEVAS pendientes de validación</h4>
+                    <p>Tienes labores creadas provisionalmente que aún no existen en el MAESTRO.<br>Antes de programar la siguiente semana, decide qué hacer con cada una.</p>
+                </div>
+            </div>
+            <div class="nuevas-semana-chips">
+                <span class="chip-sem actual">📅 Semana actual: <strong id="nv_semActual"></strong></span>
+                <span style="color:#94a3b8;align-self:center;">→</span>
+                <span class="chip-sem siguiente">📅 Semana siguiente: <strong id="nv_semSiguiente"></strong></span>
+            </div>
+            <div class="nuevas-progress-label">
+                <span>Progreso de validación</span>
+                <span id="nv_progLabel">0 / 0 resueltas</span>
+            </div>
+            <div class="nuevas-progress"><div class="nuevas-progress-bar" id="nv_progBar" style="width:0%"></div></div>
+            <div class="nuevas-lista" id="nv_lista"></div>
+            <div class="nuevas-footer">
+                <button class="btn-nueva-cancelar" onclick="cancelarCambioSemana()">← Quedarme en semana actual</button>
+                <button class="btn-nueva-continuar" id="nv_btnContinuar" onclick="confirmarCambioSemana()" disabled>
+                    ✅ Continuar a semana siguiente
+                </button>
+            </div>
+        </div>
+    </div><div class="modal-field"><label>Ingrese contraseña:</label><input type="password" id="exportPassword" placeholder="..." onkeyup="if(event.key==='Enter')verificarPassword()"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button><button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button></div></div></div>
 
     <!-- Modal resumen pre-exportar -->
     <div class="modal-bg" id="modalResumen">
@@ -653,8 +734,197 @@ function cargarAutoGuardado(){const saved=localStorage.getItem('asa_programacion
 function showToast(title,msg,type='success'){const container=document.getElementById('toastContainer');const toast=document.createElement('div');toast.className=`toast ${type}`;const icons={success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};toast.innerHTML=`<div class="toast-icon">${icons[type]}</div><div class="toast-content"><div class="toast-title">${title}</div>${msg?`<div class="toast-msg">${msg}</div>`:''}</div><button class="toast-close" onclick="this.parentElement.remove()">×</button>`;container.appendChild(toast);setTimeout(()=>toast.remove(),3000);}
 
 function getWeekNumber(d){d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));const yearStart=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil((((d-yearStart)/86400000)+1)/7);}
-function cambiarSemana(dir){const fi=document.getElementById('fechaInicio').value;if(!fi)return;const f=new Date(fi+'T00:00:00');f.setDate(f.getDate()+(dir*7));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];actualizarSemana();}
-function actualizarSemana(){const fi=document.getElementById('fechaInicio').value;if(!fi)return;let f=new Date(fi+'T00:00:00');const dia=f.getDay();if(dia!==1){f.setDate(f.getDate()+(dia===0?-6:1-dia));document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];}semanaActual=getWeekNumber(f);anioActual=f.getFullYear();document.getElementById('semanaNum').textContent=`Semana ${semanaActual}`;diasSemana=[];const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];for(let i=0;i<7;i++){const d=new Date(f);d.setDate(f.getDate()+i);diasSemana.push({nom:DIAS[i],num:d.getDate(),mes:meses[d.getMonth()],str:d.toISOString().split('T')[0],fin:i>=5});const th=document.getElementById('th-'+DIAS[i].toLowerCase());if(th)th.querySelector('.dia-fecha').textContent=d.getDate();}const ult=new Date(f);ult.setDate(f.getDate()+6);document.getElementById('semanaRango').textContent=f.getDate()+' '+meses[f.getMonth()]+' - '+ult.getDate()+' '+meses[ult.getMonth()];renderSinHistorial();}
+
+// Dirección pendiente de cambio de semana (para retomar después del modal)
+let _pendingDirSemana=null;
+
+function cambiarSemana(dir){
+    const fi=document.getElementById('fechaInicio').value;
+    if(!fi)return;
+    // Solo interceptar si va HACIA ADELANTE y hay labores NUEVA
+    const laborasNuevas=progs.filter(p=>p.esNueva);
+    if(dir>0 && laborasNuevas.length>0){
+        // Calcular semana destino para mostrar en el modal
+        const f=new Date(fi+'T00:00:00');
+        f.setDate(f.getDate()+7);
+        const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+        const semDest=getWeekNumber(f);
+        const rDest=f.getDate()+' '+meses[f.getMonth()]+' - '+(new Date(f.getFullYear(),f.getMonth(),f.getDate()+6).getDate())+' '+meses[new Date(f.getFullYear(),f.getMonth(),f.getDate()+6).getMonth()];
+        _pendingDirSemana=dir;
+        abrirModalNuevas(semanaActual, semDest, rDest, laborasNuevas);
+        return;
+    }
+    ejecutarCambioSemana(dir);
+}
+
+function ejecutarCambioSemana(dir){
+    const fi=document.getElementById('fechaInicio').value;
+    if(!fi)return;
+    const f=new Date(fi+'T00:00:00');
+    f.setDate(f.getDate()+(dir*7));
+    document.getElementById('fechaInicio').value=f.toISOString().split('T')[0];
+    actualizarSemana();
+}
+
+function cancelarCambioSemana(){
+    _pendingDirSemana=null;
+    document.getElementById('modalNuevas').classList.remove('open');
+}
+
+function confirmarCambioSemana(){
+    document.getElementById('modalNuevas').classList.remove('open');
+    const dir=_pendingDirSemana||1;
+    _pendingDirSemana=null;
+    // Ejecutar el cambio de semana
+    ejecutarCambioSemana(dir);
+}
+
+// ── MODAL GESTIÓN LABORES NUEVAS ──
+let _nv_estado={}; // {idx: 'ok'|'del'|null}
+
+function abrirModalNuevas(semActual, semSig, rangoSig, laborasNuevas){
+    document.getElementById('nv_semActual').textContent=`S${semActual}`;
+    document.getElementById('nv_semSiguiente').textContent=`S${semSig} (${rangoSig})`;
+    _nv_estado={};
+    laborasNuevas.forEach(p=>{ _nv_estado[p.id]=null; });
+    renderModalNuevas(laborasNuevas);
+    document.getElementById('modalNuevas').classList.add('open');
+}
+
+function renderModalNuevas(laborasNuevas){
+    const total=laborasNuevas.length;
+    const resueltas=Object.values(_nv_estado).filter(v=>v!==null).length;
+    // Progress
+    const pct=total>0?Math.round(resueltas/total*100):0;
+    document.getElementById('nv_progBar').style.width=pct+'%';
+    document.getElementById('nv_progLabel').textContent=`${resueltas} / ${total} resueltas`;
+    // Habilitar continuar solo si todas resueltas
+    document.getElementById('nv_btnContinuar').disabled=resueltas<total;
+
+    let html='';
+    laborasNuevas.forEach((p,idx)=>{
+        const estado=_nv_estado[p.id];
+        // Buscar candidatos en el MAESTRO (por similitud de nombre de labor)
+        const laborNorm=(p.labor||'').toLowerCase().trim();
+        const candidatos=MAESTRO.filter(m=>{
+            const mNorm=(m.Labor||'').toLowerCase();
+            return mNorm.includes(laborNorm.substring(0,4))||laborNorm.includes((m.Labor||'').toLowerCase().substring(0,4));
+        }).slice(0,6);
+
+        let cardClass='nueva-card';
+        let estadoLabel='';
+        if(estado==='ok'){cardClass+=' resuelta-ok';estadoLabel='<span class="nueva-card-estado ok">✅ Actualizada</span>';}
+        else if(estado==='del'){cardClass+=' resuelta-del';estadoLabel='<span class="nueva-card-estado del">🗑️ Eliminada</span>';}
+
+        const btnMatchDis=estado!==null?'disabled':'';
+        const btnDelDis=estado!==null?'disabled':'';
+
+        html+=`<div class="${cardClass}" id="nv_card_${p.id}">
+            ${estadoLabel}
+            <span class="nueva-card-badge">NUEVA</span>
+            <div class="nueva-card-info">
+                <div class="nueva-card-labor">${p.labor||'Sin nombre'}</div>
+                <div class="nueva-card-meta">
+                    <span>🏢 ${p.fundo||'?'}</span>
+                    <span>📍 ${p.area||'?'}</span>
+                    <span>📁 ${p.grupo||'?'}</span>
+                    <span>👤 ${p.jefe||'?'}</span>
+                </div>
+                <div class="match-panel ${estado===null?'show':''}" id="nv_match_${p.id}">
+                    <div class="match-panel-title">🔍 Posibles coincidencias en MAESTRO — selecciona para actualizar:</div>
+                    <div class="match-list">
+                        ${candidatos.length>0
+                            ? candidatos.map(m=>`<div class="match-item" onclick="nv_actualizar(${p.id},'${(m.Labor||'').replace(/'/g,"\\'")}')">
+                                <span class="match-item-labor">${m.Labor}</span>
+                                <span class="match-item-meta">${m.Fundo||''} · ${m.AREA||''} · ${m['Grupo Labor']||''}</span>
+                              </div>`).join('')
+                            : '<div class="match-none">No se encontraron coincidencias. Puedes igualmente confirmar o eliminar.</div>'
+                        }
+                        <div class="match-item" style="background:#fef3c7;" onclick="nv_mantener(${p.id})">
+                            <span class="match-item-labor" style="color:#92400e;">✔️ Mantener como está (confirmar labor provisional)</span>
+                            <span class="match-item-meta">Se quitará el badge NUEVA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nueva-card-actions">
+                <button class="btn-nueva-match" onclick="nv_toggleMatch(${p.id})" ${btnMatchDis}>🔄 Actualizar</button>
+                <button class="btn-nueva-del" onclick="nv_eliminar(${p.id})" ${btnDelDis}>🗑️ Eliminar</button>
+            </div>
+        </div>`;
+    });
+    document.getElementById('nv_lista').innerHTML=html;
+}
+
+function nv_toggleMatch(id){
+    const panel=document.getElementById('nv_match_'+id);
+    if(panel) panel.classList.toggle('show');
+}
+
+function nv_actualizar(id, laborMaestro){
+    // Buscar el registro completo en el MAESTRO
+    const reg=MAESTRO.find(m=>m.Labor===laborMaestro);
+    if(!reg)return;
+    const idx=progs.findIndex(p=>p.id===id);
+    if(idx<0)return;
+    progs[idx].fundo=reg.Fundo||progs[idx].fundo;
+    progs[idx].cultivo=reg.CULTIVO||reg.Cultivo||progs[idx].cultivo;
+    progs[idx].area=reg.AREA||progs[idx].area;
+    progs[idx].grupo=reg['Grupo Labor']||progs[idx].grupo;
+    progs[idx].labor=reg.Labor;
+    progs[idx].cc=reg.CodCentroCosto||'';
+    progs[idx].jefe=reg.Jefe||progs[idx].jefe;
+    progs[idx].esNueva=false;
+    _nv_estado[id]='ok';
+    showToast('✅ Actualizada',reg.Labor,'success');
+    const laborasNuevas=progs.filter(p=>p.esNueva||Object.keys(_nv_estado).map(Number).includes(p.id));
+    renderModalNuevas(progs.filter(p=>Object.keys(_nv_estado).map(Number).includes(p.id)));
+    guardarEnLocalSilencioso();
+}
+
+function nv_mantener(id){
+    const idx=progs.findIndex(p=>p.id===id);
+    if(idx<0)return;
+    progs[idx].esNueva=false;
+    _nv_estado[id]='ok';
+    showToast('✔️ Confirmada','Labor provisional aceptada','info');
+    renderModalNuevas(progs.filter(p=>Object.keys(_nv_estado).map(Number).includes(p.id)));
+    guardarEnLocalSilencioso();
+}
+
+function nv_eliminar(id){
+    _nv_estado[id]='del';
+    // Marcar visualmente pero no eliminar hasta confirmar
+    const card=document.getElementById('nv_card_'+id);
+    if(card){
+        card.className='nueva-card resuelta-del';
+        const actions=card.querySelector('.nueva-card-actions');
+        if(actions) actions.innerHTML='<span style="font-size:8px;color:#ef4444;font-weight:700;">🗑️ Será eliminada</span>';
+        const match=document.getElementById('nv_match_'+id);
+        if(match) match.classList.remove('show');
+    }
+    // Actualizar progress
+    const total=Object.keys(_nv_estado).length;
+    const resueltas=Object.values(_nv_estado).filter(v=>v!==null).length;
+    const pct=total>0?Math.round(resueltas/total*100):0;
+    document.getElementById('nv_progBar').style.width=pct+'%';
+    document.getElementById('nv_progLabel').textContent=`${resueltas} / ${total} resueltas`;
+    document.getElementById('nv_btnContinuar').disabled=resueltas<total;
+    showToast('🗑️ Marcada','Se eliminará al continuar','warning');
+}
+
+// Override confirmarCambioSemana para procesar eliminaciones
+function confirmarCambioSemana(){
+    // Ejecutar eliminaciones pendientes
+    const idsEliminar=Object.entries(_nv_estado).filter(([,v])=>v==='del').map(([k])=>Number(k));
+    progs=progs.filter(p=>!idsEliminar.includes(p.id));
+    document.getElementById('modalNuevas').classList.remove('open');
+    const dir=_pendingDirSemana||1;
+    _pendingDirSemana=null;
+    guardarEnLocalSilencioso();
+    ejecutarCambioSemana(dir);
+    if(idsEliminar.length>0) showToast('🗑️ Eliminadas',`${idsEliminar.length} labores provisionales`,'info');
+}
 
 async function cargarMaestro(){const loading=document.getElementById('loadingOverlay');const statusBadge=document.getElementById('statusBadge');const statusText=document.getElementById('statusText');loading.classList.add('show');statusBadge.className='status-badge loading';statusText.textContent='Actualizando...';try{const response=await fetch(SHEET_URL);if(!response.ok)throw new Error('Error');const csvText=await response.text();MAESTRO=parseCSV(csvText);document.getElementById('statMaestro').textContent=MAESTRO.length;statusBadge.className='status-badge online';statusText.textContent=`OK (${MAESTRO.length})`;actualizarTodosFiltros();renderSinHistorial();buscarLabores();showToast('MAESTRO',`${MAESTRO.length} labores`,'success');}catch(error){statusBadge.className='status-badge offline';statusText.textContent='Sin conexión';showToast('Error','No se pudo cargar','error');}loading.classList.remove('show');}
 
