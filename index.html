@@ -313,7 +313,8 @@
         .resumen-tabla td { padding:4px 6px; border-bottom:1px solid #f1f5f9; font-size:8px; }
         .resumen-tabla td.num { text-align:center; font-weight:700; }
         .resumen-tabla tr:hover td { background:#f8fafc; }
-        .resumen-tabla tr.subtotal td { background:linear-gradient(135deg,#d1fae5,#a7f3d0); font-weight:700; font-size:8px; }
+        .resumen-tabla tr.subtotal { background:linear-gradient(135deg,#d1fae5,#a7f3d0); font-weight:700; font-size:8px; }
+        .resumen-tabla tr.subtotal-fundo { background:linear-gradient(135deg,#fef3c7,#fde68a); border-top:2px solid #f59e0b; border-bottom:2px solid #f59e0b; }
         .resumen-tabla tr.total-g td { background:linear-gradient(135deg,#7c3aed,#6d28d9); color:#fff; font-weight:800; font-size:9px; }
         .resumen-num-badge { display:inline-block; background:linear-gradient(135deg,#10b981,#059669); color:#fff; padding:1px 6px; border-radius:4px; font-weight:700; min-width:24px; text-align:center; }
         .resumen-num-badge.zero { background:#e2e8f0; color:#94a3b8; }
@@ -1183,24 +1184,24 @@ function exportarExcel(){
     }
     
     // ── CONSTRUIR TABLA RESUMEN ──
-    // Agrupar: Jefe → Fundo → Área → días
+    // Agrupar: Fundo → Jefe → Área → días
     const resumen={};
     progs.forEach(p=>{
         if(!p.fundo||!p.area)return;
-        const jefe=p.jefe||'Sin Jefe';
         const fundo=p.fundo;
+        const jefe=p.jefe||'Sin Jefe';
         const area=p.area;
-        if(!resumen[jefe])resumen[jefe]={fundos:{},totDia:{},tot:0};
-        if(!resumen[jefe].fundos[fundo])resumen[jefe].fundos[fundo]={areas:{},totDia:{},tot:0};
-        if(!resumen[jefe].fundos[fundo].areas[area])resumen[jefe].fundos[fundo].areas[area]={totDia:{},tot:0};
+        if(!resumen[fundo])resumen[fundo]={jefes:{},totDia:{},tot:0};
+        if(!resumen[fundo].jefes[jefe])resumen[fundo].jefes[jefe]={areas:{},totDia:{},tot:0};
+        if(!resumen[fundo].jefes[jefe].areas[area])resumen[fundo].jefes[jefe].areas[area]={totDia:{},tot:0};
         DIAS.forEach(d=>{
             const v=(p.dias&&p.dias[d])||0;
-            resumen[jefe].fundos[fundo].areas[area].totDia[d]=(resumen[jefe].fundos[fundo].areas[area].totDia[d]||0)+v;
-            resumen[jefe].fundos[fundo].areas[area].tot=(resumen[jefe].fundos[fundo].areas[area].tot||0)+v;
-            resumen[jefe].fundos[fundo].totDia[d]=(resumen[jefe].fundos[fundo].totDia[d]||0)+v;
-            resumen[jefe].fundos[fundo].tot=(resumen[jefe].fundos[fundo].tot||0)+v;
-            resumen[jefe].totDia[d]=(resumen[jefe].totDia[d]||0)+v;
-            resumen[jefe].tot=(resumen[jefe].tot||0)+v;
+            resumen[fundo].jefes[jefe].areas[area].totDia[d]=(resumen[fundo].jefes[jefe].areas[area].totDia[d]||0)+v;
+            resumen[fundo].jefes[jefe].areas[area].tot=(resumen[fundo].jefes[jefe].areas[area].tot||0)+v;
+            resumen[fundo].jefes[jefe].totDia[d]=(resumen[fundo].jefes[jefe].totDia[d]||0)+v;
+            resumen[fundo].jefes[jefe].tot=(resumen[fundo].jefes[jefe].tot||0)+v;
+            resumen[fundo].totDia[d]=(resumen[fundo].totDia[d]||0)+v;
+            resumen[fundo].tot=(resumen[fundo].tot||0)+v;
         });
     });
     
@@ -1209,34 +1210,45 @@ function exportarExcel(){
     DIAS.forEach(d=>grandDia[d]=0);
     progs.forEach(p=>DIAS.forEach(d=>{const v=(p.dias&&p.dias[d])||0;grandDia[d]+=v;grandTot+=v;}));
     
-    // Cabecera días (solo los que tienen fecha)
+    // Cabecera días
     const diasHdr=DIAS.map((d,i)=>diasSemana[i]?`<th class="num">${diasSemana[i].num}<br><span style="font-size:6px;opacity:.7">${d}</span></th>`:`<th class="num">${d}</th>`).join('');
     
-    let tablaHTML=`<table class="resumen-tabla"><thead><tr><th>Jefe</th><th>Fundo</th><th>Área</th>${diasHdr}<th class="num">TOTAL</th></tr></thead><tbody>`;
+    let tablaHTML=`<table class="resumen-tabla"><thead><tr><th>Fundo</th><th>Jefe</th><th>Área</th>${diasHdr}<th class="num">TOTAL</th></tr></thead><tbody>`;
     
-    Object.keys(resumen).sort().forEach(jefe=>{
-        const jData=resumen[jefe];
-        Object.keys(jData.fundos).sort().forEach(fundo=>{
-            const fData=jData.fundos[fundo];
-            let primeraFila=true;
-            const numAreas=Object.keys(fData.areas).length;
-            Object.keys(fData.areas).sort().forEach(area=>{
-                const aData=fData.areas[area];
-                const jCell=primeraFila?`<td rowspan="${numAreas}" style="font-weight:700;color:#10b981;vertical-align:middle;">${jefe}</td><td rowspan="${numAreas}" style="font-weight:600;vertical-align:middle;">${fundo}</td>`:'';
-                primeraFila=false;
+    Object.keys(resumen).sort().forEach(fundo=>{
+        const fData=resumen[fundo];
+        // Calcular rowspan total del fundo (suma de áreas de cada jefe)
+        let totalFilasFundo=0;
+        Object.keys(fData.jefes).forEach(j=>totalFilasFundo+=Object.keys(fData.jefes[j].areas).length);
+        
+        let primeraFilaFundo=true;
+        Object.keys(fData.jefes).sort().forEach(jefe=>{
+            const jData=fData.jefes[jefe];
+            const areas=Object.keys(jData.areas).sort();
+            areas.forEach((area,aIdx)=>{
+                const aData=jData.areas[area];
+                // Celda Fundo (rowspan de todas las filas de este fundo)
+                const fundoCell=primeraFilaFundo
+                    ?`<td rowspan="${totalFilasFundo}" style="font-weight:800;color:#0f3460;vertical-align:middle;background:#e8f4fd;border-right:3px solid #3b82f6;">${fundo}</td>`
+                    :'';
+                primeraFilaFundo=false;
+                // Celda Jefe (rowspan de las áreas de este jefe)
+                const jefeCell=aIdx===0
+                    ?`<td rowspan="${areas.length}" style="font-weight:700;color:#10b981;vertical-align:middle;">${jefe}</td>`
+                    :'';
                 const diasCells=DIAS.map(d=>{const v=aData.totDia[d]||0;return`<td class="num"><span class="resumen-num-badge ${v===0?'zero':''}">${v}</span></td>`;}).join('');
-                const totCell=`<td class="num"><span class="resumen-num-badge">${aData.tot||0}</span></td>`;
-                tablaHTML+=`<tr>${jCell}<td>${area}</td>${diasCells}${totCell}</tr>`;
+                tablaHTML+=`<tr>${fundoCell}${jefeCell}<td>${area}</td>${diasCells}<td class="num"><span class="resumen-num-badge">${aData.tot||0}</span></td></tr>`;
             });
-            // Subtotal fundo
-            const fDiasCells=DIAS.map(d=>{const v=fData.totDia[d]||0;return`<td class="num"><strong>${v}</strong></td>`;}).join('');
-            tablaHTML+=`<tr class="subtotal"><td colspan="3" style="text-align:right;padding-right:8px;">Subtotal ${fundo}:</td>${fDiasCells}<td class="num"><strong>${fData.tot}</strong></td></tr>`;
         });
+        
+        // Subtotal por FUNDO — color naranja distintivo
+        const fDiasCells=DIAS.map(d=>{const v=fData.totDia[d]||0;return`<td class="num" style="color:#92400e;font-weight:800;">${v}</td>`;}).join('');
+        tablaHTML+=`<tr class="subtotal-fundo"><td colspan="3" style="text-align:right;padding-right:10px;font-weight:800;color:#92400e;">SUBTOTAL ${fundo.toUpperCase()}:</td>${fDiasCells}<td class="num" style="font-weight:800;color:#92400e;">${fData.tot}</td></tr>`;
     });
     
     // Total general
     const grandCells=DIAS.map(d=>`<td class="num">${grandDia[d]||0}</td>`).join('');
-    tablaHTML+=`<tr class="total-g"><td colspan="3" style="text-align:right;padding-right:8px;">TOTAL GENERAL:</td>${grandCells}<td class="num">${grandTot}</td></tr>`;
+    tablaHTML+=`<tr class="total-g"><td colspan="3" style="text-align:right;padding-right:10px;">TOTAL GENERAL:</td>${grandCells}<td class="num">${grandTot}</td></tr>`;
     tablaHTML+=`</tbody></table>`;
     
     // ── POBLAR MODAL ──
