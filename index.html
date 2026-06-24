@@ -94,36 +94,45 @@
         .alert-box .alert-title { font-weight: 700; font-size: 9px; }
         .alert-box .alert-msg { font-size: 8px; opacity: 0.8; }
         
-        .search-box { background: #fff; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .search-header h4 { font-size: 11px; color: #1a1a2e; display: flex; align-items: center; gap: 6px; }
-        .search-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: flex-end; }
-        .search-filters input { padding: 6px 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 9px; min-width: 220px; }
-        .search-filters .btn-search { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 9px; font-weight: 600; height: 28px; }
-        .search-filter-group { display: flex; flex-direction: column; gap: 2px; }
+        
+        
+        /* Layout 2 columnas */
+        .two-col-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; align-items: start; }
+        
+        /* Filtro sticky labores añadidas */
+        .filter-table-box { background: #fff; border-radius: 8px; padding: 8px 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); position: sticky; top: 44px; z-index: 100; }
+        .filter-table-header { display: flex; align-items: center; gap: 8px; }
+        .filter-table-header span:first-child { font-size: 10px; font-weight: 600; color: #1a1a2e; white-space: nowrap; }
+        .filter-table-header input { flex: 1; padding: 6px 10px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 10px; transition: border-color 0.2s; }
+        .filter-table-header input:focus { outline: none; border-color: #10b981; }
+        .btn-limpiar-filtro { background: #ef4444; color: #fff; border: none; border-radius: 4px; padding: 6px 10px; cursor: pointer; font-size: 9px; font-weight: 600; flex-shrink: 0; }
+        .btn-limpiar-filtro:hover { background: #dc2626; }
+        .filter-count { font-size: 9px; color: #64748b; font-weight: 600; white-space: nowrap; }
+        tr.fila-oculta { display: none !important; }
+
+        /* search-box compacto en 2 columnas */
+        .search-box { background: #fff; border-radius: 8px; padding: 8px 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .search-box .search-results { max-height: 180px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .alerts-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+        .search-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .search-header h4 { font-size: 10px; color: #1a1a2e; display: flex; align-items: center; gap: 6px; }
+        .search-filters { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+        .search-filters input { padding: 5px 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 9px; flex:1; min-width: 0; }
+        .search-filters .btn-search { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 6px; padding: 5px 10px; cursor: pointer; font-size: 9px; font-weight: 600; white-space:nowrap; }
+        .search-filter-group { display: flex; flex-direction: column; gap: 2px; flex:1; min-width:0; }
         .search-filter-group label { font-size: 8px; font-weight: 600; color: #1a1a2e; text-transform: uppercase; }
-        .btn-export-search { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 9px; font-weight: 600; }
-        .search-results { max-height: 150px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .btn-export-search { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 9px; font-weight: 600; white-space:nowrap; }
+        .search-results { max-height: 180px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 6px; }
         .search-results table { width: 100%; border-collapse: collapse; font-size: 8px; }
-        .search-results th { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 6px 4px; text-align: left; font-weight: 600; position: sticky; top: 0; }
-        .search-results td { padding: 5px 4px; border-bottom: 1px solid #f1f5f9; }
+        .search-results th { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 5px 4px; text-align: left; font-weight: 600; position: sticky; top: 0; }
+        .search-results td { padding: 4px; border-bottom: 1px solid #f1f5f9; }
         .search-results tr:hover td { background: #f0fdf4; }
         .search-results .btn-add { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 4px; padding: 3px 8px; cursor: pointer; font-size: 8px; }
-        .search-count { font-size: 8px; color: #64748b; margin-top: 6px; }
+        .search-count { font-size: 8px; color: #64748b; margin-top: 4px; }
         .search-info { font-size: 9px; color: #64748b; padding: 12px; text-align: center; background: #f8fafc; border-radius: 4px; }
         
-        .filter-table-box { background: #fff; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        .filter-table-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .filter-table-header span:first-child { font-size: 10px; font-weight: 600; color: #1a1a2e; }
-        .filter-table-header input { flex: 1; min-width: 200px; padding: 6px 10px; border: 2px solid #e2e8f0; border-radius: 6px; font-size: 10px; transition: border-color 0.2s; }
-        .filter-table-header input:focus { outline: none; border-color: #10b981; }
-        .btn-limpiar-filtro { background: #ef4444; color: #fff; border: none; border-radius: 4px; padding: 6px 10px; cursor: pointer; font-size: 9px; font-weight: 600; }
-        .btn-limpiar-filtro:hover { background: #dc2626; }
-        .filter-count { font-size: 9px; color: #64748b; font-weight: 600; }
-        tr.fila-oculta { display: none !important; }
-        
         .table-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        .table-scroll { overflow-x: auto; max-height: calc(100vh - 340px); }
+        .table-scroll { overflow-x: auto; max-height: calc(100vh - 280px); }
         table { width: 100%; border-collapse: collapse; }
         th { background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; padding: 4px 2px; text-align: center; font-size: 7px; font-weight: 600; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         th.col-text { text-align: left; padding-left: 4px; }
@@ -332,28 +341,33 @@
             </div>
         </div>
         
-        <!-- Búsqueda visible por defecto -->
-        <div class="search-box" id="searchBox">
-            <div class="search-header"><h4>🔍 Buscar en MAESTRO (filtrado por selección)</h4><button class="btn-export-search" onclick="exportarBusqueda()">📥 Exportar</button></div>
-            <div class="search-filters"><div class="search-filter-group"><label>BUSCAR</label><input type="text" id="searchText" placeholder="Buscar labor, grupo..." onkeyup="buscarLabores()"></div><button class="btn-search" onclick="buscarLabores()">Buscar</button></div>
-            <div class="search-results"><table><thead><tr><th>Fundo</th><th>Cultivo</th><th>Área</th><th>Grupo</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"></tbody></table></div>
-            <div class="search-count" id="searchCount"></div>
+        <!-- Layout 2 columnas: Buscador MAESTRO | Filtro sticky labores añadidas -->
+        <div class="two-col-layout">
+            <!-- Columna izquierda: Buscar en MAESTRO -->
+            <div class="search-box" id="searchBox">
+                <div class="search-header"><h4>🔍 Buscar en MAESTRO</h4><button class="btn-export-search" onclick="exportarBusqueda()">📥 Exportar</button></div>
+                <div class="search-filters"><div class="search-filter-group"><label>BUSCAR</label><input type="text" id="searchText" placeholder="Buscar labor, grupo..." onkeyup="buscarLabores()"></div><button class="btn-search" onclick="buscarLabores()">Buscar</button></div>
+                <div class="search-results"><table><thead><tr><th>Fundo</th><th>Cultivo</th><th>Área</th><th>Grupo</th><th>Labor</th><th></th></tr></thead><tbody id="searchResultsBody"></tbody></table></div>
+                <div class="search-count" id="searchCount"></div>
+            </div>
+            <!-- Columna derecha: Filtro labores añadidas (STICKY) -->
+            <div class="filter-table-box">
+                <div class="filter-table-header">
+                    <span>🔎 Filtrar labores añadidas:</span>
+                    <input type="text" id="filtroTabla" placeholder="Labor, grupo, área, fundo..." oninput="filtrarTabla()">
+                    <button class="btn-limpiar-filtro" onclick="limpiarFiltroTabla()">✕</button>
+                    <span class="filter-count" id="filterCount"></span>
+                </div>
+            </div>
         </div>
-        
+
         <div class="modal-bg" id="modalPassword"><div class="modal"><h3>🔐 Contraseña</h3><div class="modal-field"><label>Ingrese contraseña:</label><input type="password" id="exportPassword" placeholder="..." onkeyup="if(event.key==='Enter')verificarPassword()"></div><div class="modal-actions"><button class="btn btn-cancel" onclick="cerrarModalPassword()">Cancelar</button><button class="btn btn-confirm" onclick="verificarPassword()">Exportar</button></div></div></div>
         
-        <div class="alert-box warning" id="alertDuplicates"><div class="alert-icon">⚠️</div><div class="alert-text"><div class="alert-title">Duplicadas</div><div class="alert-msg" id="alertDupMsg"></div></div></div>
-        <div class="alert-box warning" id="alertIncomplete" style="border-color:#ef4444;background:linear-gradient(135deg,#fee2e2,#fecaca);"><div class="alert-icon">❌</div><div class="alert-text"><div class="alert-title" style="color:#991b1b;">Incompletas</div><div class="alert-msg" id="alertIncMsg" style="color:#b91c1c;"></div></div></div>
-        <div class="alert-box warning" id="alertNoPersonal" style="border-color:#f59e0b;"><div class="alert-icon">👥</div><div class="alert-text"><div class="alert-title" style="color:#92400e;">Sin personal</div><div class="alert-msg" id="alertNoPerMsg" style="color:#a16207;"></div></div></div>
-        
-        <!-- Filtro para labores añadidas -->
-        <div class="filter-table-box">
-            <div class="filter-table-header">
-                <span>🔎 Filtrar labores añadidas:</span>
-                <input type="text" id="filtroTabla" placeholder="Buscar por labor, grupo, área, fundo, jefe..." oninput="filtrarTabla()">
-                <button class="btn-limpiar-filtro" onclick="limpiarFiltroTabla()">✕</button>
-                <span class="filter-count" id="filterCount"></span>
-            </div>
+        <!-- Alertas en fila compacta -->
+        <div class="alerts-row">
+            <div class="alert-box warning" id="alertDuplicates"><div class="alert-icon">⚠️</div><div class="alert-text"><div class="alert-title">Duplicadas</div><div class="alert-msg" id="alertDupMsg"></div></div></div>
+            <div class="alert-box warning" id="alertIncomplete" style="border-color:#ef4444;background:linear-gradient(135deg,#fee2e2,#fecaca);"><div class="alert-icon">❌</div><div class="alert-text"><div class="alert-title" style="color:#991b1b;">Incompletas</div><div class="alert-msg" id="alertIncMsg" style="color:#b91c1c;"></div></div></div>
+            <div class="alert-box warning" id="alertNoPersonal" style="border-color:#f59e0b;"><div class="alert-icon">👥</div><div class="alert-text"><div class="alert-title" style="color:#92400e;">Sin personal</div><div class="alert-msg" id="alertNoPerMsg" style="color:#a16207;"></div></div></div>
         </div>
         
         <div class="table-card">
