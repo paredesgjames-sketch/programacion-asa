@@ -503,6 +503,7 @@
                                 <thead>
                                     <tr>
                                         <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Fundo</th>
+                                        <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Cultivo</th>
                                         <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Área</th>
                                         <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Grupo</th>
                                         <th style="background:#0f3460;color:#fff;padding:4px 5px;text-align:left;position:sticky;top:0;z-index:1;font-size:7px;white-space:nowrap;">Labor</th>
@@ -1499,7 +1500,7 @@ function buscarLabores(){
     }
 
     const total=res.length;
-    res=res.slice(0,50);
+    res=res.slice(0,500); // mostrar hasta 500
     window.searchResultados=res;
     window.searchResultadosTotal=maestroFiltrado.filter(m=>{
         if(!texto)return true;
@@ -1514,6 +1515,7 @@ function buscarLabores(){
         res.forEach((m,idx)=>{
     html+=`<tr>
                 <td>${m.Fundo||'-'}</td>
+                <td>${m.CULTIVO||m.Cultivo||'-'}</td>
                 <td>${m.AREA||'-'}</td>
                 <td>${m['Grupo Labor']||'-'}</td>
                 <td>${m.Labor||'-'}</td>
@@ -1534,7 +1536,7 @@ function buscarLabores(){
     const spaceAbove=rect.top - 8;
     const dropH=Math.min(420, Math.max(spaceBelow, spaceAbove) - 10);
     
-    dropdown.style.width=Math.max(rect.width + 200, 500)+'px';
+    dropdown.style.width=Math.max(rect.width + 260, 580)+'px';
     dropdown.style.left=rect.left+'px';
     
     if(spaceBelow >= 200 || spaceBelow >= spaceAbove){
